@@ -35,7 +35,7 @@
     "start": "./bin/webpack-dev-server",
     "test": "node_modules/.bin/jest",
     "test:dev": "node_modules/.bin/jest --notify --watch",
-    "build": "yarn install && yarn build",
+    "build": "cd client && yarn install && yarn build && cd ..",
     "deploy": "cp -a client/build/. public/",
     "heroku-postbuild": "yarn build && yarn deploy && echo 'Client built!'"
   },

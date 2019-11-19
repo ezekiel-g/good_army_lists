@@ -33,7 +33,7 @@
     "test:dev": "node_modules/.bin/jest --notify --watch",
     "build": "cd client && yarn install && yarn build && cd ..",
     "deploy": "cp -a client/build/. public/",
-    "postinstall": "yarn build && yarn deploy && echo 'Client built!'"
+    "heroku-postbuild": "yarn build && yarn deploy && echo 'Client built!'"
   },
   "jest": {
     "automock": false,
@@ -48,5 +48,6 @@
       "./spec/javascript/support/enzyme.js"
     ],
     "testURL": "http://localhost/"
-  }
+  },
+  "heroku-run-build-script": true
 }

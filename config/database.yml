@@ -83,3 +83,4 @@ production:
   database: good_army_lists_production
   username: good_army_lists
   password: <%= ENV['GOOD_ARMY_LISTS_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>

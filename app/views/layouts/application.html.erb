@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>GoodArmyLists</title>
+<head>
+    <title>Good Army Lists</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
     <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
-  </head>
-
-  <body>
+    <%= favicon_link_tag asset_path('sword.ico') %>
+</head>
+<body>  
     <%= yield %>
-  </body>
+  
+    <%- if Rails.env.development? || Rails.env.test? -%> 
+        <%= javascript_tag do %>
+            window.railsEnv = '<%= Rails.env %>'
+        <%- end -%>
+    <%- end -%>
+</body>
 </html>
+

@@ -1,5 +1,9 @@
 {
   "name": "good_army_lists",
+    "engines": {
+    "node": "10.16.3",
+    "yarn": "1.17.3"
+  },
   "private": true,
   "proxy": "http://localhost:3001",
   "dependencies": {

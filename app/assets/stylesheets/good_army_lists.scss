@@ -32,6 +32,8 @@ table {
 	table-layout: fixed;
 }
 
+hr { width: 100%; }
+
 .user-select-none {
 	user-select: none;
 }
@@ -443,7 +445,7 @@ table {
 }
 
 .formatted-list-box {
-	font-size: 95%;
+	font-size: 100%;
 	line-height: 115%;
 	padding: 20px;
 }

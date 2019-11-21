@@ -5,10 +5,10 @@ Rails.application.routes.draw do
   	namespace :api do
 		namespace :v1 do
 			resources :users, only: [:index, :show, :destroy]
-			resources :armies
-			resources :units
-			resources :artefacts
-			resources :unit_options
+			resources :armies, only: [:index, :show]
+			resources :units, only: [:index, :show]
+			resources :artefacts, only: [:index, :show]
+			resources :unit_options, only: [:index, :show]
 		end
 	end
 end

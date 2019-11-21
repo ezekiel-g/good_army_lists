@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
+import Modal from 'react-modal'
 import UnitEntryButton from '../components/UnitEntryButton'
 import UnitOptionIcon from '../components/UnitOptionIcon'
 import ArtefactIcon from '../components/ArtefactIcon'
 import UnitEntryNameTile from '../components/UnitEntryNameTile'
 import UnitOptionSelectionTile from '../components/UnitOptionSelectionTile'
+import FormattedList from '../components/FormattedList'
 import ArtefactSelectionTile from '../components/ArtefactSelectionTile'
 import whiteSquare from '../../../assets/images/whiteSquare.png'
 
@@ -21,6 +23,7 @@ class UnitEntriesFormContainer extends Component {
 			indexCount: 0,
 			unitOptionsVisible: false,
 			artefactsVisible: false,
+			formattedListVisible: false,
 			unitBeingGivenOption: '',
 			unitBeingGivenArtefact: '',
 			troopUnlocks: 0,
@@ -54,6 +57,8 @@ class UnitEntriesFormContainer extends Component {
 		this.removeUnitOption = this.removeUnitOption.bind(this)
 		this.removeArtefact = this.removeArtefact.bind(this)
 		this.clearList = this.clearList.bind(this)
+		this.showFormattedList = this.showFormattedList.bind(this)
+		this.hideFormattedList = this.hideFormattedList.bind(this)
 	}
 
 	updateSelectedArmy(selectedArmy) {
@@ -1100,8 +1105,17 @@ class UnitEntriesFormContainer extends Component {
 			largeInfantryHordeCount: 0,
 			tooMany: 1,
 			unitOptionsVisible: false,
-			artefactsVisible: false
+			artefactsVisible: false,
+			formattedListVisible: false
 		})
+	}
+
+	showFormattedList() {
+		this.setState({ formattedListVisible: true })
+	}
+
+	hideFormattedList() {
+		this.setState({ formattedListVisible: false })
 	}
 
 	render() {
@@ -1478,21 +1492,38 @@ class UnitEntriesFormContainer extends Component {
 			display = artefactSelectionTile
 		}
 		if (unitOptionSelectionTile === undefined && artefactSelectionTile === undefined) {
+			let unitEntryButtonsClassNames
+			if (selectedArmy.label === 'Elves' && filteredUnitsUnlocked.length === 0) {
+				unitEntryButtonsClassNames = 'unit-entry-buttons-elves column'
+			} else {
+				unitEntryButtonsClassNames = 'unit-entry-buttons column'
+			}
+			let listOutputSideClassNames
+			if (sortedListedUnits.length === 0) {
+				listOutputSideClassNames = 'list-output-side-blank column'
+			} else {
+				listOutputSideClassNames = 'list-output-side column'
+			}
 			display =
 				<div className={hidden}>
 					{clearListDiv}	
 					<div className="everything-after-army-dropdown row">
-						<div className="unit-entry-buttons column">
+						<div className={unitEntryButtonsClassNames}>
 							{unitEntryButtonTitle}<br />
 							{unitEntryButtonDisplay}<br />
 							{unitEntryButtonDisplayUnlocked}
 						</div>
-						<div className="list-output-side column">
+						<div className={listOutputSideClassNames}>
 							<div className="list-title-bar">
 								<h3 className="list-title">{this.state.selectedArmy.label}</h3>
 							</div>
 							{pointTotalDisplay}<br />
-							<table><tbody>{listedUnitTileDisplay}</tbody></table>
+							<table><tbody>{listedUnitTileDisplay}</tbody></table><br />
+							<div className="view-list-button-div">
+								<span onClick={this.showFormattedList} className="view-list-button">
+									View List
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -1516,6 +1547,22 @@ class UnitEntriesFormContainer extends Component {
 					</div>	
 				</div>
 				<div>{display}</div>
+				<Modal
+					appElement={document.getElementById('app')}
+					isOpen={this.state.formattedListVisible}
+					onRequestClose={this.hideFormattedList}
+					className="formatted-list-modal"
+				>
+					<FormattedList
+						selectedArmy={selectedArmy}
+						listedUnits={sortedListedUnits}
+						selectedUnitOptions={this.state.selectedUnitOptions}
+						selectedArtefacts={this.state.selectedArtefacts}
+						pointTotal={this.state.pointTotal}
+						unitStrengthTotal={this.state.unitStrengthTotal}
+						hideFormattedList={this.hideFormattedList}
+					/>
+				</Modal>
 			</div>
 		)
 	}	

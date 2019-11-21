@@ -199,6 +199,19 @@ table {
 	height: fit-content;
 }
 
+.unit-entry-buttons-elves {
+	user-select: none;
+	line-height: 120%;
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
+	padding: 5px 5px 20px 5px;
+	width: 49.5%;
+	border-radius: 6px;
+	float: left;
+	overflow: hidden;
+	height: 368px;
+}
+
 .unit-entry-buttons:active {
 	overflow: none;
 }
@@ -225,6 +238,17 @@ table {
 	float: right;
 	overflow: hidden;
 	height: fit-content;
+}
+
+.list-output-side-blank {
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
+	padding: 5px 5px 20px 5px;
+	width: 49.5%;
+	border-radius: 6px;
+	float: right;
+	overflow: hidden;
+	height: 145px;
 }
 
 .list-title-bar {
@@ -394,6 +418,64 @@ table {
 
 .unit-options-on-list {
 
+}
+
+.view-list-button-div {
+	user-select: none;
+	text-align: center;
+}
+
+.view-list-button {
+	cursor: pointer;
+	text-align: center;
+	padding: 9.3px;
+}
+
+.view-list-button:hover {
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
+}
+
+.formatted-list-modal {
+	height: 100%;
+	width: 100%;
+	background-color: #FFFFFF;
+}
+
+.formatted-list-box {
+	font-size: 95%;
+	line-height: 115%;
+	padding: 20px;
+}
+
+.close-formatted-list-button {
+	user-select: none;
+	cursor: pointer;
+	padding: 6px;
+}
+
+.close-formatted-list-button:hover {
+	border: 1px solid #000000;
+}
+
+@media screen {
+  #printSection {
+      display: none;
+  }
+}
+
+@media print {
+	body * {
+		visibility:hidden;
+	}
+	#printSection, #printSection * {
+		visibility: visible;
+	}
+	#printSection {
+		position:absolute;
+		left: 0;
+		top: 0;
+	}
 }
 
 .army-tile { margin: 5px 0px 5px 0px; }

@@ -31,6 +31,18 @@ const FormattedList = props => {
 
 	return (
 		<div className="formatted-list-box">
+			<div className="formatted-list-buttons">
+				<span
+					onClick={() => printList(document.getElementsByClassName('formatted-list')[0])}
+					className="print-button formatted-list-button"
+				>
+					Print
+				</span>
+				<span onClick={props.hideFormattedList} className="formatted-list-button">
+					Close
+				</span>
+			</div>
+			<hr />		
 			<div className="formatted-list">
 				<div className="formatted-list-header">
 					Army: {props.selectedArmy.label}<br />
@@ -39,16 +51,6 @@ const FormattedList = props => {
 				</div><br />
 				{list}
 			</div>
-			<hr /><br />		
-				<span
-					onClick={() => printList(document.getElementsByClassName('formatted-list')[0])}
-					className="print-button close-formatted-list-button"
-				>
-					Print
-				</span>
-				<span onClick={props.hideFormattedList} className="close-formatted-list-button">
-					Close
-				</span>
 		</div>
 	)
 }

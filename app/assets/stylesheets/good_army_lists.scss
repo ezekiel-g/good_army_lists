@@ -451,16 +451,20 @@ hr { width: 100%; }
 }
 
 .formatted-list-header {
-	line-height: 110%;
+
 }
 
-.close-formatted-list-button {
+.formatted-list-buttons {
+	text-align: center;
+}
+
+.formatted-list-button {
 	user-select: none;
 	cursor: pointer;
-	padding: 6px;
+	padding: 7px;
 }
 
-.close-formatted-list-button:hover {
+.formatted-list-button:hover {
 	border: 1px solid #000000;
 }
 

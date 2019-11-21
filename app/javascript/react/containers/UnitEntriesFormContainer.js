@@ -1492,12 +1492,6 @@ class UnitEntriesFormContainer extends Component {
 			display = artefactSelectionTile
 		}
 		if (unitOptionSelectionTile === undefined && artefactSelectionTile === undefined) {
-			let unitEntryButtonsClassNames
-			if (selectedArmy.label === 'Elves' && filteredUnitsUnlocked.length === 0) {
-				unitEntryButtonsClassNames = 'unit-entry-buttons-elves column'
-			} else {
-				unitEntryButtonsClassNames = 'unit-entry-buttons column'
-			}
 			let listOutputSideClassNames
 			if (sortedListedUnits.length === 0) {
 				listOutputSideClassNames = 'list-output-side-blank column'
@@ -1508,7 +1502,7 @@ class UnitEntriesFormContainer extends Component {
 				<div className={hidden}>
 					{clearListDiv}	
 					<div className="everything-after-army-dropdown row">
-						<div className={unitEntryButtonsClassNames}>
+						<div className="unit-entry-buttons column">
 							{unitEntryButtonTitle}<br />
 							{unitEntryButtonDisplay}<br />
 							{unitEntryButtonDisplayUnlocked}

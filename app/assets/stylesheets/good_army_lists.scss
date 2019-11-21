@@ -4,7 +4,6 @@
 
 body {
 	font-family: "Helvetica", sans-serif;
-	font-size: 110%;
 	background-color: #F3F3F3;
 }
 
@@ -201,19 +200,6 @@ hr { width: 100%; }
 	height: fit-content;
 }
 
-.unit-entry-buttons-elves {
-	user-select: none;
-	line-height: 120%;
-	border: 1px solid #000000;
-	background-color: #FFFFFF;
-	padding: 5px 5px 20px 5px;
-	width: 49.5%;
-	border-radius: 6px;
-	float: left;
-	overflow: hidden;
-	height: 368px;
-}
-
 .unit-entry-buttons:active {
 	overflow: none;
 }
@@ -282,8 +268,6 @@ hr { width: 100%; }
 
 .cog {
 	cursor: pointer;
-
-
 }
 
 .cog:hover {
@@ -450,7 +434,6 @@ hr { width: 100%; }
 }
 
 .formatted-list-box {
-	font-size: 100%;
 	padding: 20px;
 }
 

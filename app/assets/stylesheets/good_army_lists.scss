@@ -442,12 +442,16 @@ hr { width: 100%; }
 	height: 100%;
 	width: 100%;
 	background-color: #FFFFFF;
+    overflow-y: auto;
 }
 
 .formatted-list-box {
 	font-size: 100%;
-	line-height: 115%;
 	padding: 20px;
+}
+
+.formatted-list-header {
+	line-height: 110%;
 }
 
 .close-formatted-list-button {
@@ -460,6 +464,10 @@ hr { width: 100%; }
 	border: 1px solid #000000;
 }
 
+.formatted-list-entry {
+	line-height: 90%;
+}
+
 @media screen {
   #printSection {
       display: none;
@@ -468,13 +476,13 @@ hr { width: 100%; }
 
 @media print {
 	body * {
-		visibility:hidden;
+		visibility: hidden;
 	}
 	#printSection, #printSection * {
 		visibility: visible;
 	}
 	#printSection {
-		position:absolute;
+		position: absolute;
 		left: 0;
 		top: 0;
 	}

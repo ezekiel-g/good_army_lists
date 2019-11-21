@@ -1464,7 +1464,7 @@ class UnitEntriesFormContainer extends Component {
 								</span>
 							</td>
 							<td valign="top" className="user-select-none">
-								<span className="whiteSquare"><img src={whiteSquare} width={"10"} height={"20"} /></span>
+								<span className="white-square"><img src={whiteSquare} width={"10"} height={"20"} /></span>
 							</td>
 							<td valign="top">
 								<UnitEntryNameTile

@@ -36,8 +36,8 @@ const FormattedList = props => {
 				Points: {props.pointTotal}<br />
 				Unit Strength: {props.unitStrengthTotal}<br /><br />
 				{list}
-			</div><br /><br />
-
+			</div>
+			<hr /><br />		
 				<span
 					onClick={() => printList(document.getElementsByClassName('formatted-list')[0])}
 					className="print-button close-formatted-list-button"
@@ -47,7 +47,6 @@ const FormattedList = props => {
 				<span onClick={props.hideFormattedList} className="close-formatted-list-button">
 					Close
 				</span>
-
 		</div>
 	)
 }

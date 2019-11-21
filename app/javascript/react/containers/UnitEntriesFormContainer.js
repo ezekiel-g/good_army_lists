@@ -1551,6 +1551,7 @@ class UnitEntriesFormContainer extends Component {
 					appElement={document.getElementById('app')}
 					isOpen={this.state.formattedListVisible}
 					onRequestClose={this.hideFormattedList}
+					shouldCloseOnOverlayClick={true}
 					className="formatted-list-modal"
 				>
 					<FormattedList

@@ -439,10 +439,14 @@ hr { width: 100%; }
 }
 
 .formatted-list-modal {
-	height: 100%;
-	width: 100%;
+	height: 93%;
+	width: 95%;
 	background-color: #FFFFFF;
     overflow-y: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
 }
 
 .formatted-list-box {
@@ -473,9 +477,9 @@ hr { width: 100%; }
 }
 
 @media screen {
-  #printSection {
-      display: none;
-  }
+  	#printSection {
+      	display: none;
+  	}
 }
 
 @media print {

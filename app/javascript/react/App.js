@@ -53,7 +53,7 @@ class App extends Component {
 
 		return (
 			<div className="sections-container">
-				<NonAdminSectionContainer dropdownStyle={dropdownStyle}/>
+				<NonAdminSectionContainer dropdownStyle={dropdownStyle} />
 			</div>
 		)
 	}

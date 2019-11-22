@@ -77,7 +77,7 @@ const UnitEntryNameTileFormatted = props => {
 			<table>
 				<tbody>
 					<tr>
-						<td>{extraSpace}{pointsForEntry}{' '}--</td>
+						<td>{extraSpace}{pointsForEntry}{' '}--{' '}</td>
 						<td>{' '}{props.unitObject.unit.display_name}</td>
 					</tr>
 					{nonSpellDisplay}

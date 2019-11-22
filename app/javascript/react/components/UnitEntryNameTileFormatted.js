@@ -1,5 +1,4 @@
 import React from 'react'
-import whiteSquare from '../../../assets/images/whiteSquare.png'
 
 const UnitEntryNameTileFormatted = props => {
 	let nonSpells = []
@@ -37,8 +36,7 @@ const UnitEntryNameTileFormatted = props => {
 				<tr key={unitOptionObject.index + unitOptionObject.unitOption.id + 70000}>
 					<td></td>
 					<td>
-						--{' '}<img className="white-square-formatted" src={whiteSquare} />
-						<i>{unitOptionObject.unitOption.display_name}</i>
+						--{' '}<i>{unitOptionObject.unitOption.display_name}</i>
 					</td>
 				</tr>
 			)
@@ -52,8 +50,7 @@ const UnitEntryNameTileFormatted = props => {
 				<tr key={unitOptionObject.index + unitOptionObject.unitOption.id + 100000}>
 					<td></td>
 					<td>
-						--{' '}<img className="white-square-formatted" src={whiteSquare} />
-						<i>{unitOptionObject.unitOption.display_name}</i>
+						--{' '}<i>{unitOptionObject.unitOption.display_name}</i>
 					</td>
 				</tr>
 			)
@@ -66,8 +63,7 @@ const UnitEntryNameTileFormatted = props => {
 			<tr>
 				<td></td>
 				<td>
-					--{' '}<img className="white-square-formatted" src={whiteSquare} />
-					<i>{artefact.display_name}</i>
+					--{' '}<i>{artefact.display_name}</i>
 				</td>
 			</tr>
 	}
@@ -81,14 +77,8 @@ const UnitEntryNameTileFormatted = props => {
 			<table>
 				<tbody>
 					<tr>
-						<td>
-							{extraSpace}{pointsForEntry}{' '}
-							<img className="white-square-formatted" src={whiteSquare} />
-							<span>--</span>
-							<img className="white-square-formatted-2" src={whiteSquare} />
-							{' '}
-						</td>
-						<td>{props.unitObject.unit.display_name}</td>
+						<td>{extraSpace}{pointsForEntry}{' '}--</td>
+						<td>{' '}{props.unitObject.unit.display_name}</td>
 					</tr>
 					{nonSpellDisplay}
 					{spellDisplay}

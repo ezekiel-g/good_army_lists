@@ -85,9 +85,10 @@ const UnitEntryNameTileFormatted = props => {
 							{extraSpace}{pointsForEntry}{' '}
 							<img className="white-square-formatted" src={whiteSquare} />
 							<span>--</span>
-							<img className="white-square-formatted" src={whiteSquare} />
+							<img className="white-square-formatted-2" src={whiteSquare} />
+							{' '}
 						</td>
-						<td>{' '}{props.unitObject.unit.display_name}</td>
+						<td>{props.unitObject.unit.display_name}</td>
 					</tr>
 					{nonSpellDisplay}
 					{spellDisplay}

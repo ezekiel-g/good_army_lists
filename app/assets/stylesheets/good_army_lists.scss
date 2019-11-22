@@ -315,6 +315,14 @@ hr { width: 100%; }
 	user-select: none;
 }
 
+.white-square-formatted {
+	visibility: hidden;
+	width: 10px;
+	height: 12px;
+	display: inline-block;
+	user-select: none;	
+}
+
 .list-entry {
 
 }
@@ -423,12 +431,12 @@ hr { width: 100%; }
 }
 
 .formatted-list-modal {
-	height: 93%;
+	height: 80%;
 	width: 95%;
 	background-color: #FFFFFF;
     overflow-y: auto;
     position: absolute;
-    top: 50%;
+    top: 43%;
     left: 50%;
     transform: translate(-50%, -50%) !important;
 }
@@ -438,7 +446,7 @@ hr { width: 100%; }
 }
 
 .formatted-list-header {
-	line-height: 130%;
+	line-height: 119%;
 }
 
 .formatted-list-buttons {
@@ -453,10 +461,11 @@ hr { width: 100%; }
 
 .formatted-list-button:hover {
 	border: 1px solid #000000;
+	position: relative;
 }
 
 .formatted-list-entry {
-	line-height: 90%;
+	line-height: 94%;
 }
 
 @media screen {

@@ -1111,10 +1111,14 @@ class UnitEntriesFormContainer extends Component {
 	}
 
 	showFormattedList() {
+		let listOutputSide = document.getElementsByClassName('list-output-side')[0]
+		listOutputSide.classList.add('user-select-none')
 		this.setState({ formattedListVisible: true })
 	}
 
 	hideFormattedList() {
+		let listOutputSide = document.getElementsByClassName('list-output-side')[0]
+		listOutputSide.classList.remove('user-select-none')		
 		this.setState({ formattedListVisible: false })
 	}
 

@@ -37,6 +37,13 @@ hr { width: 100%; }
 	user-select: none;
 }
 
+.scroll-lock {
+	margin: 0;
+	height: 100%;
+	overflow: hidden;
+	user-select: none;
+}
+
 .army-dropdown-section {
 	user-select: none;
 }

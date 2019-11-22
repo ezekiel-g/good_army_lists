@@ -36,7 +36,10 @@ const UnitEntryNameTileFormatted = props => {
 			return (
 				<tr key={unitOptionObject.index + unitOptionObject.unitOption.id + 70000}>
 					<td></td>
-					<td>{' '}<i>--{' '}{unitOptionObject.unitOption.display_name}</i></td>
+					<td>
+						--{' '}<img className="white-square-formatted" src={whiteSquare} />
+						<i>{unitOptionObject.unitOption.display_name}</i>
+					</td>
 				</tr>
 			)
 		})
@@ -48,7 +51,10 @@ const UnitEntryNameTileFormatted = props => {
 			return (
 				<tr key={unitOptionObject.index + unitOptionObject.unitOption.id + 100000}>
 					<td></td>
-					<td>{' '}<i>--{' '}{unitOptionObject.unitOption.display_name}</i></td>
+					<td>
+						--{' '}<img className="white-square-formatted" src={whiteSquare} />
+						<i>{unitOptionObject.unitOption.display_name}</i>
+					</td>
 				</tr>
 			)
 		})
@@ -56,7 +62,14 @@ const UnitEntryNameTileFormatted = props => {
 
 	let artefactDisplay
 	if (artefact !== undefined && artefact !== null) {
-		artefactDisplay = <tr><td></td><td>{' '}<i>--{' '}{artefact.display_name}</i></td></tr>
+		artefactDisplay =
+			<tr>
+				<td></td>
+				<td>
+					--{' '}<img className="white-square-formatted" src={whiteSquare} />
+					<i>{artefact.display_name}</i>
+				</td>
+			</tr>
 	}
 	let extraSpace
 	if (pointsForEntry < 100) {

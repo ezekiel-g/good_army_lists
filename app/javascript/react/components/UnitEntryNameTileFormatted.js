@@ -5,10 +5,6 @@ const UnitEntryNameTileFormatted = props => {
 	let nonSpells = []
 	let spells = []
 	let pointsForEntry = props.unitObject.unit.points
-	let extraSpace
-	if (props.unitObject.unit.points < 100) {
-		extraSpace = <span className="hidden">{'_'}</span>
-	}
 	let i
 	for (i = 0; i < props.selectedUnitOptions.length; i++) {
 		if (
@@ -61,6 +57,10 @@ const UnitEntryNameTileFormatted = props => {
 	let artefactDisplay
 	if (artefact !== undefined && artefact !== null) {
 		artefactDisplay = <tr><td></td><td>{' '}<i>--{' '}{artefact.display_name}</i></td></tr>
+	}
+	let extraSpace
+	if (pointsForEntry < 100) {
+		extraSpace = <span className="hidden">{'_'}</span>
 	}
 
 	return (

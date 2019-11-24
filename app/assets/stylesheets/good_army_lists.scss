@@ -33,7 +33,10 @@ table {
 	table-layout: fixed;
 }
 
-hr { width: 100%; }
+hr {
+	width: 100%;
+	user-select: none;
+}
 
 
 

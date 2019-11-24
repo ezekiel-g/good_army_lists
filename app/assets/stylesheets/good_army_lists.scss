@@ -251,6 +251,7 @@ hr { width: 100%; }
 	float: right;
 	overflow: hidden;
 	height: fit-content;
+	user-select: none;
 }
 
 .list-output-side-blank {
@@ -262,6 +263,7 @@ hr { width: 100%; }
 	float: right;
 	overflow: hidden;
 	height: 145px;
+	user-select: none;
 }
 
 .list-title-bar {

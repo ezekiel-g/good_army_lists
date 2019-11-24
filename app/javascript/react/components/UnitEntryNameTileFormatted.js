@@ -33,14 +33,9 @@ const UnitEntryNameTileFormatted = props => {
 	if (nonSpells.length > 0) {
 		nonSpellDisplay = nonSpells.map(unitOptionObject => {
 			return (
-				<tr key={unitOptionObject.index + unitOptionObject.unitOption.id + 70000}>
-					<td></td>
-					<td></td>
-					<td>
-						--{' '}<span className="hidden">_</span>{' '}
-						<i>{unitOptionObject.unitOption.display_name}</i>
-					</td>
-				</tr>
+				<div key={unitOptionObject.index + unitOptionObject.unitOption.id + 70000}>
+					--{' '}<i>{unitOptionObject.unitOption.display_name}</i>
+				</div>
 			)
 		})
 	}
@@ -49,14 +44,9 @@ const UnitEntryNameTileFormatted = props => {
 	if (spells.length > 0) {
 		spellDisplay = spells.map(unitOptionObject => {
 			return (
-				<tr key={unitOptionObject.index + unitOptionObject.unitOption.id + 100000}>
-					<td></td>
-					<td></td>
-					<td>
-						--{' '}<span className="hidden">_</span>{' '}
-						<i>{unitOptionObject.unitOption.display_name}</i>
-					</td>
-				</tr>
+				<div key={unitOptionObject.index + unitOptionObject.unitOption.id + 100000}>
+					--{' '}<i>{unitOptionObject.unitOption.display_name}</i>	
+				</div>
 			)
 		})
 	}
@@ -64,14 +54,9 @@ const UnitEntryNameTileFormatted = props => {
 	let artefactDisplay
 	if (artefact !== undefined && artefact !== null) {
 		artefactDisplay =
-			<tr>
-				<td></td>
-				<td></td>
-				<td>
-					--{' '}<span className="hidden">_</span>{' '}
-					<i>{artefact.display_name}</i>
-				</td>
-			</tr>
+			<div>
+				--{' '}<i>{artefact.display_name}</i>
+			</div>
 	}
 	let extraSpace
 	if (pointsForEntry < 100) {
@@ -80,25 +65,10 @@ const UnitEntryNameTileFormatted = props => {
 
 	return (
 		<div className="formatted-list-entry">
-			<table>
-				<tbody>
-					<tr>
-						<td>
-							{extraSpace}{pointsForEntry}
-						</td>
-						<td>
-							<span className="hidden">_</span>{' '}--
-							<span className="hidden">_</span>
-						</td>
-						<td>
-							{props.unitObject.unit.display_name}
-						</td>
-					</tr>
-					{nonSpellDisplay}
-					{spellDisplay}
-					{artefactDisplay}
-				</tbody>
-			</table>
+			<div>{extraSpace}{pointsForEntry},{' '}{props.unitObject.unit.display_name}</div>
+			{nonSpellDisplay}
+			{spellDisplay}
+			{artefactDisplay}
 		</div>
 	)
 }

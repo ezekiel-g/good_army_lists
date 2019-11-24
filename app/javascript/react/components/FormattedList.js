@@ -52,9 +52,9 @@ const FormattedList = props => {
 		<div className="formatted-list-box">
 			<div type="text" className="formatted-list">
 				<div className="formatted-list-header">
-					Army: {props.selectedArmy.label}<br />
-					Points: {props.pointTotal}<br />
-					Unit Strength: {props.unitStrengthTotal}
+					<div>Army: {props.selectedArmy.label}</div>
+					<div>Points: {props.pointTotal}</div>
+					<div>Unit Strength: {props.unitStrengthTotal}</div>
 				</div><br />
 				{list}
 			</div>

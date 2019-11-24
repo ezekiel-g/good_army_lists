@@ -78,7 +78,7 @@ hr {
 
 .copyright-notice {
 	text-align: center;
-	font-size: 70%;
+	font-size: 73%;
 	margin: -9px 0px 0.5px 0px;
 	user-select: none;
 }
@@ -255,6 +255,7 @@ hr {
 	overflow: hidden;
 	height: fit-content;
 	user-select: none;
+	margin-bottom: 2.5px;
 }
 
 .list-output-side-blank {
@@ -267,20 +268,22 @@ hr {
 	overflow: hidden;
 	height: 143px;
 	user-select: none;
+	margin-bottom: 2.5px;
 }
 
 @media screen and (max-width: 639px) {
 	.list-output-side-blank {
-	border: 1px solid #000000;
-	background-color: #FFFFFF;
-	padding: 5px 5px 20px 5px;
-	width: 49.5%;
-	border-radius: 6px;
-	float: right;
-	overflow: hidden;
-	height: 128px;
-	user-select: none;
-}
+		border: 1px solid #000000;
+		background-color: #FFFFFF;
+		padding: 5px 5px 20px 5px;
+		width: 49.5%;
+		border-radius: 6px;
+		float: right;
+		overflow: hidden;
+		height: 128px;
+		user-select: none;
+		margin-bottom: 2.5px;
+	}
 }
 
 .list-title-bar {
@@ -540,6 +543,11 @@ hr {
 		left: 0;
 		top: 0;
 	}
+}
+
+.email-div {
+	text-align: center;
+	font-size: 73%;
 }
 
 .army-tile { margin: 5px 0px 5px 0px; }

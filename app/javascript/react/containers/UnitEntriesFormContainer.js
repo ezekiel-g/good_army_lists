@@ -1124,14 +1124,14 @@ class UnitEntriesFormContainer extends Component {
 	}
 
 	showFormattedList() {
-		let listOutputSide = document.getElementsByClassName('list-output-side')[0]
-		listOutputSide.classList.add('user-select-none')
+		let emailDiv = document.getElementsByClassName('email-div')[0]
+		emailDiv.classList.add('user-select-none')
 		this.setState({ formattedListVisible: true })
 	}
 
 	hideFormattedList() {
-		let listOutputSide = document.getElementsByClassName('list-output-side')[0]
-		listOutputSide.classList.remove('user-select-none')		
+		let emailDiv = document.getElementsByClassName('email-div')[0]
+		emailDiv.classList.remove('user-select-none')		
 		this.setState({ formattedListVisible: false })
 	}
 
@@ -1524,21 +1524,28 @@ class UnitEntriesFormContainer extends Component {
 				<div className={hidden}>
 					{clearListDiv}	
 					<div className="everything-after-army-dropdown row">
-						<div className="unit-entry-buttons column">
-							{unitEntryButtonTitle}<br />
-							{unitEntryButtonDisplay}<br />
-							{unitEntryButtonDisplayUnlocked}
-						</div>
-						<div className={listOutputSideClassNames}>
-							<div className="list-title-bar">
-								<h3 className="list-title">{this.state.selectedArmy.label}</h3>
+						<div>
+							<div className="unit-entry-buttons column">
+								{unitEntryButtonTitle}<br />
+								{unitEntryButtonDisplay}<br />
+								{unitEntryButtonDisplayUnlocked}
 							</div>
-							{pointTotalDisplay}<br />
-							<table><tbody>{listedUnitTileDisplay}</tbody></table><br /><br />
-							<div className="view-list-button-div">
-								<span onClick={this.showFormattedList} className="view-list-button">
-									View List
-								</span>
+						</div>
+						<div>
+							<div className={listOutputSideClassNames}>
+								<div className="list-title-bar">
+									<h3 className="list-title">{this.state.selectedArmy.label}</h3>
+								</div>
+								{pointTotalDisplay}<br />
+								<table><tbody>{listedUnitTileDisplay}</tbody></table><br /><br />
+								<div className="view-list-button-div">
+									<span onClick={this.showFormattedList} className="view-list-button">
+										View List
+									</span>
+								</div>
+							</div>
+							<div className="email-div">
+								<span className="user-select-none">Email:{' '}</span>admin@goodarmylists.com
 							</div>
 						</div>
 					</div>
@@ -1551,7 +1558,7 @@ class UnitEntriesFormContainer extends Component {
 					<div className="main-title-box">
 						<h2 className="main-title">Make a Good Kings of War List</h2>
 					</div>
-					<h6 className="copyright-notice"> Kings of War is copyrighted by Mantic Entertainment</h6>
+					<div className="copyright-notice">Kings of War is copyrighted by Mantic Entertainment</div>
 					<div className="react-select">
 						<Select
 							placeholder="Select Army..."

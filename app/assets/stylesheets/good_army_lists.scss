@@ -17,6 +17,8 @@ li { list-style-type: none }
 button {
 	cursor: pointer;
 	user-select: none;
+	border: 1px solid #000000;
+	padding: 9.3px;
 }
 
 ::-webkit-scrollbar {
@@ -24,7 +26,7 @@ button {
 }
 
 input {
-	width: 280px;
+	width: 400px;
 }
 
 table {
@@ -32,6 +34,14 @@ table {
 }
 
 hr { width: 100%; }
+
+
+
+.button-group {
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
 
 .user-select-none {
 	user-select: none;
@@ -96,7 +106,7 @@ hr { width: 100%; }
 	margin: 20px 20px 20px 20px;
 }
 
-.check-box { margin: 5px 0px 5px 170px; }
+.check-box { text-align: right; }
 
 .admin-display-box {
 	margin-top: 20px;
@@ -108,14 +118,16 @@ hr { width: 100%; }
 
 .navigation-box {
 	display: inline-flex;
+	background-color: #FFFFFF;
 }
 
 .admin-link, .static-link {
 	border: 1px solid #000000;
 	padding: 10px;
-	width: 149.4px;
 	cursor: pointer;
 	user-select: none;
+	white-space: nowrap;
+	width: fit-content;
 }
 
 .selected-link {
@@ -129,6 +141,7 @@ hr { width: 100%; }
 	display: inline-block;
 	text-indent: -37px;
 	padding-left: 50px;
+	background-color: #FFFFFF;
 }
 
 .error-div {
@@ -151,8 +164,7 @@ hr { width: 100%; }
 
 .dropdown {
 	cursor: pointer;
-	width: 118.5px;
-	width: 286px;
+	width: 400px;
 }
 
 .react-select {
@@ -515,8 +527,6 @@ hr { width: 100%; }
 
 .unit-tile, .tile { margin: 5px 0px 5px 0px; }
 
-.button-group { margin-top: 10px; }
-
 .army-name-field { margin: 5px 0px 5px 28.5px; }
 
 .army-name-dropdown { margin: 5px 0px 5px 34px; }
@@ -551,6 +561,8 @@ hr { width: 100%; }
 
 .unit-army-dropdown { margin: 5px 0px 5px 63px; }
 
+.unit-is-irregular-checkbox { margin: 5px 0px 5px 38px; }
+
 .artefact-name-field { margin: 5px 0px 5px 57px; }
 
 .artefact-name-dropdown { margin: 5px 0px 5px 45px; }
@@ -567,9 +579,9 @@ hr { width: 100%; }
 
 .unit-option-display-name-field { margin: 5px 0px 5px 0px; }
 
-.unit-option-is-spell-checkbox { margin: 5px 0px 5px 0px; }
+.unit-option-is-spell-checkbox { margin: 5px 0px 5px 59px; }
 
-.unit-option-is-unique-spell-checkbox { margin: 5px 0px 5px 0px; }
+.unit-option-is-unique-checkbox { margin: 5px 0px 5px 43px; }
 
 .unit-option-points-field { margin: 5px 0px 5px 55px; }
 

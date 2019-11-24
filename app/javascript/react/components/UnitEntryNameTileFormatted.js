@@ -29,6 +29,14 @@ const UnitEntryNameTileFormatted = props => {
 		}
 	}
 
+	let artefactDisplay
+	if (artefact !== undefined && artefact !== null) {
+		artefactDisplay =
+			<div>
+				--{' '}<i>{artefact.display_name}</i>
+			</div>
+	}
+
 	let nonSpellDisplay
 	if (nonSpells.length > 0) {
 		nonSpellDisplay = nonSpells.map(unitOptionObject => {
@@ -51,20 +59,12 @@ const UnitEntryNameTileFormatted = props => {
 		})
 	}
 
-	let artefactDisplay
-	if (artefact !== undefined && artefact !== null) {
-		artefactDisplay =
-			<div>
-				--{' '}<i>{artefact.display_name}</i>
-			</div>
-	}
-
 	return (
 		<div className="formatted-list-entry">
 			<div>{pointsForEntry},{' '}{props.unitObject.unit.display_name}</div>
+			{artefactDisplay}
 			{nonSpellDisplay}
 			{spellDisplay}
-			{artefactDisplay}
 		</div>
 	)
 }

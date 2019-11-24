@@ -265,8 +265,22 @@ hr {
 	border-radius: 6px;
 	float: right;
 	overflow: hidden;
+	height: 143px;
+	user-select: none;
+}
+
+@media screen and (max-width: 639px) {
+	.list-output-side-blank {
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
+	padding: 5px 5px 20px 5px;
+	width: 49.5%;
+	border-radius: 6px;
+	float: right;
+	overflow: hidden;
 	height: 128px;
 	user-select: none;
+}
 }
 
 .list-title-bar {

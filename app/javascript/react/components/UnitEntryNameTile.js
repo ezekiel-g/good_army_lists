@@ -42,7 +42,7 @@ const UnitEntryNameTile = props => {
 						onClick={() => props.removeUnitOption(unitOptionObject)}
 					>
 						{' -- '}{unitOptionObject.unitOption.display_name}
-					</span><br />
+					</span>
 				</span>
 
 			)
@@ -65,7 +65,7 @@ const UnitEntryNameTile = props => {
 					className="unit-option-entry-label"
 				>
 					{' -- '}{selectedArtefactArray[selectedArtefactArray.length - 1].artefact.display_name}
-				</span>
+				</span><br />
 			</span>
 	}
 
@@ -79,9 +79,9 @@ const UnitEntryNameTile = props => {
 			>
 				{props.unitObject.unit.display_name}
 			</span><br />
+				{artefactText}
 				{nonSpellText}
 				{spellText}
-				{artefactText}
 		</span>
 	)
 }

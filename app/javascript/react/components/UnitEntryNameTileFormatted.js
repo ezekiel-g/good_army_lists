@@ -35,10 +35,11 @@ const UnitEntryNameTileFormatted = props => {
 			return (
 				<tr key={unitOptionObject.index + unitOptionObject.unitOption.id + 70000}>
 					<td></td>
+					<td></td>
 					<td>
-						<span className="hidden">_</span>{' '}--{' '}<span className="hidden">_</span>
+						--{' '}<span className="hidden">_</span>{' '}
+						<i>{unitOptionObject.unitOption.display_name}</i>
 					</td>
-					<td><i>{unitOptionObject.unitOption.display_name}</i></td>
 				</tr>
 			)
 		})
@@ -50,10 +51,11 @@ const UnitEntryNameTileFormatted = props => {
 			return (
 				<tr key={unitOptionObject.index + unitOptionObject.unitOption.id + 100000}>
 					<td></td>
+					<td></td>
 					<td>
-						<span className="hidden">_</span>{' '}--{' '}<span className="hidden">_</span>
+						--{' '}<span className="hidden">_</span>{' '}
+						<i>{unitOptionObject.unitOption.display_name}</i>
 					</td>
-					<td><i>{unitOptionObject.unitOption.display_name}</i></td>
 				</tr>
 			)
 		})
@@ -63,11 +65,12 @@ const UnitEntryNameTileFormatted = props => {
 	if (artefact !== undefined && artefact !== null) {
 		artefactDisplay =
 			<tr>
-					<td></td>
-					<td>
-						<span className="hidden">_</span>{' '}--{' '}<span className="hidden">_</span>
-					</td>
-					<td><i>{artefact.display_name}</i></td>
+				<td></td>
+				<td></td>
+				<td>
+					--{' '}<span className="hidden">_</span>{' '}
+					<i>{artefact.display_name}</i>
+				</td>
 			</tr>
 	}
 	let extraSpace
@@ -84,7 +87,7 @@ const UnitEntryNameTileFormatted = props => {
 							{extraSpace}{pointsForEntry}
 						</td>
 						<td>
-							<span className="hidden">_</span>{' '}--{' '}
+							<span className="hidden">_</span>{' '}--
 							<span className="hidden">_</span>
 						</td>
 						<td>

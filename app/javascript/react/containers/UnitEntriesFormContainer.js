@@ -1516,7 +1516,7 @@ class UnitEntriesFormContainer extends Component {
 			} else {
 				viewListButtonDisplay =
 					<div className="instruction">
-						<i>Click units to the left<br />to add them to the list</i>
+						<i>Click units to the left to add them to the list</i>
 					</div>
 			}
 		}

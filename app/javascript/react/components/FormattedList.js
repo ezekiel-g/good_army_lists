@@ -60,8 +60,11 @@ const FormattedList = props => {
 			</div>
 			<hr />		
 			<div className="formatted-list-buttons">
-				<span onClick={props.hideFormattedList} className="formatted-list-button">
-					Close
+				<span
+					onClick={() => copyList(document.getElementsByClassName('formatted-list')[0])}
+					className="copy-button formatted-list-button"
+				>
+					Copy
 				</span>
 				<span
 					onClick={() => printList(document.getElementsByClassName('formatted-list')[0])}
@@ -69,11 +72,8 @@ const FormattedList = props => {
 				>
 					Print
 				</span>
-				<span
-					onClick={() => copyList(document.getElementsByClassName('formatted-list')[0])}
-					className="copy-button formatted-list-button"
-				>
-					Copy
+				<span onClick={props.hideFormattedList} className="formatted-list-button">
+					Close
 				</span>
 			</div>
 		</div>

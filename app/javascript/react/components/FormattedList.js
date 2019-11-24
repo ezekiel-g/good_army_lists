@@ -14,7 +14,7 @@ const FormattedList = props => {
 		)
 	})
 
-	let printList = (listElement) => {
+	const printList = listElement => {
 	    let domClone = listElement.cloneNode(true)
 	    let $printSection = document.createElement('div')
 	    $printSection.id = 'printSection'
@@ -29,27 +29,52 @@ const FormattedList = props => {
 	    return true
 	}
 
+	const copyList = listElement => {
+		let range
+		let selection
+		if (document.body.createTextRange) {
+			range = document.body.createTextRange()
+			range.moveToElementText(listElement)
+			range.select()
+		} else {
+			if (window.getSelection) {
+				selection = window.getSelection()
+				range = document.createRange()
+    			range.selectNodeContents(listElement)
+    			selection.removeAllRanges()
+    			selection.addRange(range)
+			}
+		}
+		document.execCommand('copy')
+	}
+
 	return (
 		<div className="formatted-list-box">
-			<div className="formatted-list-buttons">
-				<span
-					onClick={() => printList(document.getElementsByClassName('formatted-list')[0])}
-					className="print-button formatted-list-button"
-				>
-					Print
-				</span>
-				<span onClick={props.hideFormattedList} className="formatted-list-button">
-					Close
-				</span>
-			</div>
-			<hr />		
-			<div className="formatted-list">
+			<div type="text" className="formatted-list">
 				<div className="formatted-list-header">
 					Army: {props.selectedArmy.label}<br />
 					Points: {props.pointTotal}<br />
 					Unit Strength: {props.unitStrengthTotal}
 				</div><br />
 				{list}
+			</div>
+			<hr />		
+			<div className="formatted-list-buttons">
+				<span onClick={props.hideFormattedList} className="formatted-list-button">
+					Close
+				</span>
+				<span
+					onClick={() => printList(document.getElementsByClassName('formatted-list')[0])}
+					className="print-button formatted-list-button"
+				>
+					Print
+				</span>
+				<span
+					onClick={() => copyList(document.getElementsByClassName('formatted-list')[0])}
+					className="copy-button formatted-list-button"
+				>
+					Copy
+				</span>
 			</div>
 		</div>
 	)

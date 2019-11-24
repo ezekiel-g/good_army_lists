@@ -1161,6 +1161,7 @@ class UnitEntriesFormContainer extends Component {
 		let unitEntryButtonTitle
 		let unitEntryButtonDisplay
 		let unitEntryButtonDisplayUnlocked
+		let viewListButtonDisplay
 		let pointTotalDisplay
 		let filteredSortedByPoints = this.state.listedUnits.sort((a, b) => {
 			return (a.unit.points - b.unit.points)
@@ -1504,6 +1505,20 @@ class UnitEntriesFormContainer extends Component {
 					</tr>		
 				)
 			})
+			if (this.state.listedUnits.length > 0) {
+				viewListButtonDisplay =
+					<div className="view-list-button-div">
+						<br /><br />
+						<span onClick={this.showFormattedList} className="view-list-button">
+							View List
+						</span>
+					</div>
+			} else {
+				viewListButtonDisplay =
+					<div className="instruction">
+						<i>Click units to the left<br />to add them to the list</i>
+					</div>
+			}
 		}
 
 		let display
@@ -1516,7 +1531,7 @@ class UnitEntriesFormContainer extends Component {
 		if (unitOptionSelectionTile === undefined && artefactSelectionTile === undefined) {
 			let listOutputSideClassNames
 			if (sortedListedUnits.length === 0) {
-				listOutputSideClassNames = 'list-output-side-blank column'
+				listOutputSideClassNames = 'list-output-side column'
 			} else {
 				listOutputSideClassNames = 'list-output-side column'
 			}
@@ -1537,12 +1552,8 @@ class UnitEntriesFormContainer extends Component {
 									<h3 className="list-title">{this.state.selectedArmy.label}</h3>
 								</div>
 								{pointTotalDisplay}<br />
-								<table><tbody>{listedUnitTileDisplay}</tbody></table><br /><br />
-								<div className="view-list-button-div">
-									<span onClick={this.showFormattedList} className="view-list-button">
-										View List
-									</span>
-								</div>
+								<table><tbody>{listedUnitTileDisplay}</tbody></table>
+								{viewListButtonDisplay}
 							</div>
 							<div className="email-div">
 								<span className="user-select-none">Email:{' '}</span>admin@goodarmylists.com

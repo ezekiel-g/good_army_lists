@@ -58,14 +58,10 @@ const UnitEntryNameTileFormatted = props => {
 				--{' '}<i>{artefact.display_name}</i>
 			</div>
 	}
-	let extraSpace
-	if (pointsForEntry < 100) {
-		extraSpace = <span className="hidden">{'_'}</span>
-	}
 
 	return (
 		<div className="formatted-list-entry">
-			<div>{extraSpace}{pointsForEntry},{' '}{props.unitObject.unit.display_name}</div>
+			<div>{pointsForEntry},{' '}{props.unitObject.unit.display_name}</div>
 			{nonSpellDisplay}
 			{spellDisplay}
 			{artefactDisplay}

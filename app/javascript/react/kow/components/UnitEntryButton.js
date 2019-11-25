@@ -1,5 +1,5 @@
 import React from 'react'
-import whiteSquare from '../../../assets/images/whiteSquare.png'
+import whiteSquare from '../../../../assets/images/whiteSquare.png'
 
 const UnitEntryButton = props => {
 	let extraSpace

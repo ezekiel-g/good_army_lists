@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { render } from 'react-dom'
+import RedBox from 'redbox-react'
 import Select from 'react-select'
 import UnitEntriesFormContainer from './UnitEntriesFormContainer'
 
@@ -75,7 +77,7 @@ class NonAdminSectionContainer extends Component {
 		let selectedArmy = this.state.selectedArmy
 
 		return (
-			<div>	
+			<div className="sections-container">	
 				<UnitEntriesFormContainer
 					armies={this.state.armies}
 					updateSelectedArmy={this.updateSelectedArmy}

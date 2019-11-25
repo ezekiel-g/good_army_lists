@@ -8,7 +8,7 @@ import UnitEntryNameTile from '../components/UnitEntryNameTile'
 import UnitOptionSelectionTile from '../components/UnitOptionSelectionTile'
 import FormattedList from '../components/FormattedList'
 import ArtefactSelectionTile from '../components/ArtefactSelectionTile'
-import whiteSquare from '../../../assets/images/whiteSquare.png'
+import whiteSquare from '../../../../assets/images/whiteSquare.png'
 
 class UnitEntriesFormContainer extends Component {
 	constructor(props) {
@@ -1136,6 +1136,7 @@ class UnitEntriesFormContainer extends Component {
 	}
 
 	render() {
+		let appElement = document.getElementById('kow')
 		let armyOptions = this.props.armies.map(armyOption => {
 			return (
 				{ label: armyOption.name, value: armyOption.id }
@@ -1566,6 +1567,11 @@ class UnitEntriesFormContainer extends Component {
 		return (
 			<div>
 				<div className="army-dropdown-section">
+					<div className="main-page-link">
+						<span className="main-page-link-label">
+							<a href="/">www.goodarmylists.com</a>
+						</span>
+					</div>
 					<div className="main-title-box">
 						<h2 className="main-title">Make a Good Kings of War List</h2>
 					</div>
@@ -1582,7 +1588,7 @@ class UnitEntriesFormContainer extends Component {
 				</div>
 				<div>{display}</div>
 				<Modal
-					appElement={document.getElementById('app')}
+					appElement={appElement}
 					isOpen={this.state.formattedListVisible}
 					onRequestClose={this.hideFormattedList}
 					shouldCloseOnOverlayClick={true}

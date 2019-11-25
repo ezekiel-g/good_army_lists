@@ -38,8 +38,6 @@ hr {
 	user-select: none;
 }
 
-
-
 .button-group {
 	margin-top: 20px;
 	margin-left: auto;
@@ -55,6 +53,19 @@ hr {
 	height: 100%;
 	overflow: hidden;
 	user-select: none;
+}
+
+.main-page-link {
+	text-align: center;
+	font-size: 73%;
+}
+
+.main-page-link-label {
+	cursor: pointer;
+}
+
+.main-page-link-label:hover {
+	background-color: #D3D3D3;	
 }
 
 .army-dropdown-section {

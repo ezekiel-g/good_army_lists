@@ -4,7 +4,10 @@ import whiteSquare from '../../../../assets/images/whiteSquare.png'
 
 const ArtefactIcon = props => {
 	let display
-	if (props.listedUnitsThatCanHaveArtefacts.includes(props.unitObject)) {
+	if (
+		props.no !== 'no' &&
+		props.listedUnitsThatCanHaveArtefacts.includes(props.unitObject)
+	) {
 		display =
 			<span
 				onClick={() => props.updateUnitBeingGivenArtefact(props.unitObject)}

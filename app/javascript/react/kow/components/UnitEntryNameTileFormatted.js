@@ -22,19 +22,20 @@ const UnitEntryNameTileFormatted = props => {
 		}	
 	}
 	let artefact
-	for (i = 0; i < props.selectedArtefacts.length; i++) {
-		if (props.selectedArtefacts[i].index === props.unitObject.index) {
-			artefact = props.selectedArtefacts[i].artefact
-			pointsForEntry += props.selectedArtefacts[i].artefact.points
-		}
-	}
-
 	let artefactDisplay
-	if (artefact !== undefined && artefact !== null) {
-		artefactDisplay =
-			<div>
-				--{' '}<i>{artefact.display_name}</i>
-			</div>
+	if (props.selectedArtefacts != undefined) {
+		for (i = 0; i < props.selectedArtefacts.length; i++) {
+			if (props.selectedArtefacts[i].index === props.unitObject.index) {
+				artefact = props.selectedArtefacts[i].artefact
+				pointsForEntry += props.selectedArtefacts[i].artefact.points
+			}
+		}
+		if (artefact !== undefined && artefact !== null) {
+			artefactDisplay =
+				<div>
+					--{' '}<i>{artefact.display_name}</i>
+				</div>
+		}
 	}
 
 	let nonSpellDisplay

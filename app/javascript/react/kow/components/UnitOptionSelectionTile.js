@@ -114,11 +114,41 @@ class UnitOptionSelectionTile extends Component {
 
 	render() {
 		let unitOptions = this.state.unitOptions
+		let unitObject
+		let selectButton
 		let nonSpells = []
 		let spells = []
 		let i
+
+		if (this.props.unitObject != '' && (this.props.alliedUnitObject == '' || this.props.alliedUnitObject == undefined)) {
+			unitObject = this.props.unitObject
+			selectButton =
+				<span 
+					onClick={() => this.props.selectUnitOptions(
+						unitObject,
+						this.state.highlightedUnitOptions
+					)}
+					className="clear-or-cancel-label"
+				>
+					Select
+				</span>
+		}
+		if (this.props.unitObject == '' && (this.props.alliedUnitObject != '' || this.props.alliedUnitObject == undefined)) {
+			unitObject = this.props.alliedUnitObject
+			selectButton =
+				<span 
+					onClick={() => this.props.selectAlliedUnitOptions(
+						unitObject,
+						this.state.highlightedUnitOptions
+					)}
+					className="clear-or-cancel-label"
+				>
+					Select
+				</span>			
+		}		
+
 		for (i = 0; i < unitOptions.length; i++) {
-			if (unitOptions[i].unit_id === this.props.unitObject.unit.id) {
+			if (unitOptions[i].unit_id === unitObject.unit.id) {
 				if (unitOptions[i].is_spell === true) {
 					spells.push(unitOptions[i])
 				} else {
@@ -132,24 +162,47 @@ class UnitOptionSelectionTile extends Component {
 		let sortedSpells = spells.sort((a, b) => {
 			return (a.points - b.points)
 		})
-
 		let nonSpellDisplay = sortedNonSpells.map(unitOption => {
+			let greyedOut = false
+			if (
+				(
+					(this.props.pointTotal + this.props.alliedPointTotal + unitOption.points) / 4 <
+					this.props.alliedPointTotal + unitOption.points
+				) && (
+					this.props.alliedUnitObject != '' && this.props.alliedUnitObject != undefined
+				)
+			) {
+				greyedOut = true
+			}
 			return (
 				<UnitOptionSelectionLabel
 					key={unitOption.id}
 					id={unitOption.id}
 					unitOption={unitOption}
 					handlerFunction={this.updateHighlightedUnitOptions}
+					greyedOut={greyedOut}
 				/>
 			)
 		})
 		let spellDisplay = sortedSpells.map(unitOption => {
+			let greyedOut = false
+			if (
+				(
+					(this.props.pointTotal + this.props.alliedPointTotal + unitOption.points) / 4 <
+					this.props.alliedPointTotal + unitOption.points
+				) && (
+					this.props.alliedUnitObject != '' && this.props.alliedUnitObject != undefined
+				)
+			) {
+				greyedOut = true
+			}
 			return (
 				<UnitOptionSelectionLabel
 					key={unitOption.id + 20000}
 					id={unitOption.id}
 					unitOption={unitOption}
 					handlerFunction={this.updateHighlightedUnitOptions}
+					greyedOut={greyedOut}
 				/>
 			)
 		})
@@ -158,20 +211,12 @@ class UnitOptionSelectionTile extends Component {
 			<div>
 				<h4 className="unit-option-title">
 					What option(s) will<br />
-					{this.props.unitObject.unit.display_name} have?
+					{unitObject.unit.display_name} have?
 				</h4><br />
 				{nonSpellDisplay}
 				{spellDisplay}<br /><br />
 				<div>
-					<span 
-						onClick={() => this.props.selectUnitOptions(
-							this.props.unitObject,
-							this.state.highlightedUnitOptions
-						)}
-						className="clear-or-cancel-label"
-					>
-						Select
-					</span>
+					{selectButton}
 					<span 
 						onClick={this.props.toggleUnitOptions}
 						className="clear-or-cancel-label"

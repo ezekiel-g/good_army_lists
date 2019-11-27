@@ -116,6 +116,12 @@ hr {
 	cursor: pointer;
 }
 
+.greyed-out-unit-option {
+	opacity: 50%;
+	padding: 3px;
+	cursor: pointer;	
+}
+
 .sections-container {
 	margin: 20px 20px 20px 20px;
 }
@@ -219,6 +225,7 @@ hr {
 	background-color: #A41F26;
 	color: #FFFFFF;
 	border: 1px solid #000000;
+	margin-bottom: 7px;
 }
 
 .unit-entry-button-title {
@@ -244,7 +251,7 @@ hr {
 }
 
 .unit-entry-button {
-
+	text-align: left;
 }
 
 .unit-entry-button-label {
@@ -254,6 +261,62 @@ hr {
 .unit-entry-button-label:hover {
 	cursor: pointer;
 	background-color: #D3D3D3;
+}
+
+.allies-button-div {
+	user-select: none;
+	text-align: center;
+	margin: 0px 0px 14px 0px;
+}
+
+.allies-button {
+	cursor: pointer;
+	text-align: center;
+	padding: 9.3px;
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
+}
+
+.allies-buttons {
+	user-select: none;
+}
+
+.allied-army-choices {
+	text-align: center;
+	line-height: 150%;
+}
+
+.allied-army-choice {
+	padding: 3px;
+	cursor: pointer;
+}
+
+.allied-army-choice:hover {
+	background-color: #D3D3D3;
+}
+
+.allies-title {
+	color: #A41F26;
+	font-weight: bolder;
+	text-align: center;
+}
+
+.allies-title-on-list {
+	margin-left: 56px;
+}
+
+.change-allied-army-button-div {
+	user-select: none;
+	text-align: center;
+	margin: 0px 0px 14px 0px;
+}
+
+.change-allied-army-button {
+	cursor: pointer;
+	text-align: center;
+	padding: 9.3px;
+	border: 1px solid #000000;
+	background-color: #FFFFFF;	
 }
 
 .list-output-side {
@@ -307,6 +370,7 @@ hr {
 	background-color: #A41F26;
 	color: #FFFFFF;
 	border: 1px solid #000000;
+	margin-bottom: 2px;
 }
 
 .list-title {
@@ -316,7 +380,7 @@ hr {
 
 .point-total {
 	text-align: center;
-	margin: 20px 0px 7px 0px;
+
 	overflow-wrap: all;
 }
 
@@ -415,16 +479,12 @@ hr {
 }
 
 .unit-option-selection-tile {
-	margin: 30px 0px 30px 0px;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 	user-select: none;
 	background-color: #FFFFFF;
-	border: 1px solid #000000;
-	border-radius: 6px;
-	padding: 10px 10px 20px 10px;
-	width: fit-content;
+	padding-bottom: 13px;
 }
 
 .unit-option-title {
@@ -433,17 +493,11 @@ hr {
 }
 
 .artefact-selection-tile {
-	margin: 30px 0px 30px 0px;
-	padding: 10px;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 	user-select: none;
 	background-color: #FFFFFF;
-	border: 1px solid #000000;
-	border-radius: 6px;
-	padding: 10px 10px 20px 10px;
-	width: fit-content;
 }
 
 .artefact-title {

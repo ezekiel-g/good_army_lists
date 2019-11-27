@@ -13,6 +13,37 @@ const FormattedList = props => {
 			/>
 		)
 	})
+	let header
+	let alliesList
+	let listDisplay
+	if (props.alliedListedUnits.length > 0) {
+		header =
+			<div className="formatted-list-header">
+				<div>Army: {props.selectedArmy.label}</div>
+				<div>Ally: {props.alliedArmy.name}</div>
+				<div>Points: {props.pointTotal + props.alliedPointTotal}</div>
+				<div>Unit Strength: {props.unitStrengthTotal}</div>
+			</div>
+		alliesList = props.alliedListedUnits.map(unitObject => {
+			return (
+				<UnitEntryNameTileFormatted
+					key={unitObject.index + 350000}
+					id={unitObject.index}
+					unitObject={unitObject}
+					selectedUnitOptions={props.alliedSelectedUnitOptions}
+				/>
+			)
+		})
+		listDisplay = <div>{list}<br />{alliesList}</div>
+	} else {
+		header =
+			<div className="formatted-list-header">
+				<div>Army: {props.selectedArmy.label}</div>
+				<div>Points: {props.pointTotal + props.alliedPointTotal}</div>
+				<div>Unit Strength: {props.unitStrengthTotal}</div>
+			</div>
+		listDisplay = <div>{list}</div>
+	}
 
 	const printList = listElement => {
 	    let domClone = listElement.cloneNode(true)
@@ -51,12 +82,9 @@ const FormattedList = props => {
 	return (
 		<div className="formatted-list-box">
 			<div type="text" className="formatted-list">
-				<div className="formatted-list-header">
-					<div>Army: {props.selectedArmy.label}</div>
-					<div>Points: {props.pointTotal}</div>
-					<div>Unit Strength: {props.unitStrengthTotal}</div>
-				</div><br />
-				{list}
+				{header}<br />
+				{listDisplay}<br />
+				www.goodarmylists.com
 			</div>
 			<hr />		
 			<div className="formatted-list-buttons">

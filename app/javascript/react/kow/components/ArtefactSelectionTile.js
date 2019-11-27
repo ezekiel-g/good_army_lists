@@ -28,7 +28,58 @@ class ArtefactSelectionTile extends Component {
 
 	render() {
 		let artefacts = this.state.artefacts
+		let blessingOfTheGods
+		let blessingOfTheGodsHorde
+		let chantOfHate
+		let chantOfHateHorde
+		let brewOfStrength
+		let brewOfStrengthHorde
+		let brewOfSharpness
+		let brewOfSharpnessHorde
 		let i
+
+		for (i = 0; i < artefacts.length; i++) {
+			if (artefacts[i].name === 'Blessing of the Gods') {
+				blessingOfTheGods = artefacts[i]
+			}
+			if (artefacts[i].name === 'Blessing of the Gods (Horde)') {
+				blessingOfTheGodsHorde = artefacts[i]
+			}
+			if (artefacts[i].name === 'Chant of Hate') {
+				chantOfHate = artefacts[i]
+			}
+			if (artefacts[i].name === 'Chant of Hate (Horde)') {
+				chantOfHateHorde = artefacts[i]
+			}
+			if (artefacts[i].name === 'Brew of Strength') {
+				brewOfStrength = artefacts[i]
+			}
+			if (artefacts[i].name === 'Brew of Strength (Horde)') {
+				brewOfStrengthHorde = artefacts[i]
+			}
+			if (artefacts[i].name === 'Brew of Sharpness') {
+				brewOfSharpness = artefacts[i]
+			}
+			if (artefacts[i].name === 'Brew of Sharpness (Horde)') {
+				brewOfSharpnessHorde = artefacts[i]
+			}
+		}
+		
+		if (
+			this.props.unitObject.unit.unit_size === 'Horde' ||
+			this.props.unitObject.unit.unit_size === 'Legion'
+		) {
+			artefacts.splice(artefacts.indexOf(blessingOfTheGods), 1)
+			artefacts.splice(artefacts.indexOf(chantOfHate), 1)
+			artefacts.splice(artefacts.indexOf(brewOfStrength), 1)
+			artefacts.splice(artefacts.indexOf(brewOfSharpness), 1)
+		} else {
+			artefacts.splice(artefacts.indexOf(blessingOfTheGodsHorde), 1)
+			artefacts.splice(artefacts.indexOf(chantOfHateHorde), 1)
+			artefacts.splice(artefacts.indexOf(brewOfStrengthHorde), 1)
+			artefacts.splice(artefacts.indexOf(brewOfSharpnessHorde), 1)			
+		}
+
 		if (this.props.unitObject.unit.unit_type.includes('Hero')) {
 			let darklordsOnyxRing
 			let mournfulBlade
@@ -60,14 +111,6 @@ class ArtefactSelectionTile extends Component {
 			}
 		} else {
 			let commonArtefacts = []
-			let blessingOfTheGods
-			let blessingOfTheGodsHorde
-			let chantOfHate
-			let chantOfHateHorde
-			let brewOfStrength
-			let brewOfStrengthHorde
-			let brewOfSharpness
-			let brewOfSharpnessHorde
 			for (i = 0; i < artefacts.length; i++) {
 				if (!artefacts[i].is_heroic) {
 					commonArtefacts.push(artefacts[i])
@@ -75,46 +118,6 @@ class ArtefactSelectionTile extends Component {
 			}
 			artefacts = commonArtefacts
 
-			for (i = 0; i < artefacts.length; i++) {
-				if (artefacts[i].name === 'Blessing of the Gods') {
-					blessingOfTheGods = artefacts[i]
-				}
-				if (artefacts[i].name === 'Blessing of the Gods (Horde)') {
-					blessingOfTheGodsHorde = artefacts[i]
-				}
-				if (artefacts[i].name === 'Chant of Hate') {
-					chantOfHate = artefacts[i]
-				}
-				if (artefacts[i].name === 'Chant of Hate (Horde)') {
-					chantOfHateHorde = artefacts[i]
-				}
-				if (artefacts[i].name === 'Brew of Strength') {
-					brewOfStrength = artefacts[i]
-				}
-				if (artefacts[i].name === 'Brew of Strength (Horde)') {
-					brewOfStrengthHorde = artefacts[i]
-				}
-				if (artefacts[i].name === 'Brew of Sharpness') {
-					brewOfSharpness = artefacts[i]
-				}
-				if (artefacts[i].name === 'Brew of Sharpness (Horde)') {
-					brewOfSharpnessHorde = artefacts[i]
-				}
-			}
-			if (
-				this.props.unitObject.unit.unit_size === 'Horde' ||
-				this.props.unitObject.unit.unit_size === 'Legion'
-			) {
-				artefacts.splice(artefacts.indexOf(blessingOfTheGods), 1)
-				artefacts.splice(artefacts.indexOf(chantOfHate), 1)
-				artefacts.splice(artefacts.indexOf(brewOfStrength), 1)
-				artefacts.splice(artefacts.indexOf(brewOfSharpness), 1)
-			} else {
-				artefacts.splice(artefacts.indexOf(blessingOfTheGodsHorde), 1)
-				artefacts.splice(artefacts.indexOf(chantOfHateHorde), 1)
-				artefacts.splice(artefacts.indexOf(brewOfStrengthHorde), 1)
-				artefacts.splice(artefacts.indexOf(brewOfSharpnessHorde), 1)			
-			}
 		}
 
 		let sortedArtefacts = artefacts.sort((a, b) => {

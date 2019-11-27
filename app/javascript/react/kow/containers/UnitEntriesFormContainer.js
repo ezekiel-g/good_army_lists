@@ -3270,7 +3270,11 @@ class UnitEntriesFormContainer extends Component {
 				}
 			}
 			return alliedGreyedOutUnits
+		}
 
+		if ((pointTotal + this.state.alliedPointTotal) / 4 < this.state.alliedPointTotal) {
+			selectedUnitOptions = this.state.selectedUnitOptions
+			pointTotal += unitOptionObject.unitOption.points
 		}
 
 		this.setState({
@@ -3710,6 +3714,11 @@ class UnitEntriesFormContainer extends Component {
 				}
 			}
 			return alliedGreyedOutUnits
+		}
+
+		if ((pointTotal + this.state.alliedPointTotal) / 4 < this.state.alliedPointTotal) {
+			selectedArtefacts = this.state.selectedArtefacts
+			pointTotal += artefactObject.artefact.points
 		}
 
 		this.setState({

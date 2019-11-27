@@ -959,7 +959,10 @@ class UnitEntriesFormContainer extends Component {
 		indexCount += 1
 		this.setState({
 			listedUnits: listedUnits,
-			indexCount: indexCount
+			indexCount: indexCount,
+			unitOptionsVisible: false,
+			artefactsVisible: false,
+			alliesVisible: false
 		})
 		this.calculatePointTotal()
 		this.calculateUnitStrengthTotal()

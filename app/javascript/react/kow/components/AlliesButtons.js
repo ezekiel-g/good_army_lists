@@ -433,7 +433,7 @@ class AlliesButtons extends Component {
 							onClick={this.hideAlliedUnitChoices}
 							className="change-allied-army-button"
 						>
-							Select Other Allied Army
+							Change Ally
 						</span>
 					</div><br /><br />
 				</div>

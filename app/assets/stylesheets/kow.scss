@@ -302,8 +302,14 @@ hr {
 }
 
 .allies-title-on-list {
-	margin-left: 56px;
+	text-align: center;
 }
+
+/*@media screen and (max-width: 639px) {
+	.allies-title-on-list {
+		margin-left: 45px;
+	}
+}*/
 
 .change-allied-army-button-div {
 	user-select: none;

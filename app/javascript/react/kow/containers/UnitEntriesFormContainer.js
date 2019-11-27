@@ -981,7 +981,9 @@ class UnitEntriesFormContainer extends Component {
 			alliedListedUnits: alliedListedUnits,
 			alliedArmy: alliedArmy,
 			alliedArmySingularName: alliedArmySingularName,
-			indexCount: indexCount
+			indexCount: indexCount,
+			unitOptionsVisible: false,
+			artefactsVisible: false
 		})
 		this.calculateAlliedPointTotal()
 		this.calculateUnitStrengthTotal()

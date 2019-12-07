@@ -419,8 +419,9 @@ class AlliesButtons extends Component {
 				) {
 					allyChoices.push(this.props.armies[i3])
 				}
+				console.log(this.props.selectedArmy.label)
 				if (this.props.selectedArmy.label === 'Varangur') {
-					for (i4 < allyChoices.length - 1; i4 >= 0; i4--) {
+					for (i4 = allyChoices.length - 1; i4 >= 0; i4--) {
 						if (
 							allyChoices[i4].name === 'Abyssal Dwarfs' ||
 							allyChoices[i4].name === 'Forces of the Abyss' ||
@@ -438,7 +439,7 @@ class AlliesButtons extends Component {
 					allyChoices.push(this.props.armies[i3])
 				}
 				if (this.props.selectedArmy.label === 'Order of the Green Lady') {
-					for (i4 < allyChoices.length - 1; i4 >= 0; i4--) {
+					for (i4 = allyChoices.length - 1; i4 >= 0; i4--) {
 						if (
 							allyChoices[i4].name === 'Abyssal Dwarfs' ||
 							allyChoices[i4].name === 'Forces of the Abyss'

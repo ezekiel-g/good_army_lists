@@ -105,6 +105,54 @@ class UnitOptionSelectionTile extends Component {
 						highlightedUnitOptions.splice(highlightedUnitOptions.indexOf(highlightedUnitOptions[i]), 1)
 					}
 				}
+			}
+			if (unitOption.name === 'Horse (Summoner Crone)') {
+				for (i = 0; i < highlightedUnitOptions.length; i++) {
+					if (highlightedUnitOptions[i].name === 'Scepter of Shadows [1] (Summoner Crone)') {
+						document.getElementById(highlightedUnitOptions[i].id).classList.remove('highlighted-unit-option')
+						highlightedUnitOptions.splice(highlightedUnitOptions.indexOf(highlightedUnitOptions[i]), 1)
+					}
+				}
+			}
+			if (unitOption.name === 'Scepter of Shadows [1] (Summoner Crone)') {
+				for (i = 0; i < highlightedUnitOptions.length; i++) {
+					if (highlightedUnitOptions[i].name === 'Horse (Summoner Crone)') {
+						document.getElementById(highlightedUnitOptions[i].id).classList.remove('highlighted-unit-option')
+						highlightedUnitOptions.splice(highlightedUnitOptions.indexOf(highlightedUnitOptions[i]), 1)
+					}
+				}
+			}
+			if (unitOption.name === 'Raptor (Battle Captain (Salamanders))') {
+				for (i = 0; i < highlightedUnitOptions.length; i++) {
+					if (highlightedUnitOptions[i].name === 'Path of Fire [1] (Battle Captain (Salamanders))') {
+						document.getElementById(highlightedUnitOptions[i].id).classList.remove('highlighted-unit-option')
+						highlightedUnitOptions.splice(highlightedUnitOptions.indexOf(highlightedUnitOptions[i]), 1)
+					}
+				}
+			}
+			if (unitOption.name === 'Path of Fire [1] (Battle Captain (Salamanders))') {
+				for (i = 0; i < highlightedUnitOptions.length; i++) {
+					if (highlightedUnitOptions[i].name === 'Raptor (Battle Captain (Salamanders))') {
+						document.getElementById(highlightedUnitOptions[i].id).classList.remove('highlighted-unit-option')
+						highlightedUnitOptions.splice(highlightedUnitOptions.indexOf(highlightedUnitOptions[i]), 1)
+					}
+				}
+			}
+			if (unitOption.name === 'Horse (Exemplar Paladin)') {
+				for (i = 0; i < highlightedUnitOptions.length; i++) {
+					if (highlightedUnitOptions[i].name === 'Lead from the Front [1] (Exemplar Paladin)') {
+						document.getElementById(highlightedUnitOptions[i].id).classList.remove('highlighted-unit-option')
+						highlightedUnitOptions.splice(highlightedUnitOptions.indexOf(highlightedUnitOptions[i]), 1)
+					}
+				}
+			}
+			if (unitOption.name === 'Lead from the Front [1] (Exemplar Paladin)') {
+				for (i = 0; i < highlightedUnitOptions.length; i++) {
+					if (highlightedUnitOptions[i].name === 'Horse (Exemplar Paladin)') {
+						document.getElementById(highlightedUnitOptions[i].id).classList.remove('highlighted-unit-option')
+						highlightedUnitOptions.splice(highlightedUnitOptions.indexOf(highlightedUnitOptions[i]), 1)
+					}
+				}
 			}		
 			document.getElementById(unitOption.id).classList.add('highlighted-unit-option')
 			highlightedUnitOptions.push(unitOption)

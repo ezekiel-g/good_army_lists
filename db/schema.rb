@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_24_235508) do
+ActiveRecord::Schema.define(version: 2019_12_03_085423) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2019_11_24_235508) do
   create_table "armies", force: :cascade do |t|
     t.string "name", null: false
     t.string "alignment", null: false
+    t.string "adjective"
   end
 
   create_table "artefacts", force: :cascade do |t|
@@ -56,6 +57,20 @@ ActiveRecord::Schema.define(version: 2019_11_24_235508) do
     t.integer "limited_n"
     t.boolean "is_irregular", default: false, null: false
     t.bigint "army_id"
+    t.integer "spellcaster"
+    t.integer "height"
+    t.string "speed"
+    t.string "melee"
+    t.string "ranged"
+    t.string "defense"
+    t.string "attacks"
+    t.string "nerve"
+    t.text "special_rules"
+    t.text "spells"
+    t.text "options"
+    t.integer "unlocking_class"
+    t.text "special_rules_cont"
+    t.text "keywords"
     t.index ["army_id"], name: "index_units_on_army_id"
   end
 

@@ -397,27 +397,44 @@ class AlliesButtons extends Component {
 			mainArmyAlignment = 'Evil'
 		}
 
+		let masterListArmies = []
+		for (i3 = 0; i3 < this.props.armies.length; i3++) {
+			if (
+				this.props.armies[i3].name !== 'Order of the Brothermark' &&
+				this.props.armies[i3].name !== 'Order of the Green Lady' &&
+				this.props.armies[i3].name !== 'Free Dwarfs' &&
+				this.props.armies[i3].name !== 'Sylvan Kin' &&
+				this.props.armies[i3].name !== 'The Herd' &&
+				this.props.armies[i3].name !== 'League of Rhordia' &&
+				this.props.armies[i3].name !== 'Ratkin Slaves' &&
+				this.props.armies[i3].name !== 'Twilight Kin' &&
+				this.props.armies[i3].name !== 'Varangur'
+			) {
+				masterListArmies.push(this.props.armies[i3])
+			}
+		}
+
 		if (mainArmyAlignment === 'Good') {
-			for (i3 = 0; i3 < this.props.armies.length; i3++) {
+			for (i3 = 0; i3 < masterListArmies.length; i3++) {
 				if (
-					this.props.armies[i3].name !== this.props.selectedArmy.label && (
-						this.props.armies[i3].alignment === 'Good' ||
-						this.props.armies[i3].alignment === 'Neutral'					
+					masterListArmies[i3].name !== this.props.selectedArmy.label && (
+						masterListArmies[i3].alignment === 'Good' ||
+						masterListArmies[i3].alignment === 'Neutral'					
 					)
 				) {
-					allyChoices.push(this.props.armies[i3])
+					allyChoices.push(masterListArmies[i3])
 				}
 			}
 		}
 		if (mainArmyAlignment === 'Evil') {
-			for (i3 = 0; i3 < this.props.armies.length; i3++) {
+			for (i3 = 0; i3 < masterListArmies.length; i3++) {
 				if (
-					this.props.armies[i3].name !== this.props.selectedArmy.label && (
-						this.props.armies[i3].alignment === 'Evil' ||
-						this.props.armies[i3].alignment === 'Neutral'	
+					masterListArmies[i3].name !== this.props.selectedArmy.label && (
+						masterListArmies[i3].alignment === 'Evil' ||
+						masterListArmies[i3].alignment === 'Neutral'	
 					)
 				) {
-					allyChoices.push(this.props.armies[i3])
+					allyChoices.push(masterListArmies[i3])
 				}
 				console.log(this.props.selectedArmy.label)
 				if (this.props.selectedArmy.label === 'Varangur') {
@@ -434,9 +451,9 @@ class AlliesButtons extends Component {
 			}
 		}
 		if (mainArmyAlignment === 'Neutral') {
-			for (i3 = 0; i3 < this.props.armies.length; i3++) {
-				if (this.props.armies[i3].name !== this.props.selectedArmy.label) {
-					allyChoices.push(this.props.armies[i3])
+			for (i3 = 0; i3 < masterListArmies.length; i3++) {
+				if (masterListArmies[i3].name !== this.props.selectedArmy.label) {
+					allyChoices.push(masterListArmies[i3])
 				}
 				if (this.props.selectedArmy.label === 'Order of the Green Lady') {
 					for (i4 = allyChoices.length - 1; i4 >= 0; i4--) {

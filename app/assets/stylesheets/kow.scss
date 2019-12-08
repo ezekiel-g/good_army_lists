@@ -612,13 +612,19 @@ hr {
 	body * {
 		visibility: hidden;
 	}
+	.army-dropdown-section,
+	.clear-list-div, .unit-entry-buttons,
+	.email-div,
+	.list-output-side,
+	.formatted-list-buttons
+	{
+		display: none;
+	}
 	#printSection, #printSection * {
 		visibility: visible;
 	}
 	#printSection {
-		position: absolute;
-		left: 0;
-		top: 0;
+		margin: 9mm;
 	}
 }
 

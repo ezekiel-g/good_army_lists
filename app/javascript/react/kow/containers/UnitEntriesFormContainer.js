@@ -1421,6 +1421,11 @@ class UnitEntriesFormContainer extends Component {
 			}
 		}
 
+		if (unitObject.unit.name === 'Jarvis [1]' && this.state.alliedListedUnits.length > 0) {
+			listedUnits = this.state.listedUnits
+			selectedUnitOptions = this.state.selectedUnitOptions
+			selectedArtefacts = this.state.selectedArtefacts			
+		}
 
 		getUnitStrength(listedUnits)
 		let alliedArmy
@@ -3904,6 +3909,8 @@ class UnitEntriesFormContainer extends Component {
 			}
 			let i2
 			for (i = 0; i < units.length; i++) {
+				let limitedHeroCount = 0
+				let limitedAndLockedFromJarvisCount = 0
 				let limitedDuplicateCount = 0
 				let maybeTooMany = []
 				let heroesOnList = []
@@ -3911,10 +3918,13 @@ class UnitEntriesFormContainer extends Component {
 				let monstersOnList = []
 				let locked = false
 				for (i2 = 0; i2 < sortedListedUnits.length; i2++) {
-					if (
-						units[i].limited_n > 0 &&
-						sortedListedUnits[i2].unit.id === units[i].id
-					) {
+					if (sortedListedUnits[i2].unit.limited_n > 0 && sortedListedUnits[i2].unit.unit_type.includes('Hero')) {
+						limitedHeroCount += 1
+					}
+					if (units[i].limited_n > 0 && units[i].unit_type.includes('Hero') && sortedListedUnits[i2].unit.name === 'Jarvis [1]') {
+						limitedAndLockedFromJarvisCount += 1
+					}
+					if (units[i].limited_n > 0 && sortedListedUnits[i2].unit.id === units[i].id) {
 						limitedDuplicateCount += 1
 					}
 					if (
@@ -4076,6 +4086,17 @@ class UnitEntriesFormContainer extends Component {
 							}
 						}						
 					}
+				}
+				if (
+					units[i].name === 'Jarvis [1]' && (
+						limitedHeroCount > 0 ||
+						alliedListedUnits.length > 0
+					)
+				) {
+					locked = true
+				}
+				if (units[i].limited_n > 0 && units[i].unit_type.includes('Hero') && limitedAndLockedFromJarvisCount > 0) {
+					locked = true
 				}			
 				if (units[i].army_id === selectedArmy.value) {
 					if (
@@ -4134,6 +4155,7 @@ class UnitEntriesFormContainer extends Component {
 						armies={this.props.armies}
 						selectedArmy={this.state.selectedArmy}
 						units={allUnits}
+						listedUnits={sortedListedUnits}
 						alliedListedUnits={alliedListedUnits}
 						addToList={this.addAlliedUnitToList}
 						alliedArmy={this.state.alliedArmy}

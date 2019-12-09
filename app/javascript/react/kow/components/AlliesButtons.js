@@ -354,47 +354,59 @@ class AlliesButtons extends Component {
 	}
 
 	render() {
-		let mainArmyAlignment
+		let mainArmyAlignment = ''
+		let jarvisCount = 0
 		let allyChoices = []
 		let i3
 		let i4
-		if (
-			this.props.selectedArmy.label === 'Basileans' ||
-			this.props.selectedArmy.label === 'Dwarfs' ||
-			this.props.selectedArmy.label === 'Elves' ||
-			this.props.selectedArmy.label === 'Northern Alliance' ||
-			this.props.selectedArmy.label === 'Free Dwarfs' ||
-			this.props.selectedArmy.label === 'Order of the Brothermark' ||
-			this.props.selectedArmy.label === 'Salamanders'
-		) {
+
+		for (i3 = 0; i3 < this.props.listedUnits.length; i3++) {
+			if (this.props.listedUnits[i3].unit.name === 'Jarvis [1]') {
+				jarvisCount += 1
+			}
+		}
+
+		if (jarvisCount > 0) {
 			mainArmyAlignment = 'Good'
-		}
-		if (
-			this.props.selectedArmy.label === 'Forces of Nature' ||
-			this.props.selectedArmy.label === 'Ogres' ||
-			this.props.selectedArmy.label === 'Trident Realm of Neritica' ||
-			this.props.selectedArmy.label === 'The Herd' ||		
-			this.props.selectedArmy.label === 'Kingdoms of Men' ||
-			this.props.selectedArmy.label === 'League of Rhordia' ||
-			this.props.selectedArmy.label === 'Order of the Green Lady' ||
-			this.props.selectedArmy.label === 'Sylvan Kin'
-		) {
-			mainArmyAlignment = 'Neutral'
-		}
-		if (
-			this.props.selectedArmy.label === 'Abyssal Dwarfs' ||
-			this.props.selectedArmy.label === 'Empire of Dust' ||
-			this.props.selectedArmy.label === 'Forces of the Abyss' ||
-			this.props.selectedArmy.label === 'Goblins' ||
-			this.props.selectedArmy.label === 'Nightstalkers' ||
-			this.props.selectedArmy.label === 'Orcs' ||
-			this.props.selectedArmy.label === 'Undead' ||
-			this.props.selectedArmy.label === 'Twilight Kin' ||
-			this.props.selectedArmy.label === 'Ratkin' ||
-			this.props.selectedArmy.label === 'Ratkin Slaves' ||
-			this.props.selectedArmy.label === 'Varangur'
-		) {
-			mainArmyAlignment = 'Evil'
+		} else {
+			if (
+				this.props.selectedArmy.label === 'Basileans' ||
+				this.props.selectedArmy.label === 'Dwarfs' ||
+				this.props.selectedArmy.label === 'Elves' ||
+				this.props.selectedArmy.label === 'Northern Alliance' ||
+				this.props.selectedArmy.label === 'Free Dwarfs' ||
+				this.props.selectedArmy.label === 'Order of the Brothermark' ||
+				this.props.selectedArmy.label === 'Salamanders'
+			) {
+				mainArmyAlignment = 'Good'
+			}
+			if (
+				this.props.selectedArmy.label === 'Forces of Nature' ||
+				this.props.selectedArmy.label === 'Ogres' ||
+				this.props.selectedArmy.label === 'Trident Realm of Neritica' ||
+				this.props.selectedArmy.label === 'The Herd' ||		
+				this.props.selectedArmy.label === 'Kingdoms of Men' ||
+				this.props.selectedArmy.label === 'League of Rhordia' ||
+				this.props.selectedArmy.label === 'Order of the Green Lady' ||
+				this.props.selectedArmy.label === 'Sylvan Kin'
+			) {
+				mainArmyAlignment = 'Neutral'
+			}
+			if (
+				this.props.selectedArmy.label === 'Abyssal Dwarfs' ||
+				this.props.selectedArmy.label === 'Empire of Dust' ||
+				this.props.selectedArmy.label === 'Forces of the Abyss' ||
+				this.props.selectedArmy.label === 'Goblins' ||
+				this.props.selectedArmy.label === 'Nightstalkers' ||
+				this.props.selectedArmy.label === 'Orcs' ||
+				this.props.selectedArmy.label === 'Undead' ||
+				this.props.selectedArmy.label === 'Twilight Kin' ||
+				this.props.selectedArmy.label === 'Ratkin' ||
+				this.props.selectedArmy.label === 'Ratkin Slaves' ||
+				this.props.selectedArmy.label === 'Varangur'
+			) {
+				mainArmyAlignment = 'Evil'
+			}
 		}
 
 		let masterListArmies = []
@@ -436,7 +448,6 @@ class AlliesButtons extends Component {
 				) {
 					allyChoices.push(masterListArmies[i3])
 				}
-				console.log(this.props.selectedArmy.label)
 				if (this.props.selectedArmy.label === 'Varangur') {
 					for (i4 = allyChoices.length - 1; i4 >= 0; i4--) {
 						if (

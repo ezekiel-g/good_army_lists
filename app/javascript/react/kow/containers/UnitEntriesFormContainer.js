@@ -1421,7 +1421,11 @@ class UnitEntriesFormContainer extends Component {
 			}
 		}
 
-		if (unitObject.unit.name === 'Jarvis [1]' && this.state.alliedListedUnits.length > 0) {
+		if (
+			unitObject.unit.name === 'Jarvis [1]' &&
+			this.state.alliedListedUnits.length > 0 &&
+			this.state.alliedArmy.alignment === 'Good'
+		) {
 			listedUnits = this.state.listedUnits
 			selectedUnitOptions = this.state.selectedUnitOptions
 			selectedArtefacts = this.state.selectedArtefacts			
@@ -2181,10 +2185,13 @@ class UnitEntriesFormContainer extends Component {
 		}
 
 		let alliedArmy
+		let alliedArmySingularName
 		if (alliedListedUnits.length > 0) {
 			alliedArmy = this.state.alliedArmy
+			alliedArmySingularName = this.state.alliedArmySingularName
 		} else {
 			alliedArmy = ''
+			alliedArmySingularName = ''
 		}
 
 		addTroopUnlocks(alliedListedUnits)
@@ -2198,6 +2205,7 @@ class UnitEntriesFormContainer extends Component {
 
 		this.setState({
 			alliedArmy: alliedArmy,
+			alliedArmySingularName: alliedArmySingularName,
 			alliedListedUnits: alliedListedUnits,
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
 			alliedPointTotal: alliedPointTotal,
@@ -4089,8 +4097,10 @@ class UnitEntriesFormContainer extends Component {
 				}
 				if (
 					units[i].name === 'Jarvis [1]' && (
-						limitedHeroCount > 0 ||
-						alliedListedUnits.length > 0
+						limitedHeroCount > 0 || (
+							alliedListedUnits.length > 0 &&
+							this.state.alliedArmy.alignment === 'Good'
+						)
 					)
 				) {
 					locked = true

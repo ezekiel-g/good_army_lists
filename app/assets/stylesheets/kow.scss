@@ -382,7 +382,6 @@ hr {
 
 .point-total {
 	text-align: center;
-
 	overflow-wrap: all;
 }
 
@@ -489,6 +488,11 @@ hr {
 	padding-bottom: 13px;
 }
 
+.unit-option-selections {
+	text-align: left;
+	line-height: 120%;
+}
+
 .unit-option-title {
 	color: #A41F26;
 	font-weight: bolder;
@@ -499,17 +503,29 @@ hr {
 	margin-left: auto;
 	margin-right: auto;
 	user-select: none;
+	line-height: 120%;
 	background-color: #FFFFFF;
+}
+
+.artefact-selections {
+	text-align: left;
+	line-height: 120%;
+	margin-top: 15px;
+}
+
+.artefact-table {
+
 }
 
 .artefact-title {
 	color: #A41F26;
 	font-weight: bolder;
+	margin-bottom: 15px;
 }
 
 .unit-option-selection-label {
 	cursor: pointer;
-	padding: 3px;
+	padding: 2px 0px 2px 0px;
 }
 
 .unit-option-selection-label:hover {
@@ -522,7 +538,7 @@ hr {
 
 .artefact-selection-label {
 	cursor: pointer;
-	padding: 3px;
+	padding: 2px 0px 2px 0px;
 }
 
 .artefact-selection-label:hover {

@@ -261,8 +261,10 @@ class UnitOptionSelectionTile extends Component {
 					What option(s) will<br />
 					{unitObject.unit.display_name} have?
 				</h4><br />
-				{nonSpellDisplay}
-				{spellDisplay}<br /><br />
+				<div className="unit-option-selections">
+					{nonSpellDisplay}
+					{spellDisplay}<br /><br />
+				</div>
 				<div>
 					{selectButton}
 					<span 

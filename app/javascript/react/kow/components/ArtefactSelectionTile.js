@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ArtefactSelectionLabel from './ArtefactSelectionLabel'
 
 class ArtefactSelectionTile extends Component {
 	constructor(props) {
@@ -124,17 +125,17 @@ class ArtefactSelectionTile extends Component {
 			return ( a.points - b.points )
 		})	
 		let artefactDisplay = sortedArtefacts.map(artefact => {
+			let extraSpace
+			if (artefact.points < 10) {
+				extraSpace = <span className="hidden">_</span>
+			}
 			return (
-				<div key={artefact.id}>
-					<span
-						onClick={() => this.props.selectArtefact(this.props.unitObject, artefact)}
-						className="artefact-selection-label"
-					>
-						{artefact.display_name}{' '}
-						<span className="hidden">_</span>
-						<span className="pastel-red">{artefact.points}</span>
-					</span>
-				</div>
+				<ArtefactSelectionLabel
+					key={artefact.id}
+					unitObject={this.props.unitObject}
+					artefact={artefact}
+					selectArtefact={this.props.selectArtefact}
+				/>
 			)
 		})
 
@@ -152,7 +153,7 @@ class ArtefactSelectionTile extends Component {
 						Cancel
 					</span>
 				</div><br />
-				{artefactDisplay}
+				<div className="artefact-selections">{artefactDisplay}</div>
 			</div>
 		)
 	}

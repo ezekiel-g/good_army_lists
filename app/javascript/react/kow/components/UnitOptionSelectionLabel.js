@@ -13,7 +13,7 @@ const UnitOptionSelectionLabel = props => {
 			<table>
 				<tbody>
 					<tr>
-						<td>
+						<td valign="top">
 							{extraSpace}
 							<span className="pastel-red">{props.unitOption.points}</span>
 						</td>
@@ -40,7 +40,7 @@ const UnitOptionSelectionLabel = props => {
 			<table>
 				<tbody>
 					<tr id={props.unitOption.id} className="greyed-out-unit-option">
-						<td>
+						<td valign="top">
 							{extraSpace}{props.unitOption.points}
 						</td>
 						<td>

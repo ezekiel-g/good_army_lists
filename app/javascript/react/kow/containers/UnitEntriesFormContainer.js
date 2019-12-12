@@ -548,30 +548,32 @@ class UnitEntriesFormContainer extends Component {
 				if (array[i4].unit.unit_type === 'Titan') {
 					alliedTitanCount += 1
 				}
-				if (
-					(
-						array[i4].unit.unit_type === 'Infantry' ||
-						array[i4].unit.unit_type === 'Heavy Infantry' ||
-						array[i4].unit.unit_type === 'Cavalry' ||
-						array[i4].unit.unit_type === 'Chariot'
-					) && (
-						array[i4].unit.unit_size === 'Horde' || 
-						array[i4].unit.unit_size === 'Legion'					
-					)
-				) {
-					alliedInfantryHordeCount += 1
-				}
-				if (
-					(
-						array[i4].unit.unit_type === 'Large Infantry' ||
-						array[i4].unit.unit_type === 'Monstrous Infantry' ||
-						array[i4].unit.unit_type === 'Large Cavalry'
-					) && (
-						array[i4].unit.unit_size === 'Horde' || 
-						array[i4].unit.unit_size === 'Legion'
-					)
-				) {
-					alliedLargeInfantryHordeCount += 1
+				if (array[i4].unit.is_irregular === false) {
+					if (
+						(
+							array[i4].unit.unit_type === 'Infantry' ||
+							array[i4].unit.unit_type === 'Heavy Infantry' ||
+							array[i4].unit.unit_type === 'Cavalry' ||
+							array[i4].unit.unit_type === 'Chariot'
+						) && (
+							array[i4].unit.unit_size === 'Horde' || 
+							array[i4].unit.unit_size === 'Legion'					
+						)
+					) {
+						alliedInfantryHordeCount += 1
+					}
+					if (
+						(
+							array[i4].unit.unit_type === 'Large Infantry' ||
+							array[i4].unit.unit_type === 'Monstrous Infantry' ||
+							array[i4].unit.unit_type === 'Large Cavalry'
+						) && (
+							array[i4].unit.unit_size === 'Horde' || 
+							array[i4].unit.unit_size === 'Legion'
+						)
+					) {
+						alliedLargeInfantryHordeCount += 1
+					}
 				}
 			}
 		}
@@ -813,30 +815,32 @@ class UnitEntriesFormContainer extends Component {
 			if (this.state.listedUnits[i].unit.unit_type === 'Titan') {
 				titanCount += 1
 			}
-			if (
-				(
-					this.state.listedUnits[i].unit.unit_type === 'Infantry' ||
-					this.state.listedUnits[i].unit.unit_type === 'Heavy Infantry' ||
-					this.state.listedUnits[i].unit.unit_type === 'Cavalry' ||
-					this.state.listedUnits[i].unit.unit_type === 'Chariot'
-				) && (
-					this.state.listedUnits[i].unit.unit_size === 'Horde' || 
-					this.state.listedUnits[i].unit.unit_size === 'Legion'
-				)
-			) {
-				infantryHordeCount += 1
-			}
-			if (
-				(
-					this.state.listedUnits[i].unit.unit_type === 'Large Infantry' ||
-					this.state.listedUnits[i].unit.unit_type === 'Monstrous Infantry' ||
-					this.state.listedUnits[i].unit.unit_type === 'Large Cavalry'
-				) && (
-					this.state.listedUnits[i].unit.unit_size === 'Horde' || 
-					this.state.listedUnits[i].unit.unit_size === 'Legion'
-				)
-			) {
-				largeInfantryHordeCount += 1
+			if (this.state.listedUnits[i].unit.is_irregular === false) {
+				if (
+					(
+						this.state.listedUnits[i].unit.unit_type === 'Infantry' ||
+						this.state.listedUnits[i].unit.unit_type === 'Heavy Infantry' ||
+						this.state.listedUnits[i].unit.unit_type === 'Cavalry' ||
+						this.state.listedUnits[i].unit.unit_type === 'Chariot'
+					) && (
+						this.state.listedUnits[i].unit.unit_size === 'Horde' || 
+						this.state.listedUnits[i].unit.unit_size === 'Legion'
+					)
+				) {
+					infantryHordeCount += 1
+				}
+				if (
+					(
+						this.state.listedUnits[i].unit.unit_type === 'Large Infantry' ||
+						this.state.listedUnits[i].unit.unit_type === 'Monstrous Infantry' ||
+						this.state.listedUnits[i].unit.unit_type === 'Large Cavalry'
+					) && (
+						this.state.listedUnits[i].unit.unit_size === 'Horde' || 
+						this.state.listedUnits[i].unit.unit_size === 'Legion'
+					)
+				) {
+					largeInfantryHordeCount += 1
+				}
 			}
 		}
 		this.setState({
@@ -870,30 +874,32 @@ class UnitEntriesFormContainer extends Component {
 			if (this.state.alliedListedUnits[i].unit.unit_type === 'Titan') {
 				alliedTitanCount += 1
 			}
-			if (
-				(
-					this.state.alliedListedUnits[i].unit.unit_type === 'Infantry' ||
-					this.state.alliedListedUnits[i].unit.unit_type === 'Heavy Infantry' ||
-					this.state.alliedListedUnits[i].unit.unit_type === 'Cavalry' ||
-					this.state.alliedListedUnits[i].unit.unit_type === 'Chariot'
-				) && (
-					this.state.alliedListedUnits[i].unit.unit_size === 'Horde' || 
-					this.state.alliedListedUnits[i].unit.unit_size === 'Legion'
-				)
-			) {
-				alliedInfantryHordeCount += 1
-			}
-			if (
-				(
-					this.state.alliedListedUnits[i].unit.unit_type === 'Large Infantry' ||
-					this.state.alliedListedUnits[i].unit.unit_type === 'Monstrous Infantry' ||
-					this.state.alliedListedUnits[i].unit.unit_type === 'Large Cavalry'
-				) && (
-					this.state.alliedListedUnits[i].unit.unit_size === 'Horde' || 
-					this.state.alliedListedUnits[i].unit.unit_size === 'Legion'
-				)
-			) {
-				alliedLargeInfantryHordeCount += 1
+			if (this.state.alliedListedUnits[i].is_irregular === false) {
+				if (
+					(
+						this.state.alliedListedUnits[i].unit.unit_type === 'Infantry' ||
+						this.state.alliedListedUnits[i].unit.unit_type === 'Heavy Infantry' ||
+						this.state.alliedListedUnits[i].unit.unit_type === 'Cavalry' ||
+						this.state.alliedListedUnits[i].unit.unit_type === 'Chariot'
+					) && (
+						this.state.alliedListedUnits[i].unit.unit_size === 'Horde' || 
+						this.state.alliedListedUnits[i].unit.unit_size === 'Legion'
+					)
+				) {
+					alliedInfantryHordeCount += 1
+				}
+				if (
+					(
+						this.state.alliedListedUnits[i].unit.unit_type === 'Large Infantry' ||
+						this.state.alliedListedUnits[i].unit.unit_type === 'Monstrous Infantry' ||
+						this.state.alliedListedUnits[i].unit.unit_type === 'Large Cavalry'
+					) && (
+						this.state.alliedListedUnits[i].unit.unit_size === 'Horde' || 
+						this.state.alliedListedUnits[i].unit.unit_size === 'Legion'
+					)
+				) {
+					alliedLargeInfantryHordeCount += 1
+				}
 			}
 		}
 		this.setState({
@@ -1287,30 +1293,32 @@ class UnitEntriesFormContainer extends Component {
 				if (array[i4].unit.unit_type === 'Titan') {
 					titanCount += 1
 				}
-				if (
-					(
-						array[i4].unit.unit_type === 'Infantry' ||
-						array[i4].unit.unit_type === 'Heavy Infantry' ||
-						array[i4].unit.unit_type === 'Cavalry' ||
-						array[i4].unit.unit_type === 'Chariot'
-					) && (
-						array[i4].unit.unit_size === 'Horde' || 
-						array[i4].unit.unit_size === 'Legion'					
-					)
-				) {
-					infantryHordeCount += 1
-				}
-				if (
-					(
-						array[i4].unit.unit_type === 'Large Infantry' ||
-						array[i4].unit.unit_type === 'Monstrous Infantry' ||
-						array[i4].unit.unit_type === 'Large Cavalry'
-					) && (
-						array[i4].unit.unit_size === 'Horde' || 
-						array[i4].unit.unit_size === 'Legion'
-					)
-				) {
-					largeInfantryHordeCount += 1
+				if (array[i4].unit.is_irregular === false) {
+					if (
+						(
+							array[i4].unit.unit_type === 'Infantry' ||
+							array[i4].unit.unit_type === 'Heavy Infantry' ||
+							array[i4].unit.unit_type === 'Cavalry' ||
+							array[i4].unit.unit_type === 'Chariot'
+						) && (
+							array[i4].unit.unit_size === 'Horde' || 
+							array[i4].unit.unit_size === 'Legion'					
+						)
+					) {
+						infantryHordeCount += 1
+					}
+					if (
+						(
+							array[i4].unit.unit_type === 'Large Infantry' ||
+							array[i4].unit.unit_type === 'Monstrous Infantry' ||
+							array[i4].unit.unit_type === 'Large Cavalry'
+						) && (
+							array[i4].unit.unit_size === 'Horde' || 
+							array[i4].unit.unit_size === 'Legion'
+						)
+					) {
+						largeInfantryHordeCount += 1
+					}
 				}
 			}
 		}
@@ -1853,30 +1861,32 @@ class UnitEntriesFormContainer extends Component {
 				if (array[i4].unit.unit_type === 'Titan') {
 					alliedTitanCount += 1
 				}
-				if (
-					(
-						array[i4].unit.unit_type === 'Infantry' ||
-						array[i4].unit.unit_type === 'Heavy Infantry' ||
-						array[i4].unit.unit_type === 'Cavalry' ||
-						array[i4].unit.unit_type === 'Chariot'
-					) && (
-						array[i4].unit.unit_size === 'Horde' || 
-						array[i4].unit.unit_size === 'Legion'					
-					)
-				) {
-					alliedInfantryHordeCount += 1
-				}
-				if (
-					(
-						array[i4].unit.unit_type === 'Large Infantry' ||
-						array[i4].unit.unit_type === 'Monstrous Infantry' ||
-						array[i4].unit.unit_type === 'Large Cavalry'
-					) && (
-						array[i4].unit.unit_size === 'Horde' || 
-						array[i4].unit.unit_size === 'Legion'
-					)
-				) {
-					alliedLargeInfantryHordeCount += 1
+				if (array[i4].unit.is_irregular === false) {
+					if (
+						(
+							array[i4].unit.unit_type === 'Infantry' ||
+							array[i4].unit.unit_type === 'Heavy Infantry' ||
+							array[i4].unit.unit_type === 'Cavalry' ||
+							array[i4].unit.unit_type === 'Chariot'
+						) && (
+							array[i4].unit.unit_size === 'Horde' || 
+							array[i4].unit.unit_size === 'Legion'					
+						)
+					) {
+						alliedInfantryHordeCount += 1
+					}
+					if (
+						(
+							array[i4].unit.unit_type === 'Large Infantry' ||
+							array[i4].unit.unit_type === 'Monstrous Infantry' ||
+							array[i4].unit.unit_type === 'Large Cavalry'
+						) && (
+							array[i4].unit.unit_size === 'Horde' || 
+							array[i4].unit.unit_size === 'Legion'
+						)
+					) {
+						alliedLargeInfantryHordeCount += 1
+					}
 				}
 			}
 		}

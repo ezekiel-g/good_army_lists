@@ -2311,7 +2311,8 @@ class UnitEntriesFormContainer extends Component {
 				highlightedUnitOptions[i].unitOption.display_name === 'Horn of Ocean\'s Fury' ||
 				highlightedUnitOptions[i].unitOption.display_name === 'Infernal Advance' ||
 				highlightedUnitOptions[i].unitOption.display_name === 'Eternal Guard' ||
-				highlightedUnitOptions[i].unitOption.display_name === 'Raid Leader'
+				highlightedUnitOptions[i].unitOption.display_name === 'Raid Leader' ||
+				highlightedUnitOptions[i].unitOption.display_name === 'Path of Fire'
 			) {
 				for (i2 = 0; i2 < selectedArtefacts.length; i2++) {
 					if (selectedArtefacts[i].index === unitObject.index) {
@@ -2868,7 +2869,8 @@ class UnitEntriesFormContainer extends Component {
 					selectedUnitOptions[i].unitOption.display_name === 'Horn of Ocean\'s Fury' ||
 					selectedUnitOptions[i].unitOption.display_name === 'Infernal Advance' ||
 					selectedUnitOptions[i].unitOption.display_name === 'Eternal Guard' ||
-					selectedUnitOptions[i].unitOption.display_name === 'Raid Leader'
+					selectedUnitOptions[i].unitOption.display_name === 'Raid Leader' ||
+					selectedUnitOptions[i].unitOption.display_name === 'Path of Fire'
 				)
 			) {
 				pointTotal -= selectedUnitOptions[i].unitOption.points
@@ -3893,6 +3895,8 @@ class UnitEntriesFormContainer extends Component {
 						alliedUnitObject={this.state.alliedUnitBeingGivenOption}
 						selectUnitOptions={this.selectUnitOptions}
 						selectAlliedUnitOptions={this.selectAlliedUnitOptions}
+						selectedUnitOptions={this.state.selectedUnitOptions}
+						alliedSelectedUnitOptions={this.state.alliedSelectedUnitOptions}
 						toggleUnitOptions={this.toggleUnitOptions}
 						pointTotal={this.state.pointTotal}
 						alliedPointTotal={this.state.alliedPointTotal}

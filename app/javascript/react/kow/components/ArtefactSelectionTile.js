@@ -5,12 +5,31 @@ class ArtefactSelectionTile extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-
+			artefacts: []
 		}
 	}
 
+	componentDidMount() {
+		fetch('/api/v1/artefacts')
+		.then(response => {
+			if (response.ok) {
+				return response
+			} else {
+				let errorMessage = `${response.status} (${response.statusText})`,
+				error = new Error(errorMessage)
+				throw(error)
+			}
+		})
+		.then(response => response.json())
+		.then(body => {
+			this.setState({ artefacts: body })
+		})
+		.catch(error => console.error(`Error in fetch: ${error.message}`))		
+	}
+
 	render() {
-		let artefacts = this.props.artefacts
+		let artefacts = this.state.artefacts
+		console.log(artefacts)	
 		let blessingOfTheGods
 		let blessingOfTheGodsHorde
 		let chantOfHate

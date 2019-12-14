@@ -4005,7 +4005,6 @@ class UnitEntriesFormContainer extends Component {
 				<div className="artefact-selection-tile">
 					<ArtefactSelectionTile
 						unitObject={this.state.unitBeingGivenArtefact}
-						artefacts={this.props.artefacts}
 						selectedArtefacts={this.state.selectedArtefacts}
 						selectArtefact={this.selectArtefact}
 						toggleArtefacts={this.toggleArtefacts}

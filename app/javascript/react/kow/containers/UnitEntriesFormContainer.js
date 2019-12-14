@@ -3836,7 +3836,7 @@ class UnitEntriesFormContainer extends Component {
 			hidden = ''
 		}
 		let allUnits = this.props.units.sort((a, b) => {
-			return (b.unit_strength - a.unit_strength)
+			return (b.points - a.points)
 		})
 		let filteredUnits = []
 		let filteredUnitsUnlocked = []

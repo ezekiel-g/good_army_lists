@@ -170,6 +170,22 @@ class UnitOptionSelectionTile extends Component {
 						highlightedUnitOptions.splice(highlightedUnitOptions.indexOf(highlightedUnitOptions[i]), 1)
 					}
 				}
+			}
+			if (unitOption.display_name === 'Brand of the Warrior') {
+				for (i = 0; i < highlightedUnitOptions.length; i++) {
+					if (highlightedUnitOptions[i].display_name === 'Guise of the Deceiver') {
+						document.getElementById(highlightedUnitOptions[i].id).classList.remove('highlighted-unit-option')
+						highlightedUnitOptions.splice(highlightedUnitOptions.indexOf(highlightedUnitOptions[i]), 1)
+					}
+				}
+			}
+			if (unitOption.display_name === 'Guise of the Deceiver') {
+				for (i = 0; i < highlightedUnitOptions.length; i++) {
+					if (highlightedUnitOptions[i].display_name === 'Brand of the Warrior') {
+						document.getElementById(highlightedUnitOptions[i].id).classList.remove('highlighted-unit-option')
+						highlightedUnitOptions.splice(highlightedUnitOptions.indexOf(highlightedUnitOptions[i]), 1)
+					}
+				}
 			}		
 			document.getElementById(unitOption.id).classList.add('highlighted-unit-option')
 			highlightedUnitOptions.push(unitOption)

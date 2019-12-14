@@ -118,16 +118,30 @@ class ArtefactSelectionTile extends Component {
 				}
 			}
 			artefacts = commonArtefacts
-
 		}
 
 		let sortedArtefacts = artefacts.sort((a, b) => {
 			return ( a.points - b.points )
-		})	
+		})
+
+		let selectedArtefactPoints = 0
+		for (i = 0; i < this.props.selectedArtefacts.length; i++) {
+			if (this.props.selectedArtefacts[i].index === this.props.unitObject.index) {
+				selectedArtefactPoints += this.props.selectedArtefacts[i].artefact.points
+			}
+		}
+
 		let artefactDisplay = sortedArtefacts.map(artefact => {
-			let extraSpace
-			if (artefact.points < 10) {
-				extraSpace = <span className="hidden">_</span>
+			let greyedOut = false
+			if (
+				(
+					(this.props.pointTotal + this.props.alliedPointTotal + artefact.points - selectedArtefactPoints) / 4 <
+					this.props.alliedPointTotal
+				) && (
+					this.props.alliedPointTotal > 0
+				)
+			) {
+				greyedOut = true
 			}
 			return (
 				<ArtefactSelectionLabel
@@ -135,6 +149,7 @@ class ArtefactSelectionTile extends Component {
 					unitObject={this.props.unitObject}
 					artefact={artefact}
 					selectArtefact={this.props.selectArtefact}
+					greyedOut={greyedOut}
 				/>
 			)
 		})

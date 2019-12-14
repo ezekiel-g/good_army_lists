@@ -5,28 +5,45 @@ class UnitOptionSelectionTile extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			unitOptions: [],
 			highlightedUnitOptions: []
 		}
 		this.updateHighlightedUnitOptions = this.updateHighlightedUnitOptions.bind(this)
 	}
 
 	componentDidMount() {
-		fetch('/api/v1/unit_options')
-		.then(response => {
-			if (response.ok) {
-				return response
-			} else {
-				let errorMessage = `${response.status} (${response.statusText})`,
-				error = new Error(errorMessage)
-				throw(error)
+		let unitObject = this.props.unitObject
+		let alliedUnitObject = this.props.alliedUnitObject
+		let unitOptions = this.props.unitOptions
+		let selectedUnitOptions = this.props.selectedUnitOptions
+		let alliedSelectedUnitOptions = this.props.alliedSelectedUnitOptions
+		let highlightedUnitOptions = []
+		let i2
+		let i3
+		if (unitObject != '' && unitObject != undefined && (alliedUnitObject == '' || alliedUnitObject == undefined)) {
+			for (i2 = 0; i2 < selectedUnitOptions.length; i2++) {
+				for (i3 = 0; i3 < unitOptions.length; i3++) {	
+					if (
+						selectedUnitOptions[i2].index === unitObject.index &&
+						selectedUnitOptions[i2].unitOption.name === unitOptions[i3].name
+					) {
+						highlightedUnitOptions.push(selectedUnitOptions[i2].unitOption)
+					}
+				}
 			}
-		})
-		.then(response => response.json())
-		.then(body => {
-			this.setState({ unitOptions: body })
-		})
-		.catch(error => console.error(`Error in fetch: ${error.message}`))
+		}
+		if ((unitObject == '' || unitObject == undefined) && alliedUnitObject != '' && alliedUnitObject != undefined) {
+			for (i2 = 0; i2 < alliedSelectedUnitOptions.length; i2++) {
+				for (i3 = 0; i3 < unitOptions.length; i3++) {	
+					if (
+						alliedSelectedUnitOptions[i2].index === alliedUnitObject.index &&
+						alliedSelectedUnitOptions[i2].unitOption.name === unitOptions[i3].name
+					) {
+						highlightedUnitOptions.push(alliedSelectedUnitOptions[i2].unitOption)
+					}
+				}
+			}
+		}	
+		this.setState({ highlightedUnitOptions: highlightedUnitOptions })
 	}
 
 	updateHighlightedUnitOptions(unitOption) {
@@ -161,14 +178,19 @@ class UnitOptionSelectionTile extends Component {
 	}
 
 	render() {
-		let unitOptions = this.state.unitOptions
 		let unitObject
+		let unitOptions = this.props.unitOptions
 		let selectButton
 		let nonSpells = []
 		let spells = []
 		let i
 
-		if (this.props.unitObject != '' && (this.props.alliedUnitObject == '' || this.props.alliedUnitObject == undefined)) {
+		if (
+			this.props.unitObject != '' &&
+			this.props.unitObject != undefined && (
+				this.props.alliedUnitObject == '' || this.props.alliedUnitObject == undefined
+			)
+		) {
 			unitObject = this.props.unitObject
 			selectButton =
 				<span 
@@ -181,7 +203,12 @@ class UnitOptionSelectionTile extends Component {
 					Select
 				</span>
 		}
-		if (this.props.unitObject == '' && (this.props.alliedUnitObject != '' || this.props.alliedUnitObject == undefined)) {
+		if (
+			this.props.alliedUnitObject != '' &&
+			this.props.alliedUnitObject != undefined && (
+				this.props.unitObject == '' || this.props.unitObject == undefined
+			)
+		) {
 			unitObject = this.props.alliedUnitObject
 			selectButton =
 				<span 
@@ -211,17 +238,48 @@ class UnitOptionSelectionTile extends Component {
 			return (a.points - b.points)
 		})
 		let nonSpellDisplay = sortedNonSpells.map(unitOption => {
+			let highlighted = false
 			let greyedOut = false
-			if (
-				(
-					(this.props.pointTotal + this.props.alliedPointTotal + unitOption.points) / 4 <
-					this.props.alliedPointTotal + unitOption.points
-				) && (
-					this.props.alliedUnitObject != '' && this.props.alliedUnitObject != undefined
-				)
-			) {
-				greyedOut = true
+			for (i = 0; i < this.props.selectedUnitOptions.length; i++) {
+				if (
+					this.props.selectedUnitOptions[i].index === unitObject.index &&
+					this.props.selectedUnitOptions[i].unitOption.name === unitOption.name
+				) {
+					highlighted = true
+				}
 			}
+			for (i = 0; i < this.props.alliedSelectedUnitOptions.length; i++) {
+				if (
+					this.props.alliedSelectedUnitOptions[i].index === unitObject.index &&
+					this.props.alliedSelectedUnitOptions[i].unitOption.name === unitOption.name
+				) {
+					highlighted = true
+				}
+			}
+			if (highlighted === true && unitObject === this.props.unitObject) {
+				if (
+					(
+						(this.props.pointTotal + this.props.alliedPointTotal - unitOption.points) / 4 <
+						this.props.alliedPointTotal
+					) && (
+						this.props.alliedPointTotal > 0
+					)
+				) {
+					greyedOut = true
+				}				
+			} else {
+				if (
+					(
+						(this.props.pointTotal + this.props.alliedPointTotal + unitOption.points) / 4 <
+						this.props.alliedPointTotal + unitOption.points
+					) && (
+						this.props.alliedPointTotal > 0
+					)
+				) {
+					greyedOut = true
+				}
+			}
+
 			return (
 				<UnitOptionSelectionLabel
 					key={unitOption.id}
@@ -229,21 +287,54 @@ class UnitOptionSelectionTile extends Component {
 					unitOption={unitOption}
 					handlerFunction={this.updateHighlightedUnitOptions}
 					greyedOut={greyedOut}
+					highlighted={highlighted}
 				/>
 			)
 		})
 		let spellDisplay = sortedSpells.map(unitOption => {
+			let highlighted = false
 			let greyedOut = false
-			if (
-				(
-					(this.props.pointTotal + this.props.alliedPointTotal + unitOption.points) / 4 <
-					this.props.alliedPointTotal + unitOption.points
-				) && (
-					this.props.alliedUnitObject != '' && this.props.alliedUnitObject != undefined
-				)
-			) {
-				greyedOut = true
+			for (i = 0; i < this.props.selectedUnitOptions.length; i++) {
+				if (
+					this.props.selectedUnitOptions[i].index === unitObject.index &&
+					this.props.selectedUnitOptions[i].unitOption.name === unitOption.name
+				) {
+					highlighted = true
+				}
 			}
+			for (i = 0; i < this.props.alliedSelectedUnitOptions.length; i++) {
+				if (
+					this.props.alliedSelectedUnitOptions[i].index === unitObject.index &&
+					this.props.alliedSelectedUnitOptions[i].unitOption.name === unitOption.name
+				) {
+					highlighted = true
+				}
+			}
+			if (highlighted === false) {
+				if (
+					(
+						(this.props.pointTotal + this.props.alliedPointTotal + unitOption.points) / 4 <
+						this.props.alliedPointTotal + unitOption.points
+					) && (
+						this.props.alliedUnitObject != '' && this.props.alliedUnitObject != undefined
+					)
+				) {
+					greyedOut = true
+				}
+			}
+			if (highlighted === true) {
+				if (
+					(
+						(this.props.pointTotal + this.props.alliedPointTotal - unitOption.points) / 4 <
+						this.props.alliedPointTotal - unitOption.points
+					) && (
+						this.props.alliedUnitObject != '' && this.props.alliedUnitObject != undefined
+					)
+				) {
+					greyedOut = true
+				}				
+			}
+
 			return (
 				<UnitOptionSelectionLabel
 					key={unitOption.id + 20000}
@@ -251,6 +342,7 @@ class UnitOptionSelectionTile extends Component {
 					unitOption={unitOption}
 					handlerFunction={this.updateHighlightedUnitOptions}
 					greyedOut={greyedOut}
+					highlighted={highlighted}
 				/>
 			)
 		})

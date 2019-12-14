@@ -7,6 +7,20 @@ const UnitOptionSelectionLabel = props => {
 		extraSpace = <span className="hidden">{'_'}</span>
 	}
 
+	let className
+	if (props.highlighted === true && props.greyedOut === true) {
+		className = 'highlighted-unit-option'
+	}
+	if (props.highlighted === true && props.greyedOut === false) {
+		className = 'unit-option-selection-label highlighted-unit-option'
+	}
+	if (props.highlighted === false && props.greyedOut === true) {
+		className = 'nothing-class'
+	}
+	if (props.highlighted === false && props.greyedOut === false) {
+		className = 'unit-option-selection-label'
+	}
+
 	let display
 	if (props.greyedOut === false) {
 		display =
@@ -23,7 +37,7 @@ const UnitOptionSelectionLabel = props => {
 						<td>
 							<span
 								id={props.unitOption.id}
-								className="unit-option-selection-label"
+								className={className}
 								onClick={() => props.handlerFunction(
 									props.unitOption
 								)}				
@@ -47,8 +61,7 @@ const UnitOptionSelectionLabel = props => {
 							<span className="white-square"><img src={whiteSquare} width={"10"} height={"20"} /></span>
 						</td>
 						<td>
-							<span>{props.unitOption.display_name}</span>
-
+							<span className={className}>{props.unitOption.display_name}</span>
 						</td>
 					</tr>
 				</tbody>

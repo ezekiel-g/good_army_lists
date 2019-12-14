@@ -2,7 +2,9 @@ import React from 'react'
 import UnitEntryNameTileFormatted from './UnitEntryNameTileFormatted'
 
 const FormattedList = props => {
-	let list = props.listedUnits.map(unitObject => {
+	let header
+
+	let listTop = props.listedUnitsTop.map(unitObject => {
 		return (
 			<UnitEntryNameTileFormatted
 				key={unitObject.index}
@@ -13,10 +15,45 @@ const FormattedList = props => {
 			/>
 		)
 	})
-	let header
-	let alliesList
+	let listSecondQuarter = props.listedUnitsSecondQuarter.map(unitObject => {
+		return (
+			<UnitEntryNameTileFormatted
+				key={unitObject.index}
+				id={unitObject.index}
+				unitObject={unitObject}
+				selectedUnitOptions={props.selectedUnitOptions}
+				selectedArtefacts={props.selectedArtefacts}
+			/>
+		)
+	})
+	let listThirdQuarter = props.listedUnitsThirdQuarter.map(unitObject => {
+		return (
+			<UnitEntryNameTileFormatted
+				key={unitObject.index}
+				id={unitObject.index}
+				unitObject={unitObject}
+				selectedUnitOptions={props.selectedUnitOptions}
+				selectedArtefacts={props.selectedArtefacts}
+			/>
+		)
+	})
+	let listBottom = props.listedUnitsBottom.map(unitObject => {
+		return (
+			<UnitEntryNameTileFormatted
+				key={unitObject.index}
+				id={unitObject.index}
+				unitObject={unitObject}
+				selectedUnitOptions={props.selectedUnitOptions}
+				selectedArtefacts={props.selectedArtefacts}
+			/>
+		)
+	})
+	let alliesListTop
+	let alliesListSecondQuarter
+	let alliesListThirdQuarter
+	let alliesListBottom
 	let listDisplay
-	if (props.alliedListedUnits.length > 0) {
+	if (props.alliedListedUnitsTop.length > 0) {
 		header =
 			<div className="formatted-list-header">
 				<div>Army: {props.selectedArmy.label}</div>
@@ -24,7 +61,8 @@ const FormattedList = props => {
 				<div>Points: {props.pointTotal + props.alliedPointTotal}</div>
 				<div>Unit Strength: {props.unitStrengthTotal}</div>
 			</div>
-		alliesList = props.alliedListedUnits.map(unitObject => {
+
+		alliesListTop = props.alliedListedUnitsTop.map(unitObject => {
 			return (
 				<UnitEntryNameTileFormatted
 					key={unitObject.index + 350000}
@@ -34,7 +72,48 @@ const FormattedList = props => {
 				/>
 			)
 		})
-		listDisplay = <div>{list}<br />{alliesList}</div>
+		alliesListSecondQuarter = props.alliedListedUnitsSecondQuarter.map(unitObject => {
+			return (
+				<UnitEntryNameTileFormatted
+					key={unitObject.index + 350000}
+					id={unitObject.index}
+					unitObject={unitObject}
+					selectedUnitOptions={props.alliedSelectedUnitOptions}
+				/>
+			)
+		})
+		alliesListThirdQuarter = props.alliedListedUnitsThirdQuarter.map(unitObject => {
+			return (
+				<UnitEntryNameTileFormatted
+					key={unitObject.index + 350000}
+					id={unitObject.index}
+					unitObject={unitObject}
+					selectedUnitOptions={props.alliedSelectedUnitOptions}
+				/>
+			)
+		})
+		alliesListBottom = props.alliedListedUnitsBottom.map(unitObject => {
+			return (
+				<UnitEntryNameTileFormatted
+					key={unitObject.index + 350000}
+					id={unitObject.index}
+					unitObject={unitObject}
+					selectedUnitOptions={props.alliedSelectedUnitOptions}
+				/>
+			)
+		})
+
+		listDisplay =
+			<div>
+				{listTop}
+				{listSecondQuarter}
+				{listThirdQuarter}
+				{listBottom}<br />
+				{alliesListTop}
+				{alliesListSecondQuarter}
+				{alliesListThirdQuarter}
+				{alliesListBottom}
+			</div>
 	} else {
 		header =
 			<div className="formatted-list-header">
@@ -42,7 +121,13 @@ const FormattedList = props => {
 				<div>Points: {props.pointTotal + props.alliedPointTotal}</div>
 				<div>Unit Strength: {props.unitStrengthTotal}</div>
 			</div>
-		listDisplay = <div>{list}</div>
+		listDisplay =
+			<div>
+				{listTop}
+				{listSecondQuarter}
+				{listThirdQuarter}
+				{listBottom}			
+			</div>
 	}
 
 	const printList = listElement => {

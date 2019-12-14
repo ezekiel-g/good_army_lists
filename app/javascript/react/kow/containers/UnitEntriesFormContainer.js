@@ -3850,47 +3850,139 @@ class UnitEntriesFormContainer extends Component {
 		let alliesButtonDisplay
 		let viewListButtonDisplay
 		let pointTotalDisplay
-		let sortedListedUnits = this.state.listedUnits.sort((a, b) => {
-			return (b.unit.unit_strength - a.unit.unit_strength)
+		let unsortedListedUnitsTop = []
+		let unsortedListedUnitsSecondQuarter = []
+		let unsortedListedUnitsThirdQuarter = []
+		let unsortedListedUnitsBottom = []
+		let unsortedAlliedListedUnitsTop = []
+		let unsortedAlliedListedUnitsSecondQuarter = []
+		let unsortedAlliedListedUnitsThirdQuarter = []
+		let unsortedAlliedListedUnitsBottom = []
+		for (i = 0; i < this.state.listedUnits.length; i++) {
+			if (
+				this.state.listedUnits[i].unit.unlocking_class === 1 ||
+				this.state.listedUnits[i].unit.unlocking_class === 2 ||
+				this.state.listedUnits[i].unit.unlocking_class === 3
+			) {
+				unsortedListedUnitsTop.push(this.state.listedUnits[i])
+			}
+			if (this.state.listedUnits[i].unit.unlocking_class === 0) {
+				if (
+					this.state.listedUnits[i].unit.is_irregular === false &&
+					this.state.listedUnits[i].unit.unit_size === 'Regiment' && (
+						this.state.listedUnits[i].unit.unit_type === 'Large Infantry' ||
+						this.state.listedUnits[i].unit.unit_type === 'Large Cavalry' ||
+						this.state.listedUnits[i].unit.unit_type === 'Monstrous Infantry'
+					)
+				) {
+					unsortedListedUnitsSecondQuarter.push(this.state.listedUnits[i])
+				} else {
+					if (
+						this.state.listedUnits[i].unit.is_irregular === false &&
+						this.state.listedUnits[i].unit.unit_size === 'Troop'
+					) {
+						unsortedListedUnitsThirdQuarter.push(this.state.listedUnits[i])
+					} else {
+						unsortedListedUnitsBottom.push(this.state.listedUnits[i])
+					}
+				}
+			}
+		}
+		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
+			if (
+				this.state.alliedListedUnits[i].unit.unlocking_class === 1 ||
+				this.state.alliedListedUnits[i].unit.unlocking_class === 2 ||
+				this.state.alliedListedUnits[i].unit.unlocking_class === 3
+			) {
+				unsortedAlliedListedUnitsTop.push(this.state.alliedListedUnits[i])
+			}
+			if (this.state.alliedListedUnits[i].unit.unlocking_class === 0) {
+				if (
+					this.state.alliedListedUnits[i].unit.is_irregular === false &&
+					this.state.alliedListedUnits[i].unit.unit_size === 'Regiment' && (
+						this.state.alliedListedUnits[i].unit.unit_type === 'Large Infantry' ||
+						this.state.alliedListedUnits[i].unit.unit_type === 'Large Cavalry' ||
+						this.state.alliedListedUnits[i].unit.unit_type === 'Monstrous Infantry'
+					)
+				) {
+					unsortedAlliedListedUnitsSecondQuarter.push(this.state.alliedListedUnits[i])
+				} else {
+					if (
+						this.state.alliedListedUnits[i].unit.is_irregular === false &&
+						this.state.alliedListedUnits[i].unit.unit_size === 'Troop'
+					) {
+						unsortedAlliedListedUnitsThirdQuarter.push(this.state.alliedListedUnits[i])
+					} else {
+						unsortedAlliedListedUnitsBottom.push(this.state.alliedListedUnits[i])
+					}
+				}
+			}
+		}
+		let listedUnitsTop = unsortedListedUnitsTop.sort((a, b) => {
+			return ( b.unit.unit_strength - a.unit.unit_strength )
 		})
-		let alliedListedUnits = this.state.alliedListedUnits.sort((a, b) => {
-			return (b.unit.unit_strength - a.unit.unit_strength)
+		let listedUnitsSecondQuarter = unsortedListedUnitsSecondQuarter.sort((a, b) => {
+			return ( b.unit.unit_strength - a.unit.unit_strength )
+		})
+		let listedUnitsThirdQuarter = unsortedListedUnitsThirdQuarter.sort((a, b) => {
+			return ( b.unit.unit_strength - a.unit.unit_strength )
+		})
+		let listedUnitsBottom = unsortedListedUnitsBottom.sort((a, b) => {
+			return ( b.unit.unit_strength - a.unit.unit_strength )
+		})
+		let alliedListedUnitsTop = unsortedAlliedListedUnitsTop.sort((a, b) => {
+			return ( b.unit.unit_strength - a.unit.unit_strength )
+		})
+		let alliedListedUnitsSecondQuarter = unsortedAlliedListedUnitsSecondQuarter.sort((a, b) => {
+			return ( b.unit.unit_strength - a.unit.unit_strength )
+		})
+		let alliedListedUnitsThirdQuarter = unsortedAlliedListedUnitsThirdQuarter.sort((a, b) => {
+			return ( b.unit.unit_strength - a.unit.unit_strength )
+		})
+		let alliedListedUnitsBottom = unsortedAlliedListedUnitsBottom.sort((a, b) => {
+			return ( b.unit.unit_strength - a.unit.unit_strength )
 		})
 		let idsOfUnitsThatCanHaveOptions = []
 		for (i = 0; i < this.props.unitOptions.length; i++) {
 			idsOfUnitsThatCanHaveOptions.push(this.props.unitOptions[i].unit_id)
 		}
 		let listedUnitsThatCanHaveOptions = []
-		for (i = 0; i < sortedListedUnits.length; i++) {
-			if (idsOfUnitsThatCanHaveOptions.includes(sortedListedUnits[i].unit.id)) {
-				listedUnitsThatCanHaveOptions.push(sortedListedUnits[i])
+		for (i = 0; i < this.state.listedUnits.length; i++) {
+			if (idsOfUnitsThatCanHaveOptions.includes(this.state.listedUnits[i].unit.id)) {
+				listedUnitsThatCanHaveOptions.push(this.state.listedUnits[i])
 			}
 		}
 		let listedUnitsThatCanHaveArtefacts = []
-		for (i = 0; i < sortedListedUnits.length; i++) {
+		for (i = 0; i < this.state.listedUnits.length; i++) {
 			if (
-				sortedListedUnits[i].unit.unit_type !== 'War Engine' &&
-				sortedListedUnits[i].unit.unit_type !== 'Monster' &&
-				sortedListedUnits[i].unit.unit_type !== 'Titan' && (
-					sortedListedUnits[i].unit.limited_n === null ||
-					sortedListedUnits[i].unit.limited_n === undefined ||
-					sortedListedUnits[i].unit.limited_n === '' ||
-					sortedListedUnits[i].unit.limited_n === 0
+				this.state.listedUnits[i].unit.unit_type !== 'War Engine' &&
+				this.state.listedUnits[i].unit.unit_type !== 'Monster' &&
+				this.state.listedUnits[i].unit.unit_type !== 'Titan' && (
+					this.state.listedUnits[i].unit.limited_n === null ||
+					this.state.listedUnits[i].unit.limited_n === undefined ||
+					this.state.listedUnits[i].unit.limited_n === '' ||
+					this.state.listedUnits[i].unit.limited_n === 0
 				)
 			) {
-				listedUnitsThatCanHaveArtefacts.push(sortedListedUnits[i])
+				listedUnitsThatCanHaveArtefacts.push(this.state.listedUnits[i])
 			}
 		}
 
 		let alliedListedUnitsThatCanHaveOptions = []
-		for (i = 0; i < alliedListedUnits.length; i++) {
-			if (idsOfUnitsThatCanHaveOptions.includes(alliedListedUnits[i].unit.id)) {
-				alliedListedUnitsThatCanHaveOptions.push(alliedListedUnits[i])
+		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
+			if (idsOfUnitsThatCanHaveOptions.includes(this.state.alliedListedUnits[i].unit.id)) {
+				alliedListedUnitsThatCanHaveOptions.push(this.state.alliedListedUnits[i])
 			}
 		}
 		let totalPoints
-		let listedUnitTileDisplay
-		let alliedListedUnitTileDisplay
+		let listedUnitTileDisplayTop
+		let listedUnitTileDisplaySecondQuarter
+		let listedUnitTileDisplayThirdQuarter
+		let listedUnitTileDisplayBottom
+		let alliedListedUnitTileDisplayTop
+		let alliedListedUnitTileDisplaySecondQuarter
+		let alliedListedUnitTileDisplayThirdQuarter
+		let alliedListedUnitTileDisplayBottom
 		if (this.state.unitOptionsVisible) {
 			unitOptionSelectionTile =
 				<div className="unit-option-selection-tile">
@@ -3913,6 +4005,7 @@ class UnitEntriesFormContainer extends Component {
 				<div className="artefact-selection-tile">
 					<ArtefactSelectionTile
 						unitObject={this.state.unitBeingGivenArtefact}
+						artefacts={this.props.artefacts}
 						selectedArtefacts={this.state.selectedArtefacts}
 						selectArtefact={this.selectArtefact}
 						toggleArtefacts={this.toggleArtefacts}
@@ -3938,6 +4031,7 @@ class UnitEntriesFormContainer extends Component {
 			}
 			let i2
 			for (i = 0; i < units.length; i++) {
+				let listedUnits = this.state.listedUnits
 				let limitedHeroCount = 0
 				let limitedAndLockedFromJarvisCount = 0
 				let limitedDuplicateCount = 0
@@ -3946,23 +4040,23 @@ class UnitEntriesFormContainer extends Component {
 				let warEnginesOnList = []
 				let monstersOnList = []
 				let locked = false
-				for (i2 = 0; i2 < sortedListedUnits.length; i2++) {
-					if (sortedListedUnits[i2].unit.limited_n > 0 && sortedListedUnits[i2].unit.unit_type.includes('Hero')) {
+				for (i2 = 0; i2 < listedUnits.length; i2++) {
+					if (listedUnits[i2].unit.limited_n > 0 && listedUnits[i2].unit.unit_type.includes('Hero')) {
 						limitedHeroCount += 1
 					}
-					if (units[i].limited_n > 0 && units[i].unit_type.includes('Hero') && sortedListedUnits[i2].unit.name === 'Jarvis [1]') {
+					if (units[i].limited_n > 0 && units[i].unit_type.includes('Hero') && listedUnits[i2].unit.name === 'Jarvis [1]') {
 						limitedAndLockedFromJarvisCount += 1
 					}
-					if (units[i].limited_n > 0 && sortedListedUnits[i2].unit.id === units[i].id) {
+					if (units[i].limited_n > 0 && listedUnits[i2].unit.id === units[i].id) {
 						limitedDuplicateCount += 1
 					}
 					if (
-						(units[i].unit_type.includes('Hero') && sortedListedUnits[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'War Engine' && sortedListedUnits[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Monster' && sortedListedUnits[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Titan' && sortedListedUnits[i2].unit.id === units[i].id)
+						(units[i].unit_type.includes('Hero') && listedUnits[i2].unit.id === units[i].id) ||
+						(units[i].unit_type === 'War Engine' && listedUnits[i2].unit.id === units[i].id) ||
+						(units[i].unit_type === 'Monster' && listedUnits[i2].unit.id === units[i].id) ||
+						(units[i].unit_type === 'Titan' && listedUnits[i2].unit.id === units[i].id)
 					) {
-						maybeTooMany.push(sortedListedUnits[i2])
+						maybeTooMany.push(listedUnits[i2])
 					}
 				}
 				if (
@@ -4119,7 +4213,7 @@ class UnitEntriesFormContainer extends Component {
 				if (
 					units[i].name === 'Jarvis [1]' && (
 						limitedHeroCount > 0 || (
-							alliedListedUnits.length > 0 &&
+							this.state.alliedListedUnits.length > 0 &&
 							this.state.alliedArmy.alignment === 'Good'
 						)
 					)
@@ -4186,8 +4280,8 @@ class UnitEntriesFormContainer extends Component {
 						armies={this.props.armies}
 						selectedArmy={this.state.selectedArmy}
 						units={allUnits}
-						listedUnits={sortedListedUnits}
-						alliedListedUnits={alliedListedUnits}
+						listedUnits={this.state.listedUnits}
+						alliedListedUnits={this.state.alliedListedUnits}
 						addToList={this.addAlliedUnitToList}
 						alliedArmy={this.state.alliedArmy}
 						pointTotal={this.state.pointTotal}
@@ -4214,7 +4308,8 @@ class UnitEntriesFormContainer extends Component {
 					Points: <span className="bold">{totalPoints}</span><br />
 					Unit Strength: <span className="bold">{this.state.unitStrengthTotal}</span>
 				</div>
-			listedUnitTileDisplay = sortedListedUnits.map(unitObject => {
+
+			listedUnitTileDisplayTop = listedUnitsTop.map(unitObject => {
 				return (
 					<tr
 						key={unitObject.index}
@@ -4258,7 +4353,265 @@ class UnitEntriesFormContainer extends Component {
 				)
 			})
 
-			alliedListedUnitTileDisplay = alliedListedUnits.map(unitObject => {
+			listedUnitTileDisplaySecondQuarter = listedUnitsSecondQuarter.map(unitObject => {
+				return (
+					<tr
+						key={unitObject.index}
+						id={unitObject.index}
+						className="list-entry-including-icons"
+					>
+						<td valign="top">
+							<span className="list-icons">
+								<ArtefactIcon
+									key={unitObject.index + 20000}
+									id={unitObject.unit.id}
+									unitObject={unitObject}
+									listedUnitsThatCanHaveArtefacts={listedUnitsThatCanHaveArtefacts}
+									updateUnitBeingGivenArtefact={this.updateUnitBeingGivenArtefact}
+								/>
+								<UnitOptionIcon
+									key={unitObject.index}
+									id={unitObject.unit.id}
+									unitObject={unitObject}
+									listedUnitsThatCanHaveOptions={listedUnitsThatCanHaveOptions}
+									updateUnitBeingGivenOption={this.updateUnitBeingGivenOption}
+								/>
+							</span>
+						</td>
+						<td valign="top" className="user-select-none">
+							<span className="white-square"><img src={whiteSquare} width={"10"} height={"20"} /></span>
+						</td>
+						<td valign="top">
+							<UnitEntryNameTile
+								key={unitObject.index}
+								id={unitObject.index}
+								unitObject={unitObject}
+								selectedUnitOptions={this.state.selectedUnitOptions}
+								selectedArtefacts={this.state.selectedArtefacts}
+								removeUnitOption={this.removeUnitOption}
+								removeArtefact={this.removeArtefact}
+								removeFromList={this.removeFromList}
+							/>
+						</td>
+					</tr>		
+				)
+			})
+
+			listedUnitTileDisplayThirdQuarter = listedUnitsThirdQuarter.map(unitObject => {
+				return (
+					<tr
+						key={unitObject.index}
+						id={unitObject.index}
+						className="list-entry-including-icons"
+					>
+						<td valign="top">
+							<span className="list-icons">
+								<ArtefactIcon
+									key={unitObject.index + 20000}
+									id={unitObject.unit.id}
+									unitObject={unitObject}
+									listedUnitsThatCanHaveArtefacts={listedUnitsThatCanHaveArtefacts}
+									updateUnitBeingGivenArtefact={this.updateUnitBeingGivenArtefact}
+								/>
+								<UnitOptionIcon
+									key={unitObject.index}
+									id={unitObject.unit.id}
+									unitObject={unitObject}
+									listedUnitsThatCanHaveOptions={listedUnitsThatCanHaveOptions}
+									updateUnitBeingGivenOption={this.updateUnitBeingGivenOption}
+								/>
+							</span>
+						</td>
+						<td valign="top" className="user-select-none">
+							<span className="white-square"><img src={whiteSquare} width={"10"} height={"20"} /></span>
+						</td>
+						<td valign="top">
+							<UnitEntryNameTile
+								key={unitObject.index}
+								id={unitObject.index}
+								unitObject={unitObject}
+								selectedUnitOptions={this.state.selectedUnitOptions}
+								selectedArtefacts={this.state.selectedArtefacts}
+								removeUnitOption={this.removeUnitOption}
+								removeArtefact={this.removeArtefact}
+								removeFromList={this.removeFromList}
+							/>
+						</td>
+					</tr>		
+				)
+			})
+
+			listedUnitTileDisplayBottom = listedUnitsBottom.map(unitObject => {
+				return (
+					<tr
+						key={unitObject.index}
+						id={unitObject.index}
+						className="list-entry-including-icons"
+					>
+						<td valign="top">
+							<span className="list-icons">
+								<ArtefactIcon
+									key={unitObject.index + 20000}
+									id={unitObject.unit.id}
+									unitObject={unitObject}
+									listedUnitsThatCanHaveArtefacts={listedUnitsThatCanHaveArtefacts}
+									updateUnitBeingGivenArtefact={this.updateUnitBeingGivenArtefact}
+								/>
+								<UnitOptionIcon
+									key={unitObject.index}
+									id={unitObject.unit.id}
+									unitObject={unitObject}
+									listedUnitsThatCanHaveOptions={listedUnitsThatCanHaveOptions}
+									updateUnitBeingGivenOption={this.updateUnitBeingGivenOption}
+								/>
+							</span>
+						</td>
+						<td valign="top" className="user-select-none">
+							<span className="white-square"><img src={whiteSquare} width={"10"} height={"20"} /></span>
+						</td>
+						<td valign="top">
+							<UnitEntryNameTile
+								key={unitObject.index}
+								id={unitObject.index}
+								unitObject={unitObject}
+								selectedUnitOptions={this.state.selectedUnitOptions}
+								selectedArtefacts={this.state.selectedArtefacts}
+								removeUnitOption={this.removeUnitOption}
+								removeArtefact={this.removeArtefact}
+								removeFromList={this.removeFromList}
+							/>
+						</td>
+					</tr>		
+				)
+			})
+
+			alliedListedUnitTileDisplayTop = alliedListedUnitsTop.map(unitObject => {
+				return (
+					<tr
+						key={unitObject.index + 225000}
+						id={unitObject.index}
+						className="list-entry-including-icons"
+					>
+						<td valign="top">
+							<span className="list-icons">
+								<ArtefactIcon
+									key={unitObject.index + 300000}
+									id={unitObject.unit.id}
+									no={'no'}
+									listedUnitsThatCanHaveArtefacts={listedUnitsThatCanHaveArtefacts}
+									updateUnitBeingGivenArtefact={this.updateUnitBeingGivenArtefact}
+								/>
+								<UnitOptionIcon
+									key={unitObject.index + 250000}
+									id={unitObject.unit.id}
+									unitObject={unitObject}
+									listedUnitsThatCanHaveOptions={alliedListedUnitsThatCanHaveOptions}
+									updateUnitBeingGivenOption={this.updateAlliedUnitBeingGivenOption}
+								/>
+							</span>
+						</td>
+						<td valign="top" className="user-select-none">
+							<span className="white-square"><img src={whiteSquare} width={"10"} height={"20"} /></span>
+						</td>
+						<td valign="top">
+							<UnitEntryNameTile
+								key={unitObject.index + 275000}
+								id={unitObject.index}
+								unitObject={unitObject}
+								selectedUnitOptions={this.state.alliedSelectedUnitOptions}
+								removeUnitOption={this.removeAlliedUnitOption}
+								removeFromList={this.removeAlliedUnitFromList}
+							/>
+						</td>
+					</tr>
+				)				
+			})
+
+			alliedListedUnitTileDisplaySecondQuarter = alliedListedUnitsSecondQuarter.map(unitObject => {
+				return (
+					<tr
+						key={unitObject.index + 225000}
+						id={unitObject.index}
+						className="list-entry-including-icons"
+					>
+						<td valign="top">
+							<span className="list-icons">
+								<ArtefactIcon
+									key={unitObject.index + 300000}
+									id={unitObject.unit.id}
+									no={'no'}
+									listedUnitsThatCanHaveArtefacts={listedUnitsThatCanHaveArtefacts}
+									updateUnitBeingGivenArtefact={this.updateUnitBeingGivenArtefact}
+								/>
+								<UnitOptionIcon
+									key={unitObject.index + 250000}
+									id={unitObject.unit.id}
+									unitObject={unitObject}
+									listedUnitsThatCanHaveOptions={alliedListedUnitsThatCanHaveOptions}
+									updateUnitBeingGivenOption={this.updateAlliedUnitBeingGivenOption}
+								/>
+							</span>
+						</td>
+						<td valign="top" className="user-select-none">
+							<span className="white-square"><img src={whiteSquare} width={"10"} height={"20"} /></span>
+						</td>
+						<td valign="top">
+							<UnitEntryNameTile
+								key={unitObject.index + 275000}
+								id={unitObject.index}
+								unitObject={unitObject}
+								selectedUnitOptions={this.state.alliedSelectedUnitOptions}
+								removeUnitOption={this.removeAlliedUnitOption}
+								removeFromList={this.removeAlliedUnitFromList}
+							/>
+						</td>
+					</tr>
+				)				
+			})
+
+			alliedListedUnitTileDisplayThirdQuarter = alliedListedUnitsThirdQuarter.map(unitObject => {
+				return (
+					<tr
+						key={unitObject.index + 225000}
+						id={unitObject.index}
+						className="list-entry-including-icons"
+					>
+						<td valign="top">
+							<span className="list-icons">
+								<ArtefactIcon
+									key={unitObject.index + 300000}
+									id={unitObject.unit.id}
+									no={'no'}
+									listedUnitsThatCanHaveArtefacts={listedUnitsThatCanHaveArtefacts}
+									updateUnitBeingGivenArtefact={this.updateUnitBeingGivenArtefact}
+								/>
+								<UnitOptionIcon
+									key={unitObject.index + 250000}
+									id={unitObject.unit.id}
+									unitObject={unitObject}
+									listedUnitsThatCanHaveOptions={alliedListedUnitsThatCanHaveOptions}
+									updateUnitBeingGivenOption={this.updateAlliedUnitBeingGivenOption}
+								/>
+							</span>
+						</td>
+						<td valign="top" className="user-select-none">
+							<span className="white-square"><img src={whiteSquare} width={"10"} height={"20"} /></span>
+						</td>
+						<td valign="top">
+							<UnitEntryNameTile
+								key={unitObject.index + 275000}
+								id={unitObject.index}
+								unitObject={unitObject}
+								selectedUnitOptions={this.state.alliedSelectedUnitOptions}
+								removeUnitOption={this.removeAlliedUnitOption}
+								removeFromList={this.removeAlliedUnitFromList}
+							/>
+						</td>
+					</tr>
+				)				
+			})
+
+			alliedListedUnitTileDisplayBottom = alliedListedUnitsBottom.map(unitObject => {
 				return (
 					<tr
 						key={unitObject.index + 225000}
@@ -4335,7 +4688,10 @@ class UnitEntriesFormContainer extends Component {
 						{pointTotalDisplay}<br />
 						<table>
 							<tbody>
-								{listedUnitTileDisplay}
+								{listedUnitTileDisplayTop}
+								{listedUnitTileDisplaySecondQuarter}
+								{listedUnitTileDisplayThirdQuarter}
+								{listedUnitTileDisplayBottom}
 							</tbody>
 						</table><br />
 						<div className="allies-title-on-list">
@@ -4343,7 +4699,10 @@ class UnitEntriesFormContainer extends Component {
 						</div><br />
 						<table>
 							<tbody>
-								{alliedListedUnitTileDisplay}
+								{alliedListedUnitTileDisplayTop}
+								{alliedListedUnitTileDisplaySecondQuarter}
+								{alliedListedUnitTileDisplayThirdQuarter}
+								{alliedListedUnitTileDisplayBottom}
 							</tbody>
 						</table>
 						{viewListButtonDisplay}
@@ -4354,7 +4713,10 @@ class UnitEntriesFormContainer extends Component {
 						{pointTotalDisplay}<br />
 						<table>
 							<tbody>
-								{listedUnitTileDisplay}
+								{listedUnitTileDisplayTop}
+								{listedUnitTileDisplaySecondQuarter}
+								{listedUnitTileDisplayThirdQuarter}
+								{listedUnitTileDisplayBottom}
 							</tbody>
 						</table>
 						{viewListButtonDisplay}
@@ -4428,16 +4790,22 @@ class UnitEntriesFormContainer extends Component {
 				>
 					<FormattedList
 						selectedArmy={selectedArmy}
-						listedUnits={sortedListedUnits}
+						listedUnitsTop={listedUnitsTop}
+						listedUnitsSecondQuarter={listedUnitsSecondQuarter}
+						listedUnitsThirdQuarter={listedUnitsThirdQuarter}
+						listedUnitsBottom={listedUnitsBottom}
 						selectedUnitOptions={this.state.selectedUnitOptions}
 						selectedArtefacts={this.state.selectedArtefacts}
 						pointTotal={this.state.pointTotal}
 						unitStrengthTotal={this.state.unitStrengthTotal}
-						hideFormattedList={this.hideFormattedList}
 						alliedArmy={this.state.alliedArmy}
-						alliedListedUnits={this.state.alliedListedUnits}
+						alliedListedUnitsTop={alliedListedUnitsTop}
+						alliedListedUnitsSecondQuarter={alliedListedUnitsSecondQuarter}
+						alliedListedUnitsThirdQuarter={alliedListedUnitsThirdQuarter}
+						alliedListedUnitsBottom={alliedListedUnitsBottom}
 						alliedSelectedUnitOptions={this.state.alliedSelectedUnitOptions}
 						alliedPointTotal={this.state.alliedPointTotal}
+						hideFormattedList={this.hideFormattedList}
 					/>
 				</Modal>
 			</div>

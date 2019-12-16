@@ -29,7 +29,6 @@ class ArtefactSelectionTile extends Component {
 
 	render() {
 		let artefacts = this.state.artefacts
-		console.log(artefacts)	
 		let blessingOfTheGods
 		let blessingOfTheGodsHorde
 		let chantOfHate

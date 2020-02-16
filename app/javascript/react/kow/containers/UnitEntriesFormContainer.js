@@ -133,6 +133,28 @@ class UnitEntriesFormContainer extends Component {
 		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
 			unitStrengthTotal += this.state.alliedListedUnits[i].unit.unit_strength
 		}
+		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
+			if (
+				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+			) {
+				unitStrengthTotal += 1
+			}
+		}
+		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
+			if (
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+			) {
+				unitStrengthTotal += 1
+			}
+		}
 		this.setState({ unitStrengthTotal: unitStrengthTotal })
 	}
 
@@ -2540,10 +2562,41 @@ class UnitEntriesFormContainer extends Component {
 			return alliedGreyedOutUnits
 		}
 
+		let unitStrengthTotal = 0
+		for (i = 0; i < this.state.listedUnits.length; i++) {
+			unitStrengthTotal += this.state.listedUnits[i].unit.unit_strength
+		}
+		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
+			unitStrengthTotal += this.state.alliedListedUnits[i].unit.unit_strength
+		}
+		for (i = 0; i < selectedUnitOptions.length; i++) {
+			if (
+				selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+				selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+				selectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+				selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+				selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+			) {
+				unitStrengthTotal += 1
+			}
+		}
+		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
+			if (
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+			) {
+				unitStrengthTotal += 1
+			}
+		}
+
 		this.setState({
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
 			pointTotal: pointTotal,
+			unitStrengthTotal: unitStrengthTotal,
 			unitBeingGivenOption: '',
 			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
 		})
@@ -2784,9 +2837,40 @@ class UnitEntriesFormContainer extends Component {
 			return alliedGreyedOutUnits
 		}
 
+		let unitStrengthTotal = 0
+		for (i = 0; i < this.state.listedUnits.length; i++) {
+			unitStrengthTotal += this.state.listedUnits[i].unit.unit_strength
+		}
+		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
+			unitStrengthTotal += this.state.alliedListedUnits[i].unit.unit_strength
+		}
+		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
+			if (
+				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+			) {
+				unitStrengthTotal += 1
+			}
+		}
+		for (i = 0; i < alliedSelectedUnitOptions.length; i++) {
+			if (
+				alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+				alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+				alliedSelectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+				alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+				alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+			) {
+				unitStrengthTotal += 1
+			}
+		}
+
 		this.setState({
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
 			alliedPointTotal: alliedPointTotal,
+			unitStrengthTotal: unitStrengthTotal,
 			alliedUnitBeingGivenOption: '',
 			alliedGreyedOutUnits: (determineIfGreyedOut(this.state.alliedListedUnits))
 		})
@@ -3311,9 +3395,40 @@ class UnitEntriesFormContainer extends Component {
 			pointTotal += unitOptionObject.unitOption.points
 		}
 
+		let unitStrengthTotal = 0
+		for (i = 0; i < this.state.listedUnits.length; i++) {
+			unitStrengthTotal += this.state.listedUnits[i].unit.unit_strength
+		}
+		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
+			unitStrengthTotal += this.state.alliedListedUnits[i].unit.unit_strength
+		}
+		for (i = 0; i < selectedUnitOptions.length; i++) {
+			if (
+				selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+				selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+				selectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+				selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+				selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+			) {
+				unitStrengthTotal += 1
+			}
+		}
+		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
+			if (
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+			) {
+				unitStrengthTotal += 1
+			}
+		}
+
 		this.setState({
 			selectedUnitOptions: selectedUnitOptions,
 			pointTotal: pointTotal,
+			unitStrengthTotal: unitStrengthTotal,
 			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
 		})
 	}
@@ -3532,9 +3647,40 @@ class UnitEntriesFormContainer extends Component {
 			return alliedGreyedOutUnits
 		}
 
+		let unitStrengthTotal = 0
+		for (i = 0; i < this.state.listedUnits.length; i++) {
+			unitStrengthTotal += this.state.listedUnits[i].unit.unit_strength
+		}
+		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
+			unitStrengthTotal += this.state.alliedListedUnits[i].unit.unit_strength
+		}
+		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
+			if (
+				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+			) {
+				unitStrengthTotal += 1
+			}
+		}
+		for (i = 0; i < alliedSelectedUnitOptions.length; i++) {
+			if (
+				alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+				alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+				alliedSelectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+				alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+				alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+			) {
+				unitStrengthTotal += 1
+			}
+		}
+
 		this.setState({
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
 			alliedPointTotal: alliedPointTotal,
+			unitStrengthTotal: unitStrengthTotal,
 			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
 		})
 	}

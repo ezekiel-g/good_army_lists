@@ -479,6 +479,56 @@ class AlliesButtons extends Component {
 			}
 		}
 
+		if (this.props.selectedArmy.label === 'Order of the Brothermark') {
+			for (i3 = 0; i3 < allyChoices.length; i3++) {
+				if (allyChoices[i3].name === 'Basileans') {
+					allyChoices.splice(allyChoices.indexOf(allyChoices[i3]), 1)
+				}
+			}
+		}
+		if (this.props.selectedArmy.label === 'Order of the Green Lady') {
+			for (i3 = 0; i3 < allyChoices.length; i3++) {
+				if (allyChoices[i3].name === 'Forces of Nature') {
+					allyChoices.splice(allyChoices.indexOf(allyChoices[i3]), 1)
+				}
+			}
+		}
+		if (this.props.selectedArmy.label === 'Free Dwarfs') {
+			for (i3 = 0; i3 < allyChoices.length; i3++) {
+				if (allyChoices[i3].name === 'Dwarfs') {
+					allyChoices.splice(allyChoices.indexOf(allyChoices[i3]), 1)
+				}
+			}
+		}
+		if (this.props.selectedArmy.label === 'Sylvan Kin') {
+			for (i3 = 0; i3 < allyChoices.length; i3++) {
+				if (allyChoices[i3].name === 'Elves') {
+					allyChoices.splice(allyChoices.indexOf(allyChoices[i3]), 1)
+				}
+			}
+		}
+		if (this.props.selectedArmy.label === 'The Herd') {
+			for (i3 = 0; i3 < allyChoices.length; i3++) {
+				if (allyChoices[i3].name === 'Forces of Nature') {
+					allyChoices.splice(allyChoices.indexOf(allyChoices[i3]), 1)
+				}
+			}
+		}
+		if (this.props.selectedArmy.label === 'League of Rhordia') {
+			for (i3 = 0; i3 < allyChoices.length; i3++) {
+				if (allyChoices[i3].name === 'Kingdoms of Men') {
+					allyChoices.splice(allyChoices.indexOf(allyChoices[i3]), 1)
+				}
+			}
+		}
+		if (this.props.selectedArmy.label === 'Ratkin Slaves') {
+			for (i3 = 0; i3 < allyChoices.length; i3++) {
+				if (allyChoices[i3].name === 'Abyssal Dwarfs') {
+					allyChoices.splice(allyChoices.indexOf(allyChoices[i3]), 1)
+				}
+			}
+		}
+
 		let display
 		let titleDisplay
 		let topDisplay

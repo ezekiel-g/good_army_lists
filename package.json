@@ -1,7 +1,7 @@
 {
   "name": "good_army_lists",
   "engines": {
-    "node": "10.16.3",
+    "node": "10.17.0",
     "yarn": "1.17.3"
   },
   "private": true,

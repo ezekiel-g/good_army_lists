@@ -4,7 +4,6 @@
 
 body {
 	font-family: "Helvetica", sans-serif;
-	font-size: 110%;
 	background-color: #F3F3F3;
 }
 
@@ -18,22 +17,51 @@ li { list-style-type: none }
 button {
 	cursor: pointer;
 	user-select: none;
+	border: 1px solid #000000;
+	padding: 9.3px;
 }
 
 ::-webkit-scrollbar {
 	width: 0px;
 }
 
-input {
-	width: 280px;
-}
-
 table {
 	table-layout: fixed;
 }
 
+hr {
+	width: 100%;
+	user-select: none;
+}
+
+.button-group {
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .user-select-none {
 	user-select: none;
+}
+
+.scroll-lock {
+	margin: 0;
+	height: 100%;
+	overflow: hidden;
+	user-select: none;
+}
+
+.main-page-link {
+	text-align: center;
+	font-size: 73%;
+}
+
+.main-page-link-label {
+	cursor: pointer;
+}
+
+.main-page-link-label:hover {
+	background-color: #D3D3D3;	
 }
 
 .army-dropdown-section {
@@ -57,7 +85,7 @@ table {
 
 .copyright-notice {
 	text-align: center;
-	font-size: 60%;
+	font-size: 73%;
 	margin: -9px 0px 0.5px 0px;
 	user-select: none;
 }
@@ -75,14 +103,26 @@ table {
 }
 
 .pastel-red {
-	color: #EE6969;
+	color: #FF5349;
+}
+
+.greyed-out {
+	opacity: 50%;
+	padding: 2px 0px 2px 0px;
+	cursor: pointer;
+}
+
+.greyed-out-unit-option {
+	opacity: 50%;
+	padding: 3px;
+	cursor: pointer;	
 }
 
 .sections-container {
-	margin: 20px 20px 40px 20px;
+	margin: 20px 20px 20px 20px;
 }
 
-.check-box { margin: 5px 0px 5px 170px; }
+.check-box { text-align: right; }
 
 .admin-display-box {
 	margin-top: 20px;
@@ -94,14 +134,16 @@ table {
 
 .navigation-box {
 	display: inline-flex;
+	background-color: #FFFFFF;
 }
 
 .admin-link, .static-link {
 	border: 1px solid #000000;
 	padding: 10px;
-	width: 149.4px;
 	cursor: pointer;
 	user-select: none;
+	white-space: nowrap;
+	width: fit-content;
 }
 
 .selected-link {
@@ -115,6 +157,7 @@ table {
 	display: inline-block;
 	text-indent: -37px;
 	padding-left: 50px;
+	background-color: #FFFFFF;
 }
 
 .error-div {
@@ -137,8 +180,7 @@ table {
 
 .dropdown {
 	cursor: pointer;
-	width: 118.5px;
-	width: 286px;
+	width: 400px;
 }
 
 .react-select {
@@ -166,12 +208,12 @@ table {
 .clear-or-cancel-label {
 	cursor: pointer;
 	padding: 9.3px;
-	margin: 0px 1px 0px 1px;
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
 }
 
 .clear-or-cancel-label:hover {
-	border: 1px solid #000000;
-	background-color: #FFFFFF;
+
 }
 
 .unit-entry-button-title-bar {
@@ -179,6 +221,7 @@ table {
 	background-color: #A41F26;
 	color: #FFFFFF;
 	border: 1px solid #000000;
+	margin-bottom: 7px;
 }
 
 .unit-entry-button-title {
@@ -204,16 +247,78 @@ table {
 }
 
 .unit-entry-button {
-
+	text-align: left;
 }
 
 .unit-entry-button-label {
-	padding: 1px 0px 1px 0px;
+	padding: 2px 0px 2px 0px;
 }
 
 .unit-entry-button-label:hover {
 	cursor: pointer;
 	background-color: #D3D3D3;
+}
+
+.allies-button-div {
+	user-select: none;
+	text-align: center;
+	margin: 0px 0px 14px 0px;
+}
+
+.allies-button {
+	cursor: pointer;
+	text-align: center;
+	padding: 9.3px;
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
+}
+
+.allies-buttons {
+	user-select: none;
+}
+
+.allied-army-choices {
+	text-align: center;
+	line-height: 150%;
+}
+
+.allied-army-choice {
+	padding: 3px;
+	cursor: pointer;
+}
+
+.allied-army-choice:hover {
+	background-color: #D3D3D3;
+}
+
+.allies-title {
+	color: #A41F26;
+	font-weight: bolder;
+	text-align: center;
+}
+
+.allies-title-on-list {
+	text-align: center;
+}
+
+/*@media screen and (max-width: 639px) {
+	.allies-title-on-list {
+		margin-left: 45px;
+	}
+}*/
+
+.change-allied-army-button-div {
+	user-select: none;
+	text-align: center;
+	margin: 0px 0px 14px 0px;
+}
+
+.change-allied-army-button {
+	cursor: pointer;
+	text-align: center;
+	padding: 9.3px;
+	border: 1px solid #000000;
+	background-color: #FFFFFF;	
 }
 
 .list-output-side {
@@ -225,6 +330,41 @@ table {
 	float: right;
 	overflow: hidden;
 	height: fit-content;
+	user-select: none;
+	margin-bottom: 2.5px;
+}
+
+/*.list-output-side-blank {
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
+	padding: 5px 5px 20px 5px;
+	width: 49.5%;
+	border-radius: 6px;
+	float: right;
+	overflow: hidden;
+	height: 143px;
+	user-select: none;
+	margin-bottom: 2.5px;
+}
+
+@media screen and (max-width: 639px) {
+	.list-output-side-blank {
+		border: 1px solid #000000;
+		background-color: #FFFFFF;
+		padding: 5px 5px 20px 5px;
+		width: 49.5%;
+		border-radius: 6px;
+		float: right;
+		overflow: hidden;
+		height: 140px;
+		user-select: none;
+		margin-bottom: 2.5px;
+	}
+}*/
+
+.instruction {
+	text-align: center;
+	opacity: 50%;
 }
 
 .list-title-bar {
@@ -232,6 +372,7 @@ table {
 	background-color: #A41F26;
 	color: #FFFFFF;
 	border: 1px solid #000000;
+	margin-bottom: 2px;
 }
 
 .list-title {
@@ -241,7 +382,6 @@ table {
 
 .point-total {
 	text-align: center;
-	margin: 20px 0px 7px 0px;
 	overflow-wrap: all;
 }
 
@@ -256,8 +396,6 @@ table {
 
 .cog {
 	cursor: pointer;
-
-
 }
 
 .cog:hover {
@@ -305,6 +443,22 @@ table {
 	user-select: none;
 }
 
+.white-square-formatted {
+	visibility: hidden;
+	width: 10px;
+	height: 12px;
+	display: inline-block;
+	user-select: none;	
+}
+
+.white-square-formatted-2 {
+	visibility: hidden;
+	width: 12px;
+	height: 12px;
+	display: inline-block;
+	user-select: none;	
+}
+
 .list-entry {
 
 }
@@ -326,16 +480,17 @@ table {
 }
 
 .unit-option-selection-tile {
-	margin: 30px 0px 30px 0px;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 	user-select: none;
 	background-color: #FFFFFF;
-	border: 1px solid #000000;
-	border-radius: 6px;
-	padding: 10px 10px 20px 10px;
-	width: fit-content;
+	padding-bottom: 13px;
+}
+
+.unit-option-selections {
+	text-align: left;
+	line-height: 120%;
 }
 
 .unit-option-title {
@@ -344,31 +499,37 @@ table {
 }
 
 .artefact-selection-tile {
-	margin: 30px 0px 30px 0px;
-	padding: 10px;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 	user-select: none;
+	line-height: 120%;
 	background-color: #FFFFFF;
-	border: 1px solid #000000;
-	border-radius: 6px;
-	padding: 10px 10px 20px 10px;
-	width: fit-content;
+}
+
+.artefact-selections {
+	text-align: left;
+	line-height: 120%;
+	margin-top: 15px;
+}
+
+.artefact-table {
+
 }
 
 .artefact-title {
 	color: #A41F26;
 	font-weight: bolder;
+	margin-bottom: 15px;
 }
 
 .unit-option-selection-label {
 	cursor: pointer;
-	padding: 3px;
+	padding: 2px 0px 2px 0px;
 }
 
 .unit-option-selection-label:hover {
-	background-color: #D3D3D3;
+
 }
 
 .unit-option-selection-label:active {
@@ -377,7 +538,7 @@ table {
 
 .artefact-selection-label {
 	cursor: pointer;
-	padding: 3px;
+	padding: 2px 0px 2px 0px;
 }
 
 .artefact-selection-label:hover {
@@ -396,11 +557,101 @@ table {
 
 }
 
+.view-list-button-div {
+	user-select: none;
+	text-align: center;
+	margin: 0px 0px 14px 0px;
+}
+
+.view-list-button {
+	cursor: pointer;
+	text-align: center;
+	padding: 9.3px;
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
+}
+
+.view-list-button:hover {
+
+}
+
+.formatted-list-modal {
+	height: 80%;
+	width: 95%;
+	background-color: #FFFFFF;
+    overflow-y: auto;
+    position: absolute;
+    top: 43%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+}
+
+.formatted-list-box {
+	padding: 20px;
+}
+
+.formatted-list-header {
+	line-height: 107%;
+}
+
+.formatted-list-buttons {
+	text-align: center;
+}
+
+.formatted-list-button {
+	user-select: none;
+	cursor: pointer;
+	padding: 9.3px;
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
+}
+
+.formatted-list-button:hover {
+
+}
+
+.formatted-list-entry {
+	line-height: 107%;
+}
+
+@media screen {
+  	#printSection {
+      	display: none;
+  	}
+}
+
+@media print {
+	body * {
+		visibility: hidden;
+	}
+	.army-dropdown-section,
+	.clear-list-div, .unit-entry-buttons,
+	.email-div,
+	.list-output-side,
+	.formatted-list-buttons
+	{
+		display: none;
+	}
+	#printSection, #printSection * {
+		visibility: visible;
+	}
+	#printSection {
+		margin: 9mm;
+	}
+}
+
+.email-div {
+	text-align: center;
+	font-size: 73%;
+}
+
+.paypal-form {
+	margin-top: 6px;
+}
+
 .army-tile { margin: 5px 0px 5px 0px; }
 
 .unit-tile, .tile { margin: 5px 0px 5px 0px; }
-
-.button-group { margin-top: 10px; }
 
 .army-name-field { margin: 5px 0px 5px 28.5px; }
 
@@ -436,6 +687,8 @@ table {
 
 .unit-army-dropdown { margin: 5px 0px 5px 63px; }
 
+.unit-is-irregular-checkbox { margin: 5px 0px 5px 38px; }
+
 .artefact-name-field { margin: 5px 0px 5px 57px; }
 
 .artefact-name-dropdown { margin: 5px 0px 5px 45px; }
@@ -452,9 +705,9 @@ table {
 
 .unit-option-display-name-field { margin: 5px 0px 5px 0px; }
 
-.unit-option-is-spell-checkbox { margin: 5px 0px 5px 0px; }
+.unit-option-is-spell-checkbox { margin: 5px 0px 5px 59px; }
 
-.unit-option-is-unique-spell-checkbox { margin: 5px 0px 5px 0px; }
+.unit-option-is-unique-checkbox { margin: 5px 0px 5px 43px; }
 
 .unit-option-points-field { margin: 5px 0px 5px 55px; }
 

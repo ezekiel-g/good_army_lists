@@ -49,24 +49,26 @@ const UnitEntryNameTile = props => {
 		})
 	}
 
-	let allSelectedArtefacts = props.selectedArtefacts
-	let selectedArtefactArray = []
-	for (i = 0; i < allSelectedArtefacts.length; i++) {
-		if (allSelectedArtefacts[i].index === props.unitObject.index) {
-			selectedArtefactArray.push(allSelectedArtefacts[i])
-		}
-	}
 	let artefactText
-	if (selectedArtefactArray.length > 0) {
-		artefactText =
-			<span>
-				<span
-					onClick={() => props.removeArtefact(selectedArtefactArray[0])}
-					className="unit-option-entry-label"
-				>
-					{' -- '}{selectedArtefactArray[selectedArtefactArray.length - 1].artefact.display_name}
+	if (props.selectedArtefacts) {
+		let allSelectedArtefacts = props.selectedArtefacts
+		let selectedArtefactArray = []
+		for (i = 0; i < allSelectedArtefacts.length; i++) {
+			if (allSelectedArtefacts[i].index === props.unitObject.index) {
+				selectedArtefactArray.push(allSelectedArtefacts[i])
+			}
+		}
+		if (selectedArtefactArray.length > 0) {
+			artefactText =
+				<span>
+					<span
+						onClick={() => props.removeArtefact(selectedArtefactArray[0])}
+						className="unit-option-entry-label"
+					>
+						{' -- '}{selectedArtefactArray[selectedArtefactArray.length - 1].artefact.display_name}
+					</span><br />
 				</span>
-			</span>
+		}
 	}
 
 	return (
@@ -79,9 +81,9 @@ const UnitEntryNameTile = props => {
 			>
 				{props.unitObject.unit.display_name}
 			</span><br />
+				{artefactText}
 				{nonSpellText}
 				{spellText}
-				{artefactText}
 		</span>
 	)
 }

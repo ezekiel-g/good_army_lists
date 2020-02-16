@@ -1,6 +1,6 @@
 import React from 'react'
-import cog from '../../../assets/images/cog.ico'
-import whiteSquare from '../../../assets/images/whiteSquare.png'
+import cog from '../../../../assets/images/cog.ico'
+import whiteSquare from '../../../../assets/images/whiteSquare.png'
 
 const UnitOptionIcon = props => {
 	let display

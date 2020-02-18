@@ -122,6 +122,9 @@ class AlliesButtons extends Component {
 		if (army.name === 'Crap') {
 			selectedAlliedArmySingularName = 'Crap'
 		}
+		if (army.name === 'The Capgun Crew') {
+			selectedAlliedArmySingularName = 'Capgun Crew'
+		}
 
 		for (i = 0; i < units.length; i++) {
 			let limitedUnits = []
@@ -380,7 +383,8 @@ class AlliesButtons extends Component {
 				this.props.selectedArmy.label === 'Free Dwarfs' ||
 				this.props.selectedArmy.label === 'Order of the Brothermark' ||
 				this.props.selectedArmy.label === 'Salamanders' ||
-				this.props.selectedArmy.label === 'Crap'
+				this.props.selectedArmy.label === 'Crap' ||
+				this.props.selectedArmy.label === 'The Capgun Crew'
 			) {
 				mainArmyAlignment = 'Good'
 			}
@@ -497,7 +501,7 @@ class AlliesButtons extends Component {
 				}
 			}
 		}
-		if (this.props.selectedArmy.label === 'Free Dwarfs') {
+		if (this.props.selectedArmy.label === 'Free Dwarfs' || this.props.selectedArmy.label === 'The Capgun Crew') {
 			for (i3 = 0; i3 < allyChoices.length; i3++) {
 				if (allyChoices[i3].name === 'Dwarfs' || allyChoices[i3].name === 'Crap') {
 					allyChoices.splice(allyChoices.indexOf(allyChoices[i3]), 1)

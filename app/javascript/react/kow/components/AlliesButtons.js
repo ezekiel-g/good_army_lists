@@ -125,6 +125,9 @@ class AlliesButtons extends Component {
 		if (army.name === 'The Capgun Crew') {
 			selectedAlliedArmySingularName = 'Capgun Crew'
 		}
+		if (army.name === 'League of Good') {
+			selectedAlliedArmySingularName = 'League of Good'
+		}
 
 		for (i = 0; i < units.length; i++) {
 			let limitedUnits = []
@@ -396,7 +399,8 @@ class AlliesButtons extends Component {
 				this.props.selectedArmy.label === 'Kingdoms of Men' ||
 				this.props.selectedArmy.label === 'League of Rhordia' ||
 				this.props.selectedArmy.label === 'Order of the Green Lady' ||
-				this.props.selectedArmy.label === 'Sylvan Kin'
+				this.props.selectedArmy.label === 'Sylvan Kin' ||
+				this.props.selectedArmy.label === 'League of Good'
 			) {
 				mainArmyAlignment = 'Neutral'
 			}
@@ -524,7 +528,7 @@ class AlliesButtons extends Component {
 		}
 		if (this.props.selectedArmy.label === 'League of Rhordia') {
 			for (i3 = 0; i3 < allyChoices.length; i3++) {
-				if (allyChoices[i3].name === 'Kingdoms of Men') {
+				if (allyChoices[i3].name === 'Kingdoms of Men' || allyChoices[i3].name === 'League of Good') {
 					allyChoices.splice(allyChoices.indexOf(allyChoices[i3]), 1)
 				}
 			}

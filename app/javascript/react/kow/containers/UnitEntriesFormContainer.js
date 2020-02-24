@@ -39,8 +39,8 @@ class UnitEntriesFormContainer extends Component {
 			warEngineCount: 0,
 			monsterCount: 0,
 			titanCount: 0,
-			infantryHordeCount: 0,
-			largeInfantryHordeCount: 0,
+			hordeCount: 0,
+			largeInfantryCount: 0,
 			tooMany: 3,
 			alliedArmy: '',
 			alliedArmySingularName: '',
@@ -48,6 +48,7 @@ class UnitEntriesFormContainer extends Component {
 			alliedSelectedUnitOptions: [],
 			alliedUnitBeingGivenOption: '',
 			alliedPointTotal: 0,
+			alliedUnitStrengthTotal: 0,
 			alliedTroopUnlocks: 0,
 			alliedHeroUnlocks: 0,
 			alliedWarEngineUnlocks: 0,
@@ -58,16 +59,14 @@ class UnitEntriesFormContainer extends Component {
 			alliedWarEngineCount: 0,
 			alliedMonsterCount: 0,
 			alliedTitanCount: 0,
-			alliedInfantryHordeCount: 0,
-			alliedLargeInfantryHordeCount: 0,
+			alliedHordeCount: 0,
+			alliedLargeInfantryCount: 0,
 			alliedGreyedOutUnits: []
 		}
 		this.updateSelectedArmy = this.updateSelectedArmy.bind(this)
 		this.calculatePointTotal = this.calculatePointTotal.bind(this)
-		this.calculateAlliedPointTotal = this.calculateAlliedPointTotal.bind(this)
 		this.calculateUnitStrengthTotal = this.calculateUnitStrengthTotal.bind(this)
-		this.calculateMostOfTheFour = this.calculateMostOfTheFour.bind(this)
-		this.calculateAlliedMostOfTheFour = this.calculateAlliedMostOfTheFour.bind(this)
+		this.calculateUnitTypeCounts = this.calculateUnitTypeCounts.bind(this)
 		this.calculateTooMany = this.calculateTooMany.bind(this)
 		this.calculateUnlocks = this.calculateUnlocks.bind(this)
 		this.calculateAlliedUnlocks = this.calculateAlliedUnlocks.bind(this)
@@ -97,65 +96,120 @@ class UnitEntriesFormContainer extends Component {
 		this.clearList()
 	}
 
-	calculatePointTotal() {
+	calculatePointTotal(listedUnitArray, unitOptionArray, artefactArray) {
+		let is_ally = false
 		let pointTotal = 0
 		let i
-		for (i = 0; i < this.state.listedUnits.length; i++) {
-			pointTotal += this.state.listedUnits[i].unit.points
+		if (listedUnitArray.length > 0 && listedUnitArray != undefined) {
+			if (listedUnitArray[0].unit.army_id !== this.state.selectedArmy.value) {
+				is_ally = true
+			}
+			for (i = 0; i < listedUnitArray.length; i++) {
+				pointTotal += listedUnitArray[i].unit.points
+			}
 		}
-		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
-			pointTotal += this.state.selectedUnitOptions[i].unitOption.points
+		if (unitOptionArray == undefined) {
+			if (is_ally === false) {
+				unitOptionArray = this.state.selectedUnitOptions
+			}
+			if (is_ally === true) {
+				unitOptionArray = this.state.alliedSelectedUnitOptions
+			}		
 		}
-		for (i = 0; i < this.state.selectedArtefacts.length; i++) {
-			pointTotal += this.state.selectedArtefacts[i].artefact.points
+		for (i = 0; i < unitOptionArray.length; i++) {
+			pointTotal += unitOptionArray[i].unitOption.points
 		}
-		this.setState({ pointTotal: pointTotal })
+		if (artefactArray != undefined) {
+			for (i = 0; i < artefactArray.length; i++) {
+				pointTotal += artefactArray[i].artefact.points
+			}
+		}
+		return pointTotal
 	}
 
-	calculateAlliedPointTotal() {
-		let alliedPointTotal = 0
-		let i
-		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
-			alliedPointTotal += this.state.alliedListedUnits[i].unit.points
-		}
-		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
-			alliedPointTotal += this.state.alliedSelectedUnitOptions[i].unitOption.points
-		}
-		this.setState({ alliedPointTotal: alliedPointTotal })
-	}
-
-	calculateUnitStrengthTotal() {
+	calculateUnitStrengthTotal(listedUnitArray, unitOptionArray) {
+		let is_ally = false
 		let unitStrengthTotal = 0
 		let i
-		for (i = 0; i < this.state.listedUnits.length; i++) {
-			unitStrengthTotal += this.state.listedUnits[i].unit.unit_strength
+		if (listedUnitArray.length > 0 && listedUnitArray != undefined) {
+			if (listedUnitArray[0].unit.army_id !== this.state.selectedArmy.value) {
+				is_ally = true
+			}
+			for (i = 0; i < listedUnitArray.length; i++) {
+				unitStrengthTotal += listedUnitArray[i].unit.unit_strength
+			}
 		}
-		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
-			unitStrengthTotal += this.state.alliedListedUnits[i].unit.unit_strength
+		if (unitOptionArray == undefined) {
+			if (is_ally === false) {
+				unitOptionArray = this.state.selectedUnitOptions
+			}
+			if (is_ally === true) {
+				unitOptionArray = this.state.alliedSelectedUnitOptions
+			}
 		}
-		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
+		for (i = 0; i < unitOptionArray.length; i++) {
 			if (
-				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+				unitOptionArray[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+				unitOptionArray[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+				unitOptionArray[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+				unitOptionArray[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+				unitOptionArray[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
 			) {
 				unitStrengthTotal += 1
 			}
 		}
-		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
-			if (
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
-			) {
-				unitStrengthTotal += 1
+		return unitStrengthTotal
+	}
+
+	calculateUnitTypeCounts(listedUnitArray) {
+		let unitTypeCountObject = {
+			troopCount: 0,
+			heroCount: 0,
+			warEngineCount: 0,
+			monsterCount: 0,
+			titanCount: 0,
+			monsterAndTitanCount: 0,
+			hordeCount: 0,
+			largeInfantryCount: 0,
+			regimentCount: 0
+		}
+		let i
+		if (listedUnitArray != undefined) {
+			for (i = 0; i < listedUnitArray.length; i++) {
+				if (
+					listedUnitArray[i].unit.unit_size === 'Troop' ||
+					listedUnitArray[i].unit.is_irregular === true
+				) {
+					unitTypeCountObject.troopCount += 1
+				}
+				if (listedUnitArray[i].unit.unit_type.includes('Hero')) {
+					unitTypeCountObject.heroCount += 1
+				}
+				if (listedUnitArray[i].unit.unit_type === 'War Engine') {
+					unitTypeCountObject.warEngineCount += 1
+				}	
+				if (listedUnitArray[i].unit.unit_type === 'Monster') {
+					unitTypeCountObject.monsterCount += 1
+					unitTypeCountObject.monsterAndTitanCount += 1
+				}
+				if (listedUnitArray[i].unit.unit_type === 'Titan') {
+					unitTypeCountObject.titanCount += 1
+					unitTypeCountObject.monsterAndTitanCount += 1
+				}
+				if (listedUnitArray[i].unit.is_irregular === false) {
+					if (listedUnitArray[i].unit.unlocking_class === 3) {
+						unitTypeCountObject.hordeCount += 1
+					}
+					if (listedUnitArray[i].unit.unlocking_class === 2) {
+						unitTypeCountObject.largeInfantryCount += 1
+					}
+					if (listedUnitArray[i].unit.unlocking_class === 1) {
+						unitTypeCountObject.regimentCount += 1
+					}
+				}
 			}
 		}
-		this.setState({ unitStrengthTotal: unitStrengthTotal })
+		return unitTypeCountObject
 	}
 
 	calculateUnlocks(unit) {
@@ -257,7 +311,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.heroCount <= this.state.monsterCount &&
 							this.state.heroCount <= this.state.titanCount
 						) || (
-							this.state.heroCount < this.state.largeInfantryHordeCount
+							this.state.heroCount < this.state.largeInfantryCount
 						)
 					)
 				) {
@@ -280,7 +334,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.warEngineCount <= this.state.monsterCount &&
 							this.state.warEngineCount <= this.state.titanCount
 						) || (
-							this.state.warEngineCount < this.state.largeInfantryHordeCount
+							this.state.warEngineCount < this.state.largeInfantryCount
 						)
 					)
 				) {
@@ -303,7 +357,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.monsterCount <= this.state.warEngineCount &&
 							this.state.monsterCount <= this.state.titanCount
 						) || (
-							this.state.monsterCount < this.state.largeInfantryHordeCount
+							this.state.monsterCount < this.state.largeInfantryCount
 						)
 					)
 				) {
@@ -326,7 +380,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.titanCount <= this.state.warEngineCount &&
 							this.state.titanCount <= this.state.monsterCount
 						) || (
-							this.state.titanCount < this.state.largeInfantryHordeCount
+							this.state.titanCount < this.state.largeInfantryCount
 						)
 					)
 				) {
@@ -346,10 +400,10 @@ class UnitEntriesFormContainer extends Component {
 			warEngineUnlocks: warEngineUnlocks,
 			monsterUnlocks: monsterUnlocks,
 			unlocksFromRegiments: unlocksFromRegiments,
-			unlocksFromLargeInfantry: unlocksFromLargeInfantry
+			unlocksFromLargeInfantry: unlocksFromLargeInfantry,
+			pointTotal: this.calculatePointTotal(listedUnits),
+			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits)
 		})
-		this.calculatePointTotal()
-		this.calculateUnitStrengthTotal()
 	}
 
 	calculateAlliedUnlocks(unit, alliedArmy) {
@@ -451,7 +505,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.alliedHeroCount <= this.state.alliedMonsterCount &&
 							this.state.alliedHeroCount <= this.state.alliedTitanCount
 						) || (
-							this.state.alliedHeroCount < this.state.alliedLargeInfantryHordeCount
+							this.state.alliedHeroCount < this.state.alliedLargeInfantryCount
 						)
 					)
 				) {
@@ -474,7 +528,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.alliedWarEngineCount <= this.state.alliedMonsterCount &&
 							this.state.alliedWarEngineCount <= this.state.alliedTitanCount
 						) || (
-							this.state.alliedWarEngineCount < this.state.alliedLargeInfantryHordeCount
+							this.state.alliedWarEngineCount < this.state.alliedLargeInfantryCount
 						)
 					)
 				) {
@@ -497,7 +551,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.alliedMonsterCount <= this.state.alliedWarEngineCount &&
 							this.state.alliedMonsterCount <= this.state.alliedTitanCount
 						) || (
-							this.state.alliedMonsterCount < this.state.alliedLargeInfantryHordeCount
+							this.state.alliedMonsterCount < this.state.alliedLargeInfantryCount
 						)
 					)
 				) {
@@ -520,7 +574,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.alliedTitanCount <= this.state.alliedWarEngineCount &&
 							this.state.alliedTitanCount <= this.state.alliedMonsterCount
 						) || (
-							this.state.alliedTitanCount < this.state.alliedLargeInfantryHordeCount
+							this.state.alliedTitanCount < this.state.alliedLargeInfantryCount
 						)
 					)
 				) {
@@ -546,8 +600,8 @@ class UnitEntriesFormContainer extends Component {
 		let alliedWarEngineCount = 0
 		let alliedMonsterCount = 0
 		let alliedTitanCount = 0
-		let alliedInfantryHordeCount = 0
-		let alliedLargeInfantryHordeCount = 0
+		let alliedHordeCount = 0
+		let alliedLargeInfantryCount = 0
 		let i2
 
 		let getUnitTypeCounts = array => {
@@ -555,8 +609,8 @@ class UnitEntriesFormContainer extends Component {
 			alliedWarEngineCount = 0
 			alliedMonsterCount = 0
 			alliedTitanCount = 0
-			alliedInfantryHordeCount = 0
-			alliedLargeInfantryHordeCount = 0
+			alliedHordeCount = 0
+			alliedLargeInfantryCount = 0
 			let i4
 			for (i4 = 0; i4 < array.length; i4++) {
 				if (array[i4].unit.unit_type.includes('Hero')) {
@@ -583,7 +637,7 @@ class UnitEntriesFormContainer extends Component {
 							array[i4].unit.unit_size === 'Legion'					
 						)
 					) {
-						alliedInfantryHordeCount += 1
+						alliedHordeCount += 1
 					}
 					if (
 						(
@@ -595,27 +649,15 @@ class UnitEntriesFormContainer extends Component {
 							array[i4].unit.unit_size === 'Legion'
 						)
 					) {
-						alliedLargeInfantryHordeCount += 1
+						alliedLargeInfantryCount += 1
 					}
 				}
 			}
 		}
 
-		let getPoints = (unitArray, unitOptionArray) => {
-			let points = 0
-			let i4
-			for (i4 = 0; i4 < unitArray.length; i4++) {
-				points += unitArray[i4].unit.points
-			}
-			for (i4 = 0; i4 < unitOptionArray.length; i4++) {
-				points += unitOptionArray[i4].unitOption.points
-			}
-			return points
-		}
-
 		getUnitTypeCounts(alliedListedUnits)
-		pointTotal += getPoints(this.state.listedUnits, this.state.selectedUnitOptions)
-		alliedPointTotal += getPoints(this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
+		pointTotal += this.calculatePointTotal(this.state.listedUnits, this.state.selectedUnitOptions)
+		alliedPointTotal += this.calculatePointTotal(this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
 
 		for (i = 0; i < units.length; i++) {
 			let limitedUnits = []
@@ -664,14 +706,14 @@ class UnitEntriesFormContainer extends Component {
 											alliedHeroCount <= alliedMonsterCount ||
 											alliedHeroCount <= alliedTitanCount
 										) && (
-											alliedLargeInfantryHordeCount >
+											alliedLargeInfantryCount >
 											alliedHeroCount +
 											alliedWarEngineCount +
 											alliedMonsterCount +
 											alliedTitanCount
 										) 
 									) || (
-										alliedHeroCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
+										alliedHeroCount < alliedHordeCount + alliedLargeInfantryCount
 									)
 								)
 							) {
@@ -701,14 +743,14 @@ class UnitEntriesFormContainer extends Component {
 											alliedWarEngineCount <= alliedMonsterCount ||
 											alliedWarEngineCount <= alliedTitanCount
 										) && (
-											alliedLargeInfantryHordeCount >
+											alliedLargeInfantryCount >
 											alliedHeroCount +
 											alliedWarEngineCount +
 											alliedMonsterCount +
 											alliedTitanCount
 										)
 									) || (
-										alliedWarEngineCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
+										alliedWarEngineCount < alliedHordeCount + alliedLargeInfantryCount
 									)
 								)
 							) {
@@ -738,11 +780,11 @@ class UnitEntriesFormContainer extends Component {
 											alliedMonsterCount <= alliedWarEngineCount ||
 											alliedMonsterCount <= alliedTitanCount
 										) && (
-											alliedLargeInfantryHordeCount >
+											alliedLargeInfantryCount >
 											alliedHeroCount + alliedWarEngineCount + alliedMonsterCount + alliedTitanCount
 										)
 									) || (
-										alliedMonsterCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
+										alliedMonsterCount < alliedHordeCount + alliedLargeInfantryCount
 									)
 								)
 							) {
@@ -773,11 +815,11 @@ class UnitEntriesFormContainer extends Component {
 											alliedTitanCount <= alliedWarEngineCount ||
 											alliedTitanCount <= alliedMonsterCount
 										) && (
-											alliedLargeInfantryHordeCount >
+											alliedLargeInfantryCount >
 											alliedHeroCount + alliedWarEngineCount + alliedMonsterCount + alliedTitanCount
 										)
 									) || (
-										alliedTitanCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
+										alliedTitanCount < alliedHordeCount + alliedLargeInfantryCount
 									)
 								)
 							) {
@@ -811,127 +853,9 @@ class UnitEntriesFormContainer extends Component {
 			alliedMonsterUnlocks: alliedMonsterUnlocks,
 			alliedUnlocksFromRegiments: alliedUnlocksFromRegiments,
 			alliedUnlocksFromLargeInfantry: alliedUnlocksFromLargeInfantry,
+			alliedPointTotal: this.calculatePointTotal(alliedListedUnits),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits),
 			alliedGreyedOutUnits: alliedGreyedOutUnits
-		})
-		this.calculateAlliedPointTotal()
-		this.calculateUnitStrengthTotal()
-	}
-
-	calculateMostOfTheFour() {
-		let heroCount = 0
-		let warEngineCount = 0
-		let monsterCount = 0
-		let titanCount = 0
-		let infantryHordeCount = 0
-		let largeInfantryHordeCount = 0
-		let i
-		for (i = 0; i < this.state.listedUnits.length; i++) {
-			if (this.state.listedUnits[i].unit.unit_type.includes('Hero')) {
-				heroCount += 1
-			}
-			if (this.state.listedUnits[i].unit.unit_type === 'War Engine') {
-				warEngineCount += 1
-			}	
-			if (this.state.listedUnits[i].unit.unit_type === 'Monster') {
-				monsterCount += 1
-			}
-			if (this.state.listedUnits[i].unit.unit_type === 'Titan') {
-				titanCount += 1
-			}
-			if (this.state.listedUnits[i].unit.is_irregular === false) {
-				if (
-					(
-						this.state.listedUnits[i].unit.unit_type === 'Infantry' ||
-						this.state.listedUnits[i].unit.unit_type === 'Heavy Infantry' ||
-						this.state.listedUnits[i].unit.unit_type === 'Cavalry' ||
-						this.state.listedUnits[i].unit.unit_type === 'Chariot'
-					) && (
-						this.state.listedUnits[i].unit.unit_size === 'Horde' || 
-						this.state.listedUnits[i].unit.unit_size === 'Legion'
-					)
-				) {
-					infantryHordeCount += 1
-				}
-				if (
-					(
-						this.state.listedUnits[i].unit.unit_type === 'Large Infantry' ||
-						this.state.listedUnits[i].unit.unit_type === 'Monstrous Infantry' ||
-						this.state.listedUnits[i].unit.unit_type === 'Large Cavalry'
-					) && (
-						this.state.listedUnits[i].unit.unit_size === 'Horde' || 
-						this.state.listedUnits[i].unit.unit_size === 'Legion'
-					)
-				) {
-					largeInfantryHordeCount += 1
-				}
-			}
-		}
-		this.setState({
-			heroCount: heroCount,
-			warEngineCount: warEngineCount,
-			monsterCount: monsterCount,
-			titanCount: titanCount,
-			infantryHordeCount: infantryHordeCount,
-			largeInfantryHordeCount: largeInfantryHordeCount
-		})
-	}
-
-	calculateAlliedMostOfTheFour() {
-		let alliedHeroCount = 0
-		let alliedWarEngineCount = 0
-		let alliedMonsterCount = 0
-		let alliedTitanCount = 0
-		let alliedInfantryHordeCount = 0
-		let alliedLargeInfantryHordeCount = 0
-		let i
-		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
-			if (this.state.alliedListedUnits[i].unit.unit_type.includes('Hero')) {
-				alliedHeroCount += 1
-			}
-			if (this.state.alliedListedUnits[i].unit.unit_type === 'War Engine') {
-				alliedWarEngineCount += 1
-			}	
-			if (this.state.alliedListedUnits[i].unit.unit_type === 'Monster') {
-				alliedMonsterCount += 1
-			}
-			if (this.state.alliedListedUnits[i].unit.unit_type === 'Titan') {
-				alliedTitanCount += 1
-			}
-			if (this.state.alliedListedUnits[i].is_irregular === false) {
-				if (
-					(
-						this.state.alliedListedUnits[i].unit.unit_type === 'Infantry' ||
-						this.state.alliedListedUnits[i].unit.unit_type === 'Heavy Infantry' ||
-						this.state.alliedListedUnits[i].unit.unit_type === 'Cavalry' ||
-						this.state.alliedListedUnits[i].unit.unit_type === 'Chariot'
-					) && (
-						this.state.alliedListedUnits[i].unit.unit_size === 'Horde' || 
-						this.state.alliedListedUnits[i].unit.unit_size === 'Legion'
-					)
-				) {
-					alliedInfantryHordeCount += 1
-				}
-				if (
-					(
-						this.state.alliedListedUnits[i].unit.unit_type === 'Large Infantry' ||
-						this.state.alliedListedUnits[i].unit.unit_type === 'Monstrous Infantry' ||
-						this.state.alliedListedUnits[i].unit.unit_type === 'Large Cavalry'
-					) && (
-						this.state.alliedListedUnits[i].unit.unit_size === 'Horde' || 
-						this.state.alliedListedUnits[i].unit.unit_size === 'Legion'
-					)
-				) {
-					alliedLargeInfantryHordeCount += 1
-				}
-			}
-		}
-		this.setState({
-			alliedHeroCount: alliedHeroCount,
-			alliedWarEngineCount: alliedWarEngineCount,
-			alliedMonsterCount: alliedMonsterCount,
-			alliedTitanCount: alliedTitanCount,
-			alliedInfantryHordeCount: alliedInfantryHordeCount,
-			alliedLargeInfantryHordeCount: alliedLargeInfantryHordeCount
 		})
 	}
 
@@ -975,6 +899,46 @@ class UnitEntriesFormContainer extends Component {
 			tooMany = 20
 		} else if (this.state.pointTotal + pointAdjustment < 21000) {
 			tooMany = 21
+		} else if (this.state.pointTotal + pointAdjustment < 22000) {
+			tooMany = 22
+		} else if (this.state.pointTotal + pointAdjustment < 23000) {
+			tooMany = 23
+		} else if (this.state.pointTotal + pointAdjustment < 24000) {
+			tooMany = 24
+		} else if (this.state.pointTotal + pointAdjustment < 25000) {
+			tooMany = 25
+		} else if (this.state.pointTotal + pointAdjustment < 26000) {
+			tooMany = 26
+		} else if (this.state.pointTotal + pointAdjustment < 27000) {
+			tooMany = 27
+		} else if (this.state.pointTotal + pointAdjustment < 28000) {
+			tooMany = 28
+		} else if (this.state.pointTotal + pointAdjustment < 29000) {
+			tooMany = 29
+		} else if (this.state.pointTotal + pointAdjustment < 30000) {
+			tooMany = 30
+		} else if (this.state.pointTotal + pointAdjustment < 31000) {
+			tooMany = 31
+		} else if (this.state.pointTotal + pointAdjustment < 32000) {
+			tooMany = 32
+		} else if (this.state.pointTotal + pointAdjustment < 33000) {
+			tooMany = 33
+		} else if (this.state.pointTotal + pointAdjustment < 34000) {
+			tooMany = 34
+		} else if (this.state.pointTotal + pointAdjustment < 35000) {
+			tooMany = 35
+		} else if (this.state.pointTotal + pointAdjustment < 36000) {
+			tooMany = 36
+		} else if (this.state.pointTotal + pointAdjustment < 37000) {
+			tooMany = 37
+		} else if (this.state.pointTotal + pointAdjustment < 38000) {
+			tooMany = 38
+		} else if (this.state.pointTotal + pointAdjustment < 39000) {
+			tooMany = 39
+		} else if (this.state.pointTotal + pointAdjustment < 40000) {
+			tooMany = 40
+		} else if (this.state.pointTotal + pointAdjustment < 41000) {
+			tooMany = 41
 		}
 		this.setState({ tooMany: tooMany })
 		return tooMany
@@ -986,16 +950,22 @@ class UnitEntriesFormContainer extends Component {
 		let unitToAddWithIndex = { index: indexCount, unit: unitToAdd }
 		listedUnits.push(unitToAddWithIndex)
 		indexCount += 1
+		let unitTypeCountObject = this.calculateUnitTypeCounts(listedUnits)
 		this.setState({
 			listedUnits: listedUnits,
 			indexCount: indexCount,
+			pointTotal: this.calculatePointTotal(listedUnits),
+			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits),
+			heroCount: unitTypeCountObject.heroCount,
+			warEngineCount: unitTypeCountObject.warEngineCount,
+			monsterCount: unitTypeCountObject.monsterCount,
+			titanCount: unitTypeCountObject.titanCount,
+			hordeCount: unitTypeCountObject.hordeCount,
+			largeInfantryCount: unitTypeCountObject.largeInfantryCount,
 			unitOptionsVisible: false,
 			artefactsVisible: false,
 			alliesVisible: false
 		})
-		this.calculatePointTotal()
-		this.calculateUnitStrengthTotal()
-		this.calculateMostOfTheFour()
 		this.calculateTooMany(unitToAdd.points)
 		this.calculateUnlocks(unitToAdd)
 	}
@@ -1006,17 +976,23 @@ class UnitEntriesFormContainer extends Component {
 		let unitToAddWithIndex = { index: indexCount + 200000, unit: unitToAdd }
 		alliedListedUnits.push(unitToAddWithIndex)
 		indexCount += 1
+		let alliedUnitTypeCountObject = this.calculateUnitTypeCounts(alliedListedUnits)
 		this.setState({
 			alliedListedUnits: alliedListedUnits,
 			alliedArmy: alliedArmy,
 			alliedArmySingularName: alliedArmySingularName,
 			indexCount: indexCount,
+			alliedPointTotal: this.calculatePointTotal(alliedListedUnits),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits),
+			alliedHeroCount: alliedUnitTypeCountObject.heroCount,
+			alliedWarEngineCount: alliedUnitTypeCountObject.warEngineCount,
+			alliedMonsterCount: alliedUnitTypeCountObject.monsterCount,
+			alliedTitanCount: alliedUnitTypeCountObject.titanCount,
+			alliedHordeCount: alliedUnitTypeCountObject.hordeCount,
+			alliedLargeInfantryCount: alliedUnitTypeCountObject.largeInfantryCount,
 			unitOptionsVisible: false,
 			artefactsVisible: false
 		})
-		this.calculateAlliedPointTotal()
-		this.calculateUnitStrengthTotal()
-		this.calculateAlliedMostOfTheFour()
 		this.calculateAlliedUnlocks(unitToAdd, alliedArmy)
 	}
 
@@ -1038,8 +1014,8 @@ class UnitEntriesFormContainer extends Component {
 		let warEngineCount = 0
 		let monsterCount = 0
 		let titanCount = 0
-		let infantryHordeCount = 0
-		let largeInfantryHordeCount = 0
+		let hordeCount = 0
+		let largeInfantryCount = 0
 		let i
 		let i2
 		let i3
@@ -1269,39 +1245,13 @@ class UnitEntriesFormContainer extends Component {
 			}				
 		}
 
-		let getPoints = (unitArray, unitOptionArray, artefactArray) => {
-			let points = 0
-			let i4
-			for (i4 = 0; i4 < unitArray.length; i4++) {
-				points += unitArray[i4].unit.points
-			}
-			for (i4 = 0; i4 < unitOptionArray.length; i4++) {
-				points += unitOptionArray[i4].unitOption.points
-			}
-			for (i4 = 0; i4 < artefactArray.length; i4++) {
-				points += artefactArray[i4].artefact.points
-			}
-			return points
-		}
-
-		let getUnitStrength = array => {
-			unitStrengthTotal = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				unitStrengthTotal += array[i4].unit.unit_strength
-			}
-			for (i4 = 0; i4 < this.state.alliedListedUnits.length; i4++) {
-				unitStrengthTotal += this.state.alliedListedUnits[i4].unit.unit_strength
-			}
-		}
-
 		let getUnitTypeCounts = array => {
 			heroCount = 0
 			warEngineCount = 0
 			monsterCount = 0
 			titanCount = 0
-			infantryHordeCount = 0
-			largeInfantryHordeCount = 0
+			hordeCount = 0
+			largeInfantryCount = 0
 			let i4
 			for (i4 = 0; i4 < array.length; i4++) {
 				if (array[i4].unit.unit_type.includes('Hero')) {
@@ -1328,7 +1278,7 @@ class UnitEntriesFormContainer extends Component {
 							array[i4].unit.unit_size === 'Legion'					
 						)
 					) {
-						infantryHordeCount += 1
+						hordeCount += 1
 					}
 					if (
 						(
@@ -1340,7 +1290,7 @@ class UnitEntriesFormContainer extends Component {
 							array[i4].unit.unit_size === 'Legion'
 						)
 					) {
-						largeInfantryHordeCount += 1
+						largeInfantryCount += 1
 					}
 				}
 			}
@@ -1366,7 +1316,7 @@ class UnitEntriesFormContainer extends Component {
 		addUnlocksFromRegiments(fakeListedUnits)
 		subtractUnlocks(fakeListedUnits)
 		getUnitTypeCounts(fakeListedUnits)
-		pointTotal = getPoints(fakeListedUnits, fakeSelectedUnitOptions, fakeSelectedArtefacts)
+		pointTotal = this.calculatePointTotal(fakeListedUnits, fakeSelectedUnitOptions, fakeSelectedArtefacts)
 
 		if ((pointTotal + this.state.alliedPointTotal) / 4 < this.state.alliedPointTotal) {
 			listedUnits = this.state.listedUnits
@@ -1389,7 +1339,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.heroCount > this.state.warEngineCount &&
 							this.state.heroCount > this.state.monsterCount &&
 							this.state.heroCount > this.state.titanCount &&
-							this.state.heroCount >= this.state.largeInfantryHordeCount
+							this.state.heroCount >= this.state.largeInfantryCount
 						)
 					) {
 						if (this.state.unlocksFromRegiments <= 0) {
@@ -1405,7 +1355,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.warEngineCount > this.state.heroCount &&
 							this.state.warEngineCount > this.state.monsterCount &&
 							this.state.warEngineCount > this.state.titanCount &&
-							this.state.warEngineCount >= this.state.largeInfantryHordeCount
+							this.state.warEngineCount >= this.state.largeInfantryCount
 						)
 					) {
 						if (this.state.unlocksFromRegiments <= 0) {
@@ -1421,7 +1371,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.monsterCount > this.state.heroCount &&
 							this.state.monsterCount > this.state.warEngineCount &&
 							this.state.monsterCount > this.state.titanCount &&
-							this.state.monsterCount >= this.state.largeInfantryHordeCount
+							this.state.monsterCount >= this.state.largeInfantryCount
 						)
 					) {
 						if (this.state.unlocksFromRegiments <= 0) {
@@ -1435,7 +1385,7 @@ class UnitEntriesFormContainer extends Component {
 							this.state.titanCount > this.state.heroCount &&
 							this.state.titanCount > this.state.warEngineCount &&
 							this.state.titanCount > this.state.monsterCount &&
-							this.state.titanCount >= this.state.largeInfantryHordeCount
+							this.state.titanCount >= this.state.largeInfantryCount
 						)
 					) {
 						if (this.state.unlocksFromRegiments <= 0) {
@@ -1462,7 +1412,7 @@ class UnitEntriesFormContainer extends Component {
 			selectedArtefacts = this.state.selectedArtefacts			
 		}
 
-		getUnitStrength(listedUnits)
+		unitStrengthTotal = this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions)
 		let alliedArmy
 		let alliedListedUnits = this.state.alliedListedUnits
 		let alliedPointTotal
@@ -1476,8 +1426,8 @@ class UnitEntriesFormContainer extends Component {
 		let alliedWarEngineCount
 		let alliedMonsterCount
 		let alliedTitanCount
-		let alliedInfantryHordeCount
-		let alliedLargeInfantryHordeCount
+		let alliedHordeCount
+		let alliedLargeInfantryCount
 		let alliesVisible
 		let alliedGreyedOutUnits
 		let indexCount
@@ -1495,8 +1445,8 @@ class UnitEntriesFormContainer extends Component {
 			alliedWarEngineCount = 0
 			alliedMonsterCount = 0
 			alliedTitanCount = 0
-			alliedInfantryHordeCount = 0
-			alliedLargeInfantryHordeCount = 0
+			alliedHordeCount = 0
+			alliedLargeInfantryCount = 0
 			alliesVisible = false
 			alliedGreyedOutUnits = []
 			indexCount = 0
@@ -1518,8 +1468,8 @@ class UnitEntriesFormContainer extends Component {
 			alliedWarEngineCount = this.state.alliedWarEngineCount
 			alliedMonsterCount = this.state.alliedMonsterCount
 			alliedTitanCount = this.state.alliedTitanCount
-			alliedInfantryHordeCount = this.state.alliedInfantryHordeCount
-			alliedLargeInfantryHordeCount = this.state.alliedLargeInfantryHordeCount
+			alliedHordeCount = this.state.alliedHordeCount
+			alliedLargeInfantryCount = this.state.alliedLargeInfantryCount
 			alliesVisible = this.state.alliesVisible
 			alliedGreyedOutUnits = this.state.alliedGreyedOutUnits
 			indexCount = this.state.indexCount
@@ -1539,7 +1489,7 @@ class UnitEntriesFormContainer extends Component {
 			}
 			for (i2 = 0; i2 < listedUnits.length; i2++) {
 				if (
-					countNonUniqueUnits(listedUnits, listedUnits[i2]) >= tooManyAfter && (
+					countNonUniqueUnits(listedUnits, listedUnits[i2]) > tooManyAfter && (
 						listedUnits[i2].unit.unit_type.includes('Hero') ||
 						listedUnits[i2].unit.unit_type === 'War Engine' ||
 						listedUnits[i2].unit.unit_type === 'Monster' ||
@@ -1556,7 +1506,6 @@ class UnitEntriesFormContainer extends Component {
 		addUnlocksFromLargeInfantry(listedUnits)
 		addUnlocksFromRegiments(listedUnits)
 		subtractUnlocks(listedUnits)
-		pointTotal = getPoints(listedUnits, selectedUnitOptions, selectedArtefacts)
 
 		getUnitTypeCounts(listedUnits)
 
@@ -1564,8 +1513,8 @@ class UnitEntriesFormContainer extends Component {
 			listedUnits: listedUnits,
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
-			pointTotal: pointTotal,
-			unitStrengthTotal: unitStrengthTotal,
+			pointTotal: this.calculatePointTotal(listedUnits, selectedUnitOptions, selectedArtefacts),
+			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions),
 			troopUnlocks: troopUnlocks,
 			heroUnlocks: heroUnlocks,
 			warEngineUnlocks: warEngineUnlocks,
@@ -1576,8 +1525,8 @@ class UnitEntriesFormContainer extends Component {
 			warEngineCount: warEngineCount,
 			monsterCount: monsterCount,
 			titanCount: titanCount,
-			infantryHordeCount: infantryHordeCount,
-			largeInfantryHordeCount: largeInfantryHordeCount,
+			hordeCount: hordeCount,
+			largeInfantryCount: largeInfantryCount,
 			alliedArmy: alliedArmy,
 			alliedListedUnits: alliedListedUnits,
 			alliedPointTotal: alliedPointTotal,
@@ -1591,8 +1540,8 @@ class UnitEntriesFormContainer extends Component {
 			alliedWarEngineCount: alliedWarEngineCount,
 			alliedMonsterCount: alliedMonsterCount,
 			alliedTitanCount: alliedTitanCount,
-			alliedInfantryHordeCount: alliedInfantryHordeCount,
-			alliedLargeInfantryHordeCount: alliedLargeInfantryHordeCount,
+			alliedHordeCount: alliedHordeCount,
+			alliedLargeInfantryCount: alliedLargeInfantryCount,
 			alliesVisible: alliesVisible,
 			alliedGreyedOutUnits: alliedGreyedOutUnits,
 			indexCount: indexCount
@@ -1615,8 +1564,8 @@ class UnitEntriesFormContainer extends Component {
 		let alliedWarEngineCount = 0
 		let alliedMonsterCount = 0
 		let alliedTitanCount = 0
-		let alliedInfantryHordeCount = 0
-		let alliedLargeInfantryHordeCount = 0
+		let alliedHordeCount = 0
+		let alliedLargeInfantryCount = 0
 		let i
 		let i2
 		let i3
@@ -1840,36 +1789,13 @@ class UnitEntriesFormContainer extends Component {
 			}		
 		}
 
-		let getPoints = (unitArray, unitOptionArray) => {
-			let points = 0
-			let i4
-			for (i4 = 0; i4 < unitArray.length; i4++) {
-				points += unitArray[i4].unit.points
-			}
-			for (i4 = 0; i4 < unitOptionArray.length; i4++) {
-				points += unitOptionArray[i4].unitOption.points
-			}
-			return points
-		}
-
-		let getUnitStrength = array => {
-			unitStrengthTotal = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				unitStrengthTotal += array[i4].unit.unit_strength
-			}
-			for (i4 = 0; i4 < this.state.listedUnits.length; i4++) {
-				unitStrengthTotal += this.state.listedUnits[i4].unit.unit_strength
-			}
-		}
-
 		let getUnitTypeCounts = array => {
 			alliedHeroCount = 0
 			alliedWarEngineCount = 0
 			alliedMonsterCount = 0
 			alliedTitanCount = 0
-			alliedInfantryHordeCount = 0
-			alliedLargeInfantryHordeCount = 0
+			alliedHordeCount = 0
+			alliedLargeInfantryCount = 0
 			let i4
 			for (i4 = 0; i4 < array.length; i4++) {
 				if (array[i4].unit.unit_type.includes('Hero')) {
@@ -1896,7 +1822,7 @@ class UnitEntriesFormContainer extends Component {
 							array[i4].unit.unit_size === 'Legion'					
 						)
 					) {
-						alliedInfantryHordeCount += 1
+						alliedHordeCount += 1
 					}
 					if (
 						(
@@ -1908,7 +1834,7 @@ class UnitEntriesFormContainer extends Component {
 							array[i4].unit.unit_size === 'Legion'
 						)
 					) {
-						alliedLargeInfantryHordeCount += 1
+						alliedLargeInfantryCount += 1
 					}
 				}
 			}
@@ -1926,7 +1852,7 @@ class UnitEntriesFormContainer extends Component {
 			alliedPointTotal = 0
 
 			getUnitTypeCounts(array)
-			alliedPointTotal += getPoints(array, alliedSelectedUnitOptions)
+			alliedPointTotal += this.calculatePointTotal(array, alliedSelectedUnitOptions)
 
 			for (i = 0; i < units.length; i++) {
 				let limitedUnits = []
@@ -1975,14 +1901,14 @@ class UnitEntriesFormContainer extends Component {
 												alliedHeroCount <= alliedMonsterCount ||
 												alliedHeroCount <= alliedTitanCount
 											) && (
-												alliedLargeInfantryHordeCount >
+												alliedLargeInfantryCount >
 												alliedHeroCount +
 												alliedWarEngineCount +
 												alliedMonsterCount +
 												alliedTitanCount
 											) 
 										) || (
-											alliedHeroCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
+											alliedHeroCount < alliedHordeCount + alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -2012,14 +1938,14 @@ class UnitEntriesFormContainer extends Component {
 												alliedWarEngineCount <= alliedMonsterCount ||
 												alliedWarEngineCount <= alliedTitanCount
 											) && (
-												alliedLargeInfantryHordeCount >
+												alliedLargeInfantryCount >
 												alliedHeroCount +
 												alliedWarEngineCount +
 												alliedMonsterCount +
 												alliedTitanCount
 											)
 										) || (
-											alliedWarEngineCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
+											alliedWarEngineCount < alliedHordeCount + alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -2049,11 +1975,11 @@ class UnitEntriesFormContainer extends Component {
 												alliedMonsterCount <= alliedWarEngineCount ||
 												alliedMonsterCount <= alliedTitanCount
 											) && (
-												alliedLargeInfantryHordeCount >
+												alliedLargeInfantryCount >
 												alliedHeroCount + alliedWarEngineCount + alliedMonsterCount + alliedTitanCount
 											)
 										) || (
-											alliedMonsterCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
+											alliedMonsterCount < alliedHordeCount + alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -2084,11 +2010,11 @@ class UnitEntriesFormContainer extends Component {
 												alliedTitanCount <= alliedWarEngineCount ||
 												alliedTitanCount <= alliedMonsterCount
 											) && (
-												alliedLargeInfantryHordeCount >
+												alliedLargeInfantryCount >
 												alliedHeroCount + alliedWarEngineCount + alliedMonsterCount + alliedTitanCount
 											)
 										) || (
-											alliedTitanCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
+											alliedTitanCount < alliedHordeCount + alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -2136,7 +2062,7 @@ class UnitEntriesFormContainer extends Component {
 		addUnlocksFromRegiments(fakeListedUnits)
 		subtractUnlocks(fakeListedUnits)
 		getUnitTypeCounts(fakeListedUnits)
-		alliedPointTotal = getPoints(fakeListedUnits, fakeSelectedUnitOptions)
+		alliedPointTotal = this.calculatePointTotal(fakeListedUnits, fakeSelectedUnitOptions)
 
 		if (doesUnitUnlock(unitObject.unit) === true) {
 			alliedListedUnits = fakeListedUnits
@@ -2152,7 +2078,7 @@ class UnitEntriesFormContainer extends Component {
 						this.state.alliedHeroCount > this.state.alliedWarEngineCount &&
 						this.state.alliedHeroCount > this.state.alliedMonsterCount &&
 						this.state.alliedHeroCount > this.state.alliedTitanCount &&
-						this.state.alliedHeroCount >= this.state.alliedLargeInfantryHordeCount
+						this.state.alliedHeroCount >= this.state.alliedLargeInfantryCount
 					)
 				) {
 					if (this.state.alliedUnlocksFromRegiments <= 0) {
@@ -2167,7 +2093,7 @@ class UnitEntriesFormContainer extends Component {
 						this.state.alliedWarEngineCount > this.state.alliedHeroCount &&
 						this.state.alliedWarEngineCount > this.state.alliedMonsterCount &&
 						this.state.alliedWarEngineCount > this.state.alliedTitanCount &&
-						this.state.alliedWarEngineCount >= this.state.alliedLargeInfantryHordeCount
+						this.state.alliedWarEngineCount >= this.state.alliedLargeInfantryCount
 					)
 				) {
 					if (this.state.alliedUnlocksFromRegiments <= 0) {
@@ -2182,7 +2108,7 @@ class UnitEntriesFormContainer extends Component {
 						this.state.alliedMonsterCount > this.state.alliedHeroCount &&
 						this.state.alliedMonsterCount > this.state.alliedWarEngineCount &&
 						this.state.alliedMonsterCount > this.state.alliedTitanCount &&
-						this.state.alliedMonsterCount >= this.state.alliedLargeInfantryHordeCount
+						this.state.alliedMonsterCount >= this.state.alliedLargeInfantryCount
 					)
 				) {
 					if (this.state.alliedUnlocksFromRegiments <= 0) {
@@ -2195,7 +2121,7 @@ class UnitEntriesFormContainer extends Component {
 						this.state.alliedTitanCount > this.state.alliedHeroCount &&
 						this.state.alliedTitanCount > this.state.alliedWarEngineCount &&
 						this.state.alliedTitanCount > this.state.alliedMonsterCount &&
-						this.state.alliedTitanCount >= this.state.alliedLargeInfantryHordeCount
+						this.state.alliedTitanCount >= this.state.alliedLargeInfantryCount
 					)
 				) {
 					if (this.state.alliedUnlocksFromRegiments <= 0) {
@@ -2232,8 +2158,7 @@ class UnitEntriesFormContainer extends Component {
 		addUnlocksFromLargeInfantry(alliedListedUnits)
 		addUnlocksFromRegiments(alliedListedUnits)
 		subtractUnlocks(alliedListedUnits)
-		alliedPointTotal = getPoints(alliedListedUnits, alliedSelectedUnitOptions)
-		getUnitStrength(alliedListedUnits)
+		alliedPointTotal = this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions)
 		getUnitTypeCounts(alliedListedUnits)
 
 		this.setState({
@@ -2242,7 +2167,7 @@ class UnitEntriesFormContainer extends Component {
 			alliedListedUnits: alliedListedUnits,
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
 			alliedPointTotal: alliedPointTotal,
-			unitStrengthTotal: unitStrengthTotal,
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits, alliedSelectedUnitOptions),
 			alliedTroopUnlocks: alliedTroopUnlocks,
 			alliedHeroUnlocks: alliedHeroUnlocks,
 			alliedWarEngineUnlocks: alliedWarEngineUnlocks,
@@ -2253,8 +2178,8 @@ class UnitEntriesFormContainer extends Component {
 			alliedWarEngineCount: alliedWarEngineCount,
 			alliedMonsterCount: alliedMonsterCount,
 			alliedTitanCount: alliedTitanCount,
-			alliedInfantryHordeCount: alliedInfantryHordeCount,
-			alliedLargeInfantryHordeCount: alliedLargeInfantryHordeCount,
+			alliedHordeCount: alliedHordeCount,
+			alliedLargeInfantryCount: alliedLargeInfantryCount,
 			alliedGreyedOutUnits: determineIfGreyedOut(alliedListedUnits)
 		})
 	}
@@ -2419,14 +2344,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
 												this.state.alliedHeroCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											) 
 										) || (
-											this.state.alliedHeroCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -2456,14 +2381,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
 												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedWarEngineCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -2493,11 +2418,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedMonsterCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedMonsterCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -2528,11 +2453,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedTitanCount <= this.state.alliedMonsterCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedTitanCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -2694,14 +2619,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
 												this.state.alliedHeroCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											) 
 										) || (
-											this.state.alliedHeroCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -2731,14 +2656,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
 												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedWarEngineCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -2768,11 +2693,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedMonsterCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedMonsterCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -2803,11 +2728,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedTitanCount <= this.state.alliedMonsterCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedTitanCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3023,14 +2948,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
 												this.state.alliedHeroCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											) 
 										) || (
-											this.state.alliedHeroCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3060,14 +2985,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
 												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedWarEngineCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3097,11 +3022,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedMonsterCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedMonsterCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3132,11 +3057,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedTitanCount <= this.state.alliedMonsterCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedTitanCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3247,14 +3172,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
 												this.state.alliedHeroCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											) 
 										) || (
-											this.state.alliedHeroCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3284,14 +3209,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
 												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedWarEngineCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3321,11 +3246,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedMonsterCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedMonsterCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3356,11 +3281,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedTitanCount <= this.state.alliedMonsterCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedTitanCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3504,14 +3429,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
 												this.state.alliedHeroCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											) 
 										) || (
-											this.state.alliedHeroCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3541,14 +3466,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
 												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedWarEngineCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3578,11 +3503,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedMonsterCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedMonsterCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3613,11 +3538,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedTitanCount <= this.state.alliedMonsterCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedTitanCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3753,14 +3678,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
 												this.state.alliedHeroCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											) 
 										) || (
-											this.state.alliedHeroCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3790,14 +3715,14 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
 												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount +
 												this.state.alliedWarEngineCount +
 												this.state.alliedMonsterCount +
 												this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedWarEngineCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3827,11 +3752,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedMonsterCount <= this.state.alliedTitanCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedMonsterCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3862,11 +3787,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
 												this.state.alliedTitanCount <= this.state.alliedMonsterCount
 											) && (
-												this.state.alliedLargeInfantryHordeCount >
+												this.state.alliedLargeInfantryCount >
 												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
 											)
 										) || (
-											this.state.alliedTitanCount < this.state.alliedInfantryHordeCount + this.state.alliedLargeInfantryHordeCount
+											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
 										)
 									)
 								) {
@@ -3926,9 +3851,9 @@ class UnitEntriesFormContainer extends Component {
 			warEngineCount: 0,
 			monsterCount: 0,
 			titanCount: 0,
-			infantryHordeCount: 0,
-			largeInfantryHordeCount: 0,
-			tooMany: 1,
+			hordeCount: 0,
+			largeInfantryCount: 0,
+			tooMany: 3,
 			formattedListVisible: false,
 			unitOptionsVisible: false,
 			artefactsVisible: false,
@@ -3938,6 +3863,7 @@ class UnitEntriesFormContainer extends Component {
 			alliedListedUnits: [],
 			alliedSelectedUnitOptions: [],
 			alliedPointTotal: 0,
+			alliedUnitStrengthTotal: 0,
 			alliedTroopUnlocks: 0,
 			alliedHeroUnlocks: 0,
 			alliedWarEngineUnlocks: 0,
@@ -3948,8 +3874,8 @@ class UnitEntriesFormContainer extends Component {
 			alliedWarEngineCount: 0,
 			alliedMonsterCount: 0,
 			alliedTitanCount: 0,
-			alliedInfantryHordeCount: 0,
-			alliedLargeInfantryHordeCount: 0,
+			alliedHordeCount: 0,
+			alliedLargeInfantryCount: 0,
 			alliedGreyedOutUnits: []
 		})
 	}
@@ -4120,8 +4046,9 @@ class UnitEntriesFormContainer extends Component {
 				alliedListedUnitsThatCanHaveOptions.push(this.state.alliedListedUnits[i])
 			}
 		}
-		let totalPoints
+		let grandPointTotal
 		let unitCount
+		let grandUnitStrengthTotal
 		let listedUnitTileDisplayTop
 		let listedUnitTileDisplaySecondQuarter
 		let listedUnitTileDisplayThirdQuarter
@@ -4235,11 +4162,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.heroCount <= this.state.monsterCount ||
 												this.state.heroCount <= this.state.titanCount
 											) && (
-												this.state.largeInfantryHordeCount >
+												this.state.largeInfantryCount >
 												this.state.heroCount + this.state.warEngineCount + this.state.monsterCount + this.state.titanCount
 											) 
 										) || (
-											this.state.heroCount < this.state.infantryHordeCount + this.state.largeInfantryHordeCount
+											this.state.heroCount < this.state.hordeCount + this.state.largeInfantryCount
 										)
 									)
 								) {
@@ -4269,11 +4196,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.warEngineCount <= this.state.monsterCount ||
 												this.state.warEngineCount <= this.state.titanCount
 											) && (
-												this.state.largeInfantryHordeCount >
+												this.state.largeInfantryCount >
 												this.state.heroCount + this.state.warEngineCount + this.state.monsterCount + this.state.titanCount
 											)
 										) || (
-											this.state.warEngineCount < this.state.infantryHordeCount + this.state.largeInfantryHordeCount
+											this.state.warEngineCount < this.state.hordeCount + this.state.largeInfantryCount
 										)
 									)
 								) {
@@ -4303,11 +4230,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.monsterCount <= this.state.warEngineCount ||
 												this.state.monsterCount <= this.state.titanCount
 											) && (
-												this.state.largeInfantryHordeCount >
+												this.state.largeInfantryCount >
 												this.state.heroCount + this.state.warEngineCount + this.state.monsterCount + this.state.titanCount
 											)
 										) || (
-											this.state.monsterCount < this.state.infantryHordeCount + this.state.largeInfantryHordeCount
+											this.state.monsterCount < this.state.hordeCount + this.state.largeInfantryCount
 										)
 									)
 								) {
@@ -4338,11 +4265,11 @@ class UnitEntriesFormContainer extends Component {
 												this.state.titanCount <= this.state.warEngineCount ||
 												this.state.titanCount <= this.state.monsterCount
 											) && (
-												this.state.largeInfantryHordeCount >
+												this.state.largeInfantryCount >
 												this.state.heroCount + this.state.warEngineCount + this.state.monsterCount + this.state.titanCount
 											)
 										) || (
-											this.state.titanCount < this.state.infantryHordeCount + this.state.largeInfantryHordeCount
+											this.state.titanCount < this.state.hordeCount + this.state.largeInfantryCount
 										)
 									)
 								) {
@@ -4442,19 +4369,20 @@ class UnitEntriesFormContainer extends Component {
 						alliedWarEngineCount={this.state.alliedWarEngineCount}
 						alliedMonsterCount={this.state.alliedMonsterCount}
 						alliedTitanCount={this.state.alliedTitanCount}
-						alliedInfantryHordeCount={this.state.alliedInfantryHordeCount}
-						alliedLargeInfantryHordeCount={this.state.alliedLargeInfantryHordeCount}
+						alliedHordeCount={this.state.alliedHordeCount}
+						alliedLargeInfantryCount={this.state.alliedLargeInfantryCount}
 						greyedOutUnits={this.state.alliedGreyedOutUnits}
 					/>
 			}
 
-			totalPoints = this.state.pointTotal + this.state.alliedPointTotal
+			grandPointTotal = this.state.pointTotal + this.state.alliedPointTotal
 			unitCount = this.state.listedUnits.length + this.state.alliedListedUnits.length
+			grandUnitStrengthTotal = this.state.unitStrengthTotal + this.state.alliedUnitStrengthTotal
 			pointTotalDisplay =
 				<div className="point-total">
-					Points: <span className="bold">{totalPoints}</span><br />
+					Points: <span className="bold">{grandPointTotal}</span><br />
 					Unit Count: <span className="bold">{unitCount}</span><br />
-					Unit Strength: <span className="bold">{this.state.unitStrengthTotal}</span>
+					Unit Strength: <span className="bold">{grandUnitStrengthTotal}</span>
 				</div>
 
 			listedUnitTileDisplayTop = listedUnitsTop.map(unitObject => {
@@ -4945,7 +4873,7 @@ class UnitEntriesFormContainer extends Component {
 						selectedUnitOptions={this.state.selectedUnitOptions}
 						selectedArtefacts={this.state.selectedArtefacts}
 						pointTotal={this.state.pointTotal}
-						unitStrengthTotal={this.state.unitStrengthTotal}
+						unitStrengthTotal={grandUnitStrengthTotal}
 						unitCount={unitCount}
 						alliedArmy={this.state.alliedArmy}
 						alliedListedUnitsTop={alliedListedUnitsTop}

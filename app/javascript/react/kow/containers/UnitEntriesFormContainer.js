@@ -48,6 +48,7 @@ class UnitEntriesFormContainer extends Component {
 			alliedSelectedUnitOptions: [],
 			alliedUnitBeingGivenOption: '',
 			alliedPointTotal: 0,
+			alliedUnitStrengthTotal: 0,
 			alliedTroopUnlocks: 0,
 			alliedHeroUnlocks: 0,
 			alliedWarEngineUnlocks: 0,
@@ -128,38 +129,39 @@ class UnitEntriesFormContainer extends Component {
 		return pointTotal
 	}
 
-	calculateUnitStrengthTotal() {
+	calculateUnitStrengthTotal(listedUnitArray, unitOptionArray) {
+		let is_ally = false
 		let unitStrengthTotal = 0
 		let i
-		for (i = 0; i < this.state.listedUnits.length; i++) {
-			unitStrengthTotal += this.state.listedUnits[i].unit.unit_strength
-		}
-		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
-			unitStrengthTotal += this.state.alliedListedUnits[i].unit.unit_strength
-		}
-		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
-			if (
-				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
-			) {
-				unitStrengthTotal += 1
+		if (listedUnitArray.length > 0 && listedUnitArray != undefined) {
+			if (listedUnitArray[0].unit.army_id !== this.state.selectedArmy.value) {
+				is_ally = true
+			}
+			for (i = 0; i < listedUnitArray.length; i++) {
+				unitStrengthTotal += listedUnitArray[i].unit.unit_strength
 			}
 		}
-		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
-			if (
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
-			) {
-				unitStrengthTotal += 1
+		if (unitOptionArray == undefined) {
+			if (is_ally === false) {
+				unitOptionArray = this.state.selectedUnitOptions
+			}
+			if (is_ally === true) {
+				unitOptionArray = this.state.alliedSelectedUnitOptions
+			}
+		} else {
+			for (i = 0; i < unitOptionArray.length; i++) {
+				if (
+					unitOptionArray[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
+					unitOptionArray[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
+					unitOptionArray[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
+					unitOptionArray[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
+					unitOptionArray[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
+				) {
+					unitStrengthTotal += 1
+				}
 			}
 		}
-		this.setState({ unitStrengthTotal: unitStrengthTotal })
+		return unitStrengthTotal
 	}
 
 	calculateUnlocks(unit) {
@@ -351,9 +353,9 @@ class UnitEntriesFormContainer extends Component {
 			monsterUnlocks: monsterUnlocks,
 			unlocksFromRegiments: unlocksFromRegiments,
 			unlocksFromLargeInfantry: unlocksFromLargeInfantry,
-			pointTotal: this.calculatePointTotal(listedUnits)
+			pointTotal: this.calculatePointTotal(listedUnits),
+			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits)
 		})
-		this.calculateUnitStrengthTotal()
 	}
 
 	calculateAlliedUnlocks(unit, alliedArmy) {
@@ -804,9 +806,9 @@ class UnitEntriesFormContainer extends Component {
 			alliedUnlocksFromRegiments: alliedUnlocksFromRegiments,
 			alliedUnlocksFromLargeInfantry: alliedUnlocksFromLargeInfantry,
 			alliedPointTotal: this.calculatePointTotal(alliedListedUnits),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits),
 			alliedGreyedOutUnits: alliedGreyedOutUnits
 		})
-		this.calculateUnitStrengthTotal()
 	}
 
 	calculateMostOfTheFour() {
@@ -982,11 +984,11 @@ class UnitEntriesFormContainer extends Component {
 			listedUnits: listedUnits,
 			indexCount: indexCount,
 			pointTotal: this.calculatePointTotal(listedUnits),
+			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits),
 			unitOptionsVisible: false,
 			artefactsVisible: false,
 			alliesVisible: false
 		})
-		this.calculateUnitStrengthTotal()
 		this.calculateMostOfTheFour()
 		this.calculateTooMany(unitToAdd.points)
 		this.calculateUnlocks(unitToAdd)
@@ -1004,10 +1006,10 @@ class UnitEntriesFormContainer extends Component {
 			alliedArmySingularName: alliedArmySingularName,
 			indexCount: indexCount,
 			alliedPointTotal: this.calculatePointTotal(alliedListedUnits),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits),
 			unitOptionsVisible: false,
 			artefactsVisible: false
 		})
-		this.calculateUnitStrengthTotal()
 		this.calculateAlliedMostOfTheFour()
 		this.calculateAlliedUnlocks(unitToAdd, alliedArmy)
 	}
@@ -1261,17 +1263,6 @@ class UnitEntriesFormContainer extends Component {
 			}				
 		}
 
-		let getUnitStrength = array => {
-			unitStrengthTotal = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				unitStrengthTotal += array[i4].unit.unit_strength
-			}
-			for (i4 = 0; i4 < this.state.alliedListedUnits.length; i4++) {
-				unitStrengthTotal += this.state.alliedListedUnits[i4].unit.unit_strength
-			}
-		}
-
 		let getUnitTypeCounts = array => {
 			heroCount = 0
 			warEngineCount = 0
@@ -1439,7 +1430,7 @@ class UnitEntriesFormContainer extends Component {
 			selectedArtefacts = this.state.selectedArtefacts			
 		}
 
-		getUnitStrength(listedUnits)
+		unitStrengthTotal = this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions)
 		let alliedArmy
 		let alliedListedUnits = this.state.alliedListedUnits
 		let alliedPointTotal
@@ -1541,7 +1532,7 @@ class UnitEntriesFormContainer extends Component {
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
 			pointTotal: this.calculatePointTotal(listedUnits, selectedUnitOptions, selectedArtefacts),
-			unitStrengthTotal: unitStrengthTotal,
+			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions),
 			troopUnlocks: troopUnlocks,
 			heroUnlocks: heroUnlocks,
 			warEngineUnlocks: warEngineUnlocks,
@@ -1814,17 +1805,6 @@ class UnitEntriesFormContainer extends Component {
 					unitOptionArray.splice(unitOptionArray.indexOf(unitOptionArray[i4]), 1)
 				}
 			}		
-		}
-
-		let getUnitStrength = array => {
-			unitStrengthTotal = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				unitStrengthTotal += array[i4].unit.unit_strength
-			}
-			for (i4 = 0; i4 < this.state.listedUnits.length; i4++) {
-				unitStrengthTotal += this.state.listedUnits[i4].unit.unit_strength
-			}
 		}
 
 		let getUnitTypeCounts = array => {
@@ -2197,7 +2177,6 @@ class UnitEntriesFormContainer extends Component {
 		addUnlocksFromRegiments(alliedListedUnits)
 		subtractUnlocks(alliedListedUnits)
 		alliedPointTotal = this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions)
-		getUnitStrength(alliedListedUnits)
 		getUnitTypeCounts(alliedListedUnits)
 
 		this.setState({
@@ -2206,7 +2185,7 @@ class UnitEntriesFormContainer extends Component {
 			alliedListedUnits: alliedListedUnits,
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
 			alliedPointTotal: alliedPointTotal,
-			unitStrengthTotal: unitStrengthTotal,
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits, alliedSelectedUnitOptions),
 			alliedTroopUnlocks: alliedTroopUnlocks,
 			alliedHeroUnlocks: alliedHeroUnlocks,
 			alliedWarEngineUnlocks: alliedWarEngineUnlocks,
@@ -3902,6 +3881,7 @@ class UnitEntriesFormContainer extends Component {
 			alliedListedUnits: [],
 			alliedSelectedUnitOptions: [],
 			alliedPointTotal: 0,
+			alliedUnitStrengthTotal: 0,
 			alliedTroopUnlocks: 0,
 			alliedHeroUnlocks: 0,
 			alliedWarEngineUnlocks: 0,
@@ -4084,8 +4064,9 @@ class UnitEntriesFormContainer extends Component {
 				alliedListedUnitsThatCanHaveOptions.push(this.state.alliedListedUnits[i])
 			}
 		}
-		let totalPoints
+		let grandPointTotal
 		let unitCount
+		let grandUnitStrengthTotal
 		let listedUnitTileDisplayTop
 		let listedUnitTileDisplaySecondQuarter
 		let listedUnitTileDisplayThirdQuarter
@@ -4412,13 +4393,14 @@ class UnitEntriesFormContainer extends Component {
 					/>
 			}
 
-			totalPoints = this.state.pointTotal + this.state.alliedPointTotal
+			grandPointTotal = this.state.pointTotal + this.state.alliedPointTotal
 			unitCount = this.state.listedUnits.length + this.state.alliedListedUnits.length
+			grandUnitStrengthTotal = this.state.unitStrengthTotal + this.state.alliedUnitStrengthTotal
 			pointTotalDisplay =
 				<div className="point-total">
-					Points: <span className="bold">{totalPoints}</span><br />
+					Points: <span className="bold">{grandPointTotal}</span><br />
 					Unit Count: <span className="bold">{unitCount}</span><br />
-					Unit Strength: <span className="bold">{this.state.unitStrengthTotal}</span>
+					Unit Strength: <span className="bold">{grandUnitStrengthTotal}</span>
 				</div>
 
 			listedUnitTileDisplayTop = listedUnitsTop.map(unitObject => {
@@ -4909,7 +4891,7 @@ class UnitEntriesFormContainer extends Component {
 						selectedUnitOptions={this.state.selectedUnitOptions}
 						selectedArtefacts={this.state.selectedArtefacts}
 						pointTotal={this.state.pointTotal}
-						unitStrengthTotal={this.state.unitStrengthTotal}
+						unitStrengthTotal={grandUnitStrengthTotal}
 						unitCount={unitCount}
 						alliedArmy={this.state.alliedArmy}
 						alliedListedUnitsTop={alliedListedUnitsTop}

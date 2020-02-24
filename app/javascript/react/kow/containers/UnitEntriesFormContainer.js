@@ -4121,6 +4121,7 @@ class UnitEntriesFormContainer extends Component {
 			}
 		}
 		let totalPoints
+		let unitCount
 		let listedUnitTileDisplayTop
 		let listedUnitTileDisplaySecondQuarter
 		let listedUnitTileDisplayThirdQuarter
@@ -4448,9 +4449,11 @@ class UnitEntriesFormContainer extends Component {
 			}
 
 			totalPoints = this.state.pointTotal + this.state.alliedPointTotal
+			unitCount = this.state.listedUnits.length + this.state.alliedListedUnits.length
 			pointTotalDisplay =
 				<div className="point-total">
 					Points: <span className="bold">{totalPoints}</span><br />
+					Unit Count: <span className="bold">{unitCount}</span><br />
 					Unit Strength: <span className="bold">{this.state.unitStrengthTotal}</span>
 				</div>
 
@@ -4943,6 +4946,7 @@ class UnitEntriesFormContainer extends Component {
 						selectedArtefacts={this.state.selectedArtefacts}
 						pointTotal={this.state.pointTotal}
 						unitStrengthTotal={this.state.unitStrengthTotal}
+						unitCount={unitCount}
 						alliedArmy={this.state.alliedArmy}
 						alliedListedUnitsTop={alliedListedUnitsTop}
 						alliedListedUnitsSecondQuarter={alliedListedUnitsSecondQuarter}

@@ -1491,7 +1491,7 @@ class UnitEntriesFormContainer extends Component {
 			}
 			for (i2 = 0; i2 < listedUnits.length; i2++) {
 				if (
-					countNonUniqueUnits(listedUnits, listedUnits[i2]) >= tooManyAfter && (
+					countNonUniqueUnits(listedUnits, listedUnits[i2]) > tooManyAfter && (
 						listedUnits[i2].unit.unit_type.includes('Hero') ||
 						listedUnits[i2].unit.unit_type === 'War Engine' ||
 						listedUnits[i2].unit.unit_type === 'Monster' ||

@@ -64,7 +64,6 @@ class UnitEntriesFormContainer extends Component {
 		}
 		this.updateSelectedArmy = this.updateSelectedArmy.bind(this)
 		this.calculatePointTotal = this.calculatePointTotal.bind(this)
-		this.calculateAlliedPointTotal = this.calculateAlliedPointTotal.bind(this)
 		this.calculateUnitStrengthTotal = this.calculateUnitStrengthTotal.bind(this)
 		this.calculateMostOfTheFour = this.calculateMostOfTheFour.bind(this)
 		this.calculateAlliedMostOfTheFour = this.calculateAlliedMostOfTheFour.bind(this)
@@ -97,31 +96,36 @@ class UnitEntriesFormContainer extends Component {
 		this.clearList()
 	}
 
-	calculatePointTotal() {
+	calculatePointTotal(listedUnitArray, unitOptionArray, artefactArray) {
+		let is_ally = false
 		let pointTotal = 0
 		let i
-		for (i = 0; i < this.state.listedUnits.length; i++) {
-			pointTotal += this.state.listedUnits[i].unit.points
+		if (listedUnitArray.length > 0 && listedUnitArray != undefined) {
+			if (listedUnitArray[0].unit.army_id !== this.state.selectedArmy.value) {
+				is_ally = true
+			}
+			for (i = 0; i < listedUnitArray.length; i++) {
+				pointTotal += listedUnitArray[i].unit.points
+			}
 		}
-		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
-			pointTotal += this.state.selectedUnitOptions[i].unitOption.points
+		if (unitOptionArray == undefined) {
+			if (is_ally === false) {
+				unitOptionArray = this.state.selectedUnitOptions
+			}
+			if (is_ally === true) {
+				unitOptionArray = this.state.alliedSelectedUnitOptions
+			}		
+		} else {
+			for (i = 0; i < unitOptionArray.length; i++) {
+				pointTotal += unitOptionArray[i].unitOption.points
+			}
 		}
-		for (i = 0; i < this.state.selectedArtefacts.length; i++) {
-			pointTotal += this.state.selectedArtefacts[i].artefact.points
+		if (artefactArray != undefined) {
+			for (i = 0; i < artefactArray.length; i++) {
+				pointTotal += artefactArray[i].artefact.points
+			}
 		}
-		this.setState({ pointTotal: pointTotal })
-	}
-
-	calculateAlliedPointTotal() {
-		let alliedPointTotal = 0
-		let i
-		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
-			alliedPointTotal += this.state.alliedListedUnits[i].unit.points
-		}
-		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
-			alliedPointTotal += this.state.alliedSelectedUnitOptions[i].unitOption.points
-		}
-		this.setState({ alliedPointTotal: alliedPointTotal })
+		return pointTotal
 	}
 
 	calculateUnitStrengthTotal() {
@@ -346,9 +350,9 @@ class UnitEntriesFormContainer extends Component {
 			warEngineUnlocks: warEngineUnlocks,
 			monsterUnlocks: monsterUnlocks,
 			unlocksFromRegiments: unlocksFromRegiments,
-			unlocksFromLargeInfantry: unlocksFromLargeInfantry
+			unlocksFromLargeInfantry: unlocksFromLargeInfantry,
+			pointTotal: this.calculatePointTotal(listedUnits)
 		})
-		this.calculatePointTotal()
 		this.calculateUnitStrengthTotal()
 	}
 
@@ -601,21 +605,9 @@ class UnitEntriesFormContainer extends Component {
 			}
 		}
 
-		let getPoints = (unitArray, unitOptionArray) => {
-			let points = 0
-			let i4
-			for (i4 = 0; i4 < unitArray.length; i4++) {
-				points += unitArray[i4].unit.points
-			}
-			for (i4 = 0; i4 < unitOptionArray.length; i4++) {
-				points += unitOptionArray[i4].unitOption.points
-			}
-			return points
-		}
-
 		getUnitTypeCounts(alliedListedUnits)
-		pointTotal += getPoints(this.state.listedUnits, this.state.selectedUnitOptions)
-		alliedPointTotal += getPoints(this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
+		pointTotal += this.calculatePointTotal(this.state.listedUnits, this.state.selectedUnitOptions)
+		alliedPointTotal += this.calculatePointTotal(this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
 
 		for (i = 0; i < units.length; i++) {
 			let limitedUnits = []
@@ -811,9 +803,9 @@ class UnitEntriesFormContainer extends Component {
 			alliedMonsterUnlocks: alliedMonsterUnlocks,
 			alliedUnlocksFromRegiments: alliedUnlocksFromRegiments,
 			alliedUnlocksFromLargeInfantry: alliedUnlocksFromLargeInfantry,
+			alliedPointTotal: this.calculatePointTotal(alliedListedUnits),
 			alliedGreyedOutUnits: alliedGreyedOutUnits
 		})
-		this.calculateAlliedPointTotal()
 		this.calculateUnitStrengthTotal()
 	}
 
@@ -989,11 +981,11 @@ class UnitEntriesFormContainer extends Component {
 		this.setState({
 			listedUnits: listedUnits,
 			indexCount: indexCount,
+			pointTotal: this.calculatePointTotal(listedUnits),
 			unitOptionsVisible: false,
 			artefactsVisible: false,
 			alliesVisible: false
 		})
-		this.calculatePointTotal()
 		this.calculateUnitStrengthTotal()
 		this.calculateMostOfTheFour()
 		this.calculateTooMany(unitToAdd.points)
@@ -1011,10 +1003,10 @@ class UnitEntriesFormContainer extends Component {
 			alliedArmy: alliedArmy,
 			alliedArmySingularName: alliedArmySingularName,
 			indexCount: indexCount,
+			alliedPointTotal: this.calculatePointTotal(alliedListedUnits),
 			unitOptionsVisible: false,
 			artefactsVisible: false
 		})
-		this.calculateAlliedPointTotal()
 		this.calculateUnitStrengthTotal()
 		this.calculateAlliedMostOfTheFour()
 		this.calculateAlliedUnlocks(unitToAdd, alliedArmy)
@@ -1269,21 +1261,6 @@ class UnitEntriesFormContainer extends Component {
 			}				
 		}
 
-		let getPoints = (unitArray, unitOptionArray, artefactArray) => {
-			let points = 0
-			let i4
-			for (i4 = 0; i4 < unitArray.length; i4++) {
-				points += unitArray[i4].unit.points
-			}
-			for (i4 = 0; i4 < unitOptionArray.length; i4++) {
-				points += unitOptionArray[i4].unitOption.points
-			}
-			for (i4 = 0; i4 < artefactArray.length; i4++) {
-				points += artefactArray[i4].artefact.points
-			}
-			return points
-		}
-
 		let getUnitStrength = array => {
 			unitStrengthTotal = 0
 			let i4
@@ -1366,7 +1343,7 @@ class UnitEntriesFormContainer extends Component {
 		addUnlocksFromRegiments(fakeListedUnits)
 		subtractUnlocks(fakeListedUnits)
 		getUnitTypeCounts(fakeListedUnits)
-		pointTotal = getPoints(fakeListedUnits, fakeSelectedUnitOptions, fakeSelectedArtefacts)
+		pointTotal = this.calculatePointTotal(fakeListedUnits, fakeSelectedUnitOptions, fakeSelectedArtefacts)
 
 		if ((pointTotal + this.state.alliedPointTotal) / 4 < this.state.alliedPointTotal) {
 			listedUnits = this.state.listedUnits
@@ -1556,7 +1533,6 @@ class UnitEntriesFormContainer extends Component {
 		addUnlocksFromLargeInfantry(listedUnits)
 		addUnlocksFromRegiments(listedUnits)
 		subtractUnlocks(listedUnits)
-		pointTotal = getPoints(listedUnits, selectedUnitOptions, selectedArtefacts)
 
 		getUnitTypeCounts(listedUnits)
 
@@ -1564,7 +1540,7 @@ class UnitEntriesFormContainer extends Component {
 			listedUnits: listedUnits,
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
-			pointTotal: pointTotal,
+			pointTotal: this.calculatePointTotal(listedUnits, selectedUnitOptions, selectedArtefacts),
 			unitStrengthTotal: unitStrengthTotal,
 			troopUnlocks: troopUnlocks,
 			heroUnlocks: heroUnlocks,
@@ -1840,18 +1816,6 @@ class UnitEntriesFormContainer extends Component {
 			}		
 		}
 
-		let getPoints = (unitArray, unitOptionArray) => {
-			let points = 0
-			let i4
-			for (i4 = 0; i4 < unitArray.length; i4++) {
-				points += unitArray[i4].unit.points
-			}
-			for (i4 = 0; i4 < unitOptionArray.length; i4++) {
-				points += unitOptionArray[i4].unitOption.points
-			}
-			return points
-		}
-
 		let getUnitStrength = array => {
 			unitStrengthTotal = 0
 			let i4
@@ -1926,7 +1890,7 @@ class UnitEntriesFormContainer extends Component {
 			alliedPointTotal = 0
 
 			getUnitTypeCounts(array)
-			alliedPointTotal += getPoints(array, alliedSelectedUnitOptions)
+			alliedPointTotal += this.calculatePointTotal(array, alliedSelectedUnitOptions)
 
 			for (i = 0; i < units.length; i++) {
 				let limitedUnits = []
@@ -2136,7 +2100,7 @@ class UnitEntriesFormContainer extends Component {
 		addUnlocksFromRegiments(fakeListedUnits)
 		subtractUnlocks(fakeListedUnits)
 		getUnitTypeCounts(fakeListedUnits)
-		alliedPointTotal = getPoints(fakeListedUnits, fakeSelectedUnitOptions)
+		alliedPointTotal = this.calculatePointTotal(fakeListedUnits, fakeSelectedUnitOptions)
 
 		if (doesUnitUnlock(unitObject.unit) === true) {
 			alliedListedUnits = fakeListedUnits
@@ -2232,7 +2196,7 @@ class UnitEntriesFormContainer extends Component {
 		addUnlocksFromLargeInfantry(alliedListedUnits)
 		addUnlocksFromRegiments(alliedListedUnits)
 		subtractUnlocks(alliedListedUnits)
-		alliedPointTotal = getPoints(alliedListedUnits, alliedSelectedUnitOptions)
+		alliedPointTotal = this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions)
 		getUnitStrength(alliedListedUnits)
 		getUnitTypeCounts(alliedListedUnits)
 

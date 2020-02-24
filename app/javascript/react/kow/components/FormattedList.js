@@ -59,6 +59,7 @@ const FormattedList = props => {
 				<div>Army: {props.selectedArmy.label}</div>
 				<div>Ally: {props.alliedArmy.name}</div>
 				<div>Points: {props.pointTotal + props.alliedPointTotal}</div>
+				<div>Unit Count: {props.unitCount}</div>
 				<div>Unit Strength: {props.unitStrengthTotal}</div>
 			</div>
 
@@ -119,6 +120,7 @@ const FormattedList = props => {
 			<div className="formatted-list-header">
 				<div>Army: {props.selectedArmy.label}</div>
 				<div>Points: {props.pointTotal + props.alliedPointTotal}</div>
+				<div>Unit Count: {props.unitCount}</div>
 				<div>Unit Strength: {props.unitStrengthTotal}</div>
 			</div>
 		listDisplay =

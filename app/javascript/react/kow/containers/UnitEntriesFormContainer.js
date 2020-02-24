@@ -41,7 +41,7 @@ class UnitEntriesFormContainer extends Component {
 			titanCount: 0,
 			hordeCount: 0,
 			largeInfantryCount: 0,
-			tooMany: 3,
+			maximumCount: 3,
 			alliedArmy: '',
 			alliedArmySingularName: '',
 			alliedListedUnits: [],
@@ -67,7 +67,7 @@ class UnitEntriesFormContainer extends Component {
 		this.calculatePointTotal = this.calculatePointTotal.bind(this)
 		this.calculateUnitStrengthTotal = this.calculateUnitStrengthTotal.bind(this)
 		this.calculateUnitTypeCounts = this.calculateUnitTypeCounts.bind(this)
-		this.calculateTooMany = this.calculateTooMany.bind(this)
+		this.calculateMaximumCount = this.calculateMaximumCount.bind(this)
 		this.calculateUnlocks = this.calculateUnlocks.bind(this)
 		this.calculateAlliedUnlocks = this.calculateAlliedUnlocks.bind(this)
 		this.addToList = this.addToList.bind(this)
@@ -119,11 +119,12 @@ class UnitEntriesFormContainer extends Component {
 		for (i = 0; i < unitOptionArray.length; i++) {
 			pointTotal += unitOptionArray[i].unitOption.points
 		}
-		if (artefactArray != undefined) {
-			for (i = 0; i < artefactArray.length; i++) {
-				pointTotal += artefactArray[i].artefact.points
-			}
+		if (artefactArray == undefined) {
+			artefactArray = this.state.selectedArtefacts
 		}
+		for (i = 0; i < artefactArray.length; i++) {
+			pointTotal += artefactArray[i].artefact.points
+		}			
 		return pointTotal
 	}
 
@@ -210,6 +211,108 @@ class UnitEntriesFormContainer extends Component {
 			}
 		}
 		return unitTypeCountObject
+	}
+
+	calculateMaximumCount(pointTotal) {
+		let maximumCount
+		if (pointTotal < 3000) {
+			maximumCount = 3
+		} else if (pointTotal < 4000) {
+			maximumCount = 4
+		} else if (pointTotal < 5000) {
+			maximumCount = 5
+		} else if (pointTotal < 6000) {
+			maximumCount = 6
+		} else if (pointTotal < 7000) {
+			maximumCount = 7
+		} else if (pointTotal < 8000) {
+			maximumCount = 8
+		} else if (pointTotal < 9000) {
+			maximumCount = 9
+		} else if (pointTotal < 10000) {
+			maximumCount = 10
+		} else if (pointTotal < 11000) {
+			maximumCount = 11
+		} else if (pointTotal < 12000) {
+			maximumCount = 12
+		} else if (pointTotal < 13000) {
+			maximumCount = 13
+		} else if (pointTotal < 14000) {
+			maximumCount = 14
+		} else if (pointTotal < 15000) {
+			maximumCount = 15
+		} else if (pointTotal < 16000) {
+			maximumCount = 16
+		} else if (pointTotal < 17000) {
+			maximumCount = 17
+		} else if (pointTotal < 18000) {
+			maximumCount = 18
+		} else if (pointTotal < 19000) {
+			maximumCount = 19
+		} else if (pointTotal < 20000) {
+			maximumCount = 20
+		} else if (pointTotal < 21000) {
+			maximumCount = 21
+		} else if (pointTotal < 22000) {
+			maximumCount = 22
+		} else if (pointTotal < 23000) {
+			maximumCount = 23
+		} else if (pointTotal < 24000) {
+			maximumCount = 24
+		} else if (pointTotal < 25000) {
+			maximumCount = 25
+		} else if (pointTotal < 26000) {
+			maximumCount = 26
+		} else if (pointTotal < 27000) {
+			maximumCount = 27
+		} else if (pointTotal < 28000) {
+			maximumCount = 28
+		} else if (pointTotal < 29000) {
+			maximumCount = 29
+		} else if (pointTotal < 30000) {
+			maximumCount = 30
+		} else if (pointTotal < 31000) {
+			maximumCount = 31
+		} else if (pointTotal < 32000) {
+			maximumCount = 32
+		} else if (pointTotal < 33000) {
+			maximumCount = 33
+		} else if (pointTotal < 34000) {
+			maximumCount = 34
+		} else if (pointTotal < 35000) {
+			maximumCount = 35
+		} else if (pointTotal < 36000) {
+			maximumCount = 36
+		} else if (pointTotal < 37000) {
+			maximumCount = 37
+		} else if (pointTotal < 38000) {
+			maximumCount = 38
+		} else if (pointTotal < 39000) {
+			maximumCount = 39
+		} else if (pointTotal < 40000) {
+			maximumCount = 40
+		} else if (pointTotal < 41000) {
+			maximumCount = 41
+		} else if (pointTotal < 42000) {
+			maximumCount = 42
+		} else if (pointTotal < 43000) {
+			maximumCount = 43
+		} else if (pointTotal < 44000) {
+			maximumCount = 44
+		} else if (pointTotal < 45000) {
+			maximumCount = 45
+		} else if (pointTotal < 46000) {
+			maximumCount = 46
+		} else if (pointTotal < 47000) {
+			maximumCount = 47
+		} else if (pointTotal < 48000) {
+			maximumCount = 48
+		} else if (pointTotal < 49000) {
+			maximumCount = 49
+		} else if (pointTotal < 40000) {
+			maximumCount = 50
+		}
+		return maximumCount
 	}
 
 	calculateUnlocks(unit) {
@@ -661,7 +764,7 @@ class UnitEntriesFormContainer extends Component {
 
 		for (i = 0; i < units.length; i++) {
 			let limitedUnits = []
-			let maybeTooMany = []
+			let maybeMaxedOut = []
 			alliedLocked = false
 			for (i2 = 0; i2 < alliedListedUnits.length; i2++) {
 				if (units[i].limited_n > 0) {
@@ -673,7 +776,7 @@ class UnitEntriesFormContainer extends Component {
 					(units[i].unit_type === 'Monster' && alliedListedUnits[i2].unit.id === units[i].id) ||
 					(units[i].unit_type === 'Titan' && alliedListedUnits[i2].unit.id === units[i].id)
 				) {
-					maybeTooMany.push(alliedListedUnits[i2])
+					maybeMaxedOut.push(alliedListedUnits[i2])
 				}
 			}
 			if (
@@ -839,7 +942,7 @@ class UnitEntriesFormContainer extends Component {
 				units[i].army_id !== alliedArmy.id ||
 				(pointTotal + alliedPointTotal + units[i].points) / 4 < alliedPointTotal + units[i].points ||
 				limitedUnits.length >= 1 ||
-				maybeTooMany.length >= 1
+				maybeMaxedOut.length >= 1
 			) {
 				alliedGreyedOutUnits.push(units[i])
 			}
@@ -859,102 +962,18 @@ class UnitEntriesFormContainer extends Component {
 		})
 	}
 
-	calculateTooMany(pointAdjustment) {
-		let tooMany
-		if (this.state.pointTotal + pointAdjustment < 3000) {
-			tooMany = 3
-		} else if (this.state.pointTotal + pointAdjustment < 4000) {
-			tooMany = 4
-		} else if (this.state.pointTotal + pointAdjustment < 5000) {
-			tooMany = 5
-		} else if (this.state.pointTotal + pointAdjustment < 6000) {
-			tooMany = 6
-		} else if (this.state.pointTotal + pointAdjustment < 7000) {
-			tooMany = 7
-		} else if (this.state.pointTotal + pointAdjustment < 8000) {
-			tooMany = 8
-		} else if (this.state.pointTotal + pointAdjustment < 9000) {
-			tooMany = 9
-		} else if (this.state.pointTotal + pointAdjustment < 10000) {
-			tooMany = 10
-		} else if (this.state.pointTotal + pointAdjustment < 11000) {
-			tooMany = 11
-		} else if (this.state.pointTotal + pointAdjustment < 12000) {
-			tooMany = 12
-		} else if (this.state.pointTotal + pointAdjustment < 13000) {
-			tooMany = 13
-		} else if (this.state.pointTotal + pointAdjustment < 14000) {
-			tooMany = 14
-		} else if (this.state.pointTotal + pointAdjustment < 15000) {
-			tooMany = 15
-		} else if (this.state.pointTotal + pointAdjustment < 16000) {
-			tooMany = 16
-		} else if (this.state.pointTotal + pointAdjustment < 17000) {
-			tooMany = 17
-		} else if (this.state.pointTotal + pointAdjustment < 18000) {
-			tooMany = 18
-		} else if (this.state.pointTotal + pointAdjustment < 19000) {
-			tooMany = 19
-		} else if (this.state.pointTotal + pointAdjustment < 20000) {
-			tooMany = 20
-		} else if (this.state.pointTotal + pointAdjustment < 21000) {
-			tooMany = 21
-		} else if (this.state.pointTotal + pointAdjustment < 22000) {
-			tooMany = 22
-		} else if (this.state.pointTotal + pointAdjustment < 23000) {
-			tooMany = 23
-		} else if (this.state.pointTotal + pointAdjustment < 24000) {
-			tooMany = 24
-		} else if (this.state.pointTotal + pointAdjustment < 25000) {
-			tooMany = 25
-		} else if (this.state.pointTotal + pointAdjustment < 26000) {
-			tooMany = 26
-		} else if (this.state.pointTotal + pointAdjustment < 27000) {
-			tooMany = 27
-		} else if (this.state.pointTotal + pointAdjustment < 28000) {
-			tooMany = 28
-		} else if (this.state.pointTotal + pointAdjustment < 29000) {
-			tooMany = 29
-		} else if (this.state.pointTotal + pointAdjustment < 30000) {
-			tooMany = 30
-		} else if (this.state.pointTotal + pointAdjustment < 31000) {
-			tooMany = 31
-		} else if (this.state.pointTotal + pointAdjustment < 32000) {
-			tooMany = 32
-		} else if (this.state.pointTotal + pointAdjustment < 33000) {
-			tooMany = 33
-		} else if (this.state.pointTotal + pointAdjustment < 34000) {
-			tooMany = 34
-		} else if (this.state.pointTotal + pointAdjustment < 35000) {
-			tooMany = 35
-		} else if (this.state.pointTotal + pointAdjustment < 36000) {
-			tooMany = 36
-		} else if (this.state.pointTotal + pointAdjustment < 37000) {
-			tooMany = 37
-		} else if (this.state.pointTotal + pointAdjustment < 38000) {
-			tooMany = 38
-		} else if (this.state.pointTotal + pointAdjustment < 39000) {
-			tooMany = 39
-		} else if (this.state.pointTotal + pointAdjustment < 40000) {
-			tooMany = 40
-		} else if (this.state.pointTotal + pointAdjustment < 41000) {
-			tooMany = 41
-		}
-		this.setState({ tooMany: tooMany })
-		return tooMany
-	}
-
 	addToList(unitToAdd) {
 		let listedUnits = this.state.listedUnits
 		let indexCount = this.state.indexCount
 		let unitToAddWithIndex = { index: indexCount, unit: unitToAdd }
 		listedUnits.push(unitToAddWithIndex)
 		indexCount += 1
+		let pointTotal = this.calculatePointTotal(listedUnits)
 		let unitTypeCountObject = this.calculateUnitTypeCounts(listedUnits)
 		this.setState({
 			listedUnits: listedUnits,
 			indexCount: indexCount,
-			pointTotal: this.calculatePointTotal(listedUnits),
+			pointTotal: pointTotal,
 			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits),
 			heroCount: unitTypeCountObject.heroCount,
 			warEngineCount: unitTypeCountObject.warEngineCount,
@@ -962,11 +981,11 @@ class UnitEntriesFormContainer extends Component {
 			titanCount: unitTypeCountObject.titanCount,
 			hordeCount: unitTypeCountObject.hordeCount,
 			largeInfantryCount: unitTypeCountObject.largeInfantryCount,
+			maximumCount: this.calculateMaximumCount(pointTotal + this.state.alliedPointTotal),
 			unitOptionsVisible: false,
 			artefactsVisible: false,
 			alliesVisible: false
 		})
-		this.calculateTooMany(unitToAdd.points)
 		this.calculateUnlocks(unitToAdd)
 	}
 
@@ -976,13 +995,14 @@ class UnitEntriesFormContainer extends Component {
 		let unitToAddWithIndex = { index: indexCount + 200000, unit: unitToAdd }
 		alliedListedUnits.push(unitToAddWithIndex)
 		indexCount += 1
+		let alliedPointTotal = this.calculatePointTotal(alliedListedUnits)
 		let alliedUnitTypeCountObject = this.calculateUnitTypeCounts(alliedListedUnits)
 		this.setState({
 			alliedListedUnits: alliedListedUnits,
 			alliedArmy: alliedArmy,
 			alliedArmySingularName: alliedArmySingularName,
 			indexCount: indexCount,
-			alliedPointTotal: this.calculatePointTotal(alliedListedUnits),
+			alliedPointTotal: alliedPointTotal,
 			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits),
 			alliedHeroCount: alliedUnitTypeCountObject.heroCount,
 			alliedWarEngineCount: alliedUnitTypeCountObject.warEngineCount,
@@ -990,6 +1010,7 @@ class UnitEntriesFormContainer extends Component {
 			alliedTitanCount: alliedUnitTypeCountObject.titanCount,
 			alliedHordeCount: alliedUnitTypeCountObject.hordeCount,
 			alliedLargeInfantryCount: alliedUnitTypeCountObject.largeInfantryCount,
+			maximumCount: this.calculateMaximumCount(this.state.pointTotal + alliedPointTotal),
 			unitOptionsVisible: false,
 			artefactsVisible: false
 		})
@@ -1415,6 +1436,7 @@ class UnitEntriesFormContainer extends Component {
 		unitStrengthTotal = this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions)
 		let alliedArmy
 		let alliedListedUnits = this.state.alliedListedUnits
+		let alliedSelectedUnitOptions = this.state.alliedSelectedUnitOptions
 		let alliedPointTotal
 		let alliedTroopUnlocks
 		let alliedHeroUnlocks
@@ -1434,6 +1456,7 @@ class UnitEntriesFormContainer extends Component {
 		if (listedUnits.length < 1) {
 			alliedArmy = ''
 			alliedListedUnits = []
+			alliedSelectedUnitOptions = []
 			alliedPointTotal = 0
 			alliedTroopUnlocks = 0
 			alliedHeroUnlocks = 0
@@ -1450,13 +1473,10 @@ class UnitEntriesFormContainer extends Component {
 			alliesVisible = false
 			alliedGreyedOutUnits = []
 			indexCount = 0
-			let i7
-			for (i7 = 0; i7 < this.state.alliedListedUnits.length; i7 ++) {
-				unitStrengthTotal -= this.state.alliedListedUnits[i7].unit.unit_strength
-			}
 		} else {
 			alliedArmy = this.state.alliedArmy
 			alliedListedUnits = this.state.alliedListedUnits
+			alliedSelectedUnitOptions = this.state.alliedSelectedUnitOptions
 			alliedPointTotal = this.state.alliedPointTotal
 			alliedTroopUnlocks = this.state.alliedTroopUnlocks
 			alliedHeroUnlocks = this.state.alliedHeroUnlocks,
@@ -1475,9 +1495,13 @@ class UnitEntriesFormContainer extends Component {
 			indexCount = this.state.indexCount
 		}
 
-		let tooManyBefore = this.calculateTooMany(0)
-		let tooManyAfter = this.calculateTooMany(unitObject.unit.points * -1)
-		if (tooManyAfter < tooManyBefore) {
+		let oldPointTotal = this.calculatePointTotal(this.state.listedUnits, this.state.selectedUnitOptions, this.state.selectedArtefacts)
+		let oldAlliedPointTotal = this.calculatePointTotal(this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
+		pointTotal = this.calculatePointTotal(listedUnits, selectedUnitOptions, selectedArtefacts)
+		alliedPointTotal = this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions)
+		let maximumCountBefore = this.calculateMaximumCount(oldPointTotal + oldAlliedPointTotal)
+		let maximumCountAfter = this.calculateMaximumCount(pointTotal + alliedPointTotal)
+		if (maximumCountAfter < maximumCountBefore) {
 			let countNonUniqueUnits = (array, value) => {
 				let count = 0
 				for (i3 = 0; i3 < array.length; i3++) {
@@ -1489,7 +1513,7 @@ class UnitEntriesFormContainer extends Component {
 			}
 			for (i2 = 0; i2 < listedUnits.length; i2++) {
 				if (
-					countNonUniqueUnits(listedUnits, listedUnits[i2]) > tooManyAfter && (
+					countNonUniqueUnits(listedUnits, listedUnits[i2]) > maximumCountAfter && (
 						listedUnits[i2].unit.unit_type.includes('Hero') ||
 						listedUnits[i2].unit.unit_type === 'War Engine' ||
 						listedUnits[i2].unit.unit_type === 'Monster' ||
@@ -1509,11 +1533,14 @@ class UnitEntriesFormContainer extends Component {
 
 		getUnitTypeCounts(listedUnits)
 
+		pointTotal = this.calculatePointTotal(listedUnits, selectedUnitOptions, selectedArtefacts)
+		alliedPointTotal = this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions)
+
 		this.setState({
 			listedUnits: listedUnits,
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
-			pointTotal: this.calculatePointTotal(listedUnits, selectedUnitOptions, selectedArtefacts),
+			pointTotal: pointTotal,
 			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions),
 			troopUnlocks: troopUnlocks,
 			heroUnlocks: heroUnlocks,
@@ -1529,7 +1556,9 @@ class UnitEntriesFormContainer extends Component {
 			largeInfantryCount: largeInfantryCount,
 			alliedArmy: alliedArmy,
 			alliedListedUnits: alliedListedUnits,
+			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
 			alliedPointTotal: alliedPointTotal,
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits, alliedSelectedUnitOptions),
 			alliedTroopUnlocks: alliedTroopUnlocks,
 			alliedHeroUnlocks: alliedHeroUnlocks,
 			alliedWarEngineUnlocks: alliedWarEngineUnlocks,
@@ -1544,7 +1573,8 @@ class UnitEntriesFormContainer extends Component {
 			alliedLargeInfantryCount: alliedLargeInfantryCount,
 			alliesVisible: alliesVisible,
 			alliedGreyedOutUnits: alliedGreyedOutUnits,
-			indexCount: indexCount
+			indexCount: indexCount,
+			maximumCount: this.calculateMaximumCount(pointTotal + alliedPointTotal)
 		})
 	}
 
@@ -1856,7 +1886,7 @@ class UnitEntriesFormContainer extends Component {
 
 			for (i = 0; i < units.length; i++) {
 				let limitedUnits = []
-				let maybeTooMany = []
+				let maybeMaxedOut = []
 				alliedLocked = false
 				for (i2 = 0; i2 < array.length; i2++) {
 					if (units[i].limited_n > 0) {
@@ -1868,7 +1898,7 @@ class UnitEntriesFormContainer extends Component {
 						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
 						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
 					) {
-						maybeTooMany.push(array[i2])
+						maybeMaxedOut.push(array[i2])
 					}
 				}
 				if (
@@ -2032,7 +2062,7 @@ class UnitEntriesFormContainer extends Component {
 					alliedLocked === true ||
 					(this.state.pointTotal + alliedPointTotal + units[i].points) / 4 < alliedPointTotal + units[i].points ||
 					limitedUnits.length >= 1 ||
-					maybeTooMany.length >= 1 || (
+					maybeMaxedOut.length >= 1 || (
 						this.state.alliedArmy !== '' &&
 						units[i].army_id !== this.state.alliedArmy.id &&
 						alliedListedUnits.length > 0					
@@ -2158,7 +2188,7 @@ class UnitEntriesFormContainer extends Component {
 		addUnlocksFromLargeInfantry(alliedListedUnits)
 		addUnlocksFromRegiments(alliedListedUnits)
 		subtractUnlocks(alliedListedUnits)
-		alliedPointTotal = this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions)
+
 		getUnitTypeCounts(alliedListedUnits)
 
 		this.setState({
@@ -2166,7 +2196,7 @@ class UnitEntriesFormContainer extends Component {
 			alliedArmySingularName: alliedArmySingularName,
 			alliedListedUnits: alliedListedUnits,
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
-			alliedPointTotal: alliedPointTotal,
+			alliedPointTotal: this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions),
 			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits, alliedSelectedUnitOptions),
 			alliedTroopUnlocks: alliedTroopUnlocks,
 			alliedHeroUnlocks: alliedHeroUnlocks,
@@ -2299,7 +2329,7 @@ class UnitEntriesFormContainer extends Component {
 
 			for (i = 0; i < units.length; i++) {
 				let limitedUnits = []
-				let maybeTooMany = []
+				let maybeMaxedOut = []
 				alliedLocked = false
 				for (i2 = 0; i2 < array.length; i2++) {
 					if (units[i].limited_n > 0) {
@@ -2311,7 +2341,7 @@ class UnitEntriesFormContainer extends Component {
 						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
 						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
 					) {
-						maybeTooMany.push(array[i2])
+						maybeMaxedOut.push(array[i2])
 					}
 				}
 				if (
@@ -2475,7 +2505,7 @@ class UnitEntriesFormContainer extends Component {
 					alliedLocked === true ||
 					(pointTotal + this.state.alliedPointTotal + units[i].points) / 4 < this.state.alliedPointTotal + units[i].points ||
 					limitedUnits.length >= 1 ||
-					maybeTooMany.length >= 1 || (
+					maybeMaxedOut.length >= 1 || (
 						this.state.alliedArmy !== '' &&
 						units[i].army_id !== this.state.alliedArmy.id &&
 						this.state.alliedListedUnits.length > 0					
@@ -2520,8 +2550,8 @@ class UnitEntriesFormContainer extends Component {
 		this.setState({
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
-			pointTotal: pointTotal,
-			unitStrengthTotal: unitStrengthTotal,
+			pointTotal: this.calculatePointTotal(this.state.listedUnits, selectedUnitOptions, selectedArtefacts),
+			unitStrengthTotal: this.calculateUnitStrengthTotal(this.state.listedUnits, selectedUnitOptions),
 			unitBeingGivenOption: '',
 			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
 		})
@@ -2574,7 +2604,7 @@ class UnitEntriesFormContainer extends Component {
 
 			for (i = 0; i < units.length; i++) {
 				let limitedUnits = []
-				let maybeTooMany = []
+				let maybeMaxedOut = []
 				alliedLocked = false
 				for (i2 = 0; i2 < array.length; i2++) {
 					if (units[i].limited_n > 0) {
@@ -2586,7 +2616,7 @@ class UnitEntriesFormContainer extends Component {
 						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
 						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
 					) {
-						maybeTooMany.push(array[i2])
+						maybeMaxedOut.push(array[i2])
 					}
 				}
 				if (
@@ -2750,7 +2780,7 @@ class UnitEntriesFormContainer extends Component {
 					alliedLocked === true ||
 					(this.state.pointTotal + alliedPointTotal + units[i].points) / 4 < alliedPointTotal + units[i].points ||
 					limitedUnits.length >= 1 ||
-					maybeTooMany.length >= 1 || (
+					maybeMaxedOut.length >= 1 || (
 						this.state.alliedArmy !== '' &&
 						units[i].army_id !== this.state.alliedArmy.id &&
 						this.state.alliedListedUnits.length > 0					
@@ -2794,8 +2824,8 @@ class UnitEntriesFormContainer extends Component {
 
 		this.setState({
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
-			alliedPointTotal: alliedPointTotal,
-			unitStrengthTotal: unitStrengthTotal,
+			alliedPointTotal: this.calculatePointTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
 			alliedUnitBeingGivenOption: '',
 			alliedGreyedOutUnits: (determineIfGreyedOut(this.state.alliedListedUnits))
 		})
@@ -2903,7 +2933,7 @@ class UnitEntriesFormContainer extends Component {
 
 			for (i = 0; i < units.length; i++) {
 				let limitedUnits = []
-				let maybeTooMany = []
+				let maybeMaxedOut = []
 				alliedLocked = false
 				for (i2 = 0; i2 < array.length; i2++) {
 					if (units[i].limited_n > 0) {
@@ -2915,7 +2945,7 @@ class UnitEntriesFormContainer extends Component {
 						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
 						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
 					) {
-						maybeTooMany.push(array[i2])
+						maybeMaxedOut.push(array[i2])
 					}
 				}
 				if (
@@ -3079,7 +3109,7 @@ class UnitEntriesFormContainer extends Component {
 					alliedLocked === true ||
 					(pointTotal + this.state.alliedPointTotal + units[i].points) / 4 < this.state.alliedPointTotal + units[i].points ||
 					limitedUnits.length >= 1 ||
-					maybeTooMany.length >= 1 || (
+					maybeMaxedOut.length >= 1 || (
 						this.state.alliedArmy !== '' &&
 						units[i].army_id !== this.state.alliedArmy.id &&
 						this.state.alliedListedUnits.length > 0					
@@ -3094,7 +3124,8 @@ class UnitEntriesFormContainer extends Component {
 		this.setState({
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
-			pointTotal: pointTotal,
+			pointTotal: this.calculatePointTotal(this.state.listedUnits, selectedUnitOptions, selectedArtefacts),
+			unitStrengthTotal: this.calculateUnitStrengthTotal(this.state.listedUnits, selectedUnitOptions),
 			unitBeingGivenArtefact: '',
 			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
 		})
@@ -3127,7 +3158,7 @@ class UnitEntriesFormContainer extends Component {
 
 			for (i = 0; i < units.length; i++) {
 				let limitedUnits = []
-				let maybeTooMany = []
+				let maybeMaxedOut = []
 				alliedLocked = false
 				for (i2 = 0; i2 < array.length; i2++) {
 					if (units[i].limited_n > 0) {
@@ -3139,7 +3170,7 @@ class UnitEntriesFormContainer extends Component {
 						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
 						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
 					) {
-						maybeTooMany.push(array[i2])
+						maybeMaxedOut.push(array[i2])
 					}
 				}
 				if (
@@ -3303,7 +3334,7 @@ class UnitEntriesFormContainer extends Component {
 					alliedLocked === true ||
 					(pointTotal + this.state.alliedPointTotal + units[i].points) / 4 < this.state.alliedPointTotal + units[i].points ||
 					limitedUnits.length >= 1 ||
-					maybeTooMany.length >= 1 || (
+					maybeMaxedOut.length >= 1 || (
 						this.state.alliedArmy !== '' &&
 						units[i].army_id !== this.state.alliedArmy.id &&
 						this.state.alliedListedUnits.length > 0					
@@ -3352,8 +3383,8 @@ class UnitEntriesFormContainer extends Component {
 
 		this.setState({
 			selectedUnitOptions: selectedUnitOptions,
-			pointTotal: pointTotal,
-			unitStrengthTotal: unitStrengthTotal,
+			pointTotal: this.calculatePointTotal(this.state.listedUnits, selectedUnitOptions),
+			unitStrengthTotal: this.calculateUnitStrengthTotal(this.state.listedUnits, selectedUnitOptions),
 			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
 		})
 	}
@@ -3384,7 +3415,7 @@ class UnitEntriesFormContainer extends Component {
 
 			for (i = 0; i < units.length; i++) {
 				let limitedUnits = []
-				let maybeTooMany = []
+				let maybeMaxedOut = []
 				alliedLocked = false
 				for (i2 = 0; i2 < array.length; i2++) {
 					if (units[i].limited_n > 0) {
@@ -3396,7 +3427,7 @@ class UnitEntriesFormContainer extends Component {
 						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
 						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
 					) {
-						maybeTooMany.push(array[i2])
+						maybeMaxedOut.push(array[i2])
 					}
 				}
 				if (
@@ -3560,7 +3591,7 @@ class UnitEntriesFormContainer extends Component {
 					alliedLocked === true ||
 					(this.state.pointTotal + alliedPointTotal + units[i].points) / 4 < alliedPointTotal + units[i].points ||
 					limitedUnits.length >= 1 ||
-					maybeTooMany.length >= 1 || (
+					maybeMaxedOut.length >= 1 || (
 						this.state.alliedArmy !== '' &&
 						units[i].army_id !== this.state.alliedArmy.id &&
 						this.state.alliedListedUnits.length > 0					
@@ -3604,8 +3635,8 @@ class UnitEntriesFormContainer extends Component {
 
 		this.setState({
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
-			alliedPointTotal: alliedPointTotal,
-			unitStrengthTotal: unitStrengthTotal,
+			alliedPointTotal: this.calculatePointTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
 			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
 		})
 	}
@@ -3633,7 +3664,7 @@ class UnitEntriesFormContainer extends Component {
 
 			for (i = 0; i < units.length; i++) {
 				let limitedUnits = []
-				let maybeTooMany = []
+				let maybeMaxedOut = []
 				alliedLocked = false
 				for (i2 = 0; i2 < array.length; i2++) {
 					if (units[i].limited_n > 0) {
@@ -3645,7 +3676,7 @@ class UnitEntriesFormContainer extends Component {
 						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
 						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
 					) {
-						maybeTooMany.push(array[i2])
+						maybeMaxedOut.push(array[i2])
 					}
 				}
 				if (
@@ -3809,7 +3840,7 @@ class UnitEntriesFormContainer extends Component {
 					alliedLocked === true ||
 					(pointTotal + this.state.alliedPointTotal + units[i].points) / 4 < this.state.alliedPointTotal + units[i].points ||
 					limitedUnits.length >= 1 ||
-					maybeTooMany.length >= 1 || (
+					maybeMaxedOut.length >= 1 || (
 						this.state.alliedArmy !== '' &&
 						units[i].army_id !== this.state.alliedArmy.id &&
 						this.state.alliedListedUnits.length > 0					
@@ -3828,7 +3859,7 @@ class UnitEntriesFormContainer extends Component {
 
 		this.setState({
 			selectedArtefacts: selectedArtefacts,
-			pointTotal: pointTotal,
+			pointTotal: this.calculatePointTotal(this.state.listedUnits, this.state.selectedUnitOptions, selectedArtefacts),
 			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
 		})
 	}
@@ -3853,7 +3884,7 @@ class UnitEntriesFormContainer extends Component {
 			titanCount: 0,
 			hordeCount: 0,
 			largeInfantryCount: 0,
-			tooMany: 3,
+			maximumCount: 3,
 			formattedListVisible: false,
 			unitOptionsVisible: false,
 			artefactsVisible: false,
@@ -4108,7 +4139,7 @@ class UnitEntriesFormContainer extends Component {
 				let limitedHeroCount = 0
 				let limitedAndLockedFromJarvisCount = 0
 				let limitedDuplicateCount = 0
-				let maybeTooMany = []
+				let maybeMaxedOut = []
 				let heroesOnList = []
 				let warEnginesOnList = []
 				let monstersOnList = []
@@ -4129,7 +4160,7 @@ class UnitEntriesFormContainer extends Component {
 						(units[i].unit_type === 'Monster' && listedUnits[i2].unit.id === units[i].id) ||
 						(units[i].unit_type === 'Titan' && listedUnits[i2].unit.id === units[i].id)
 					) {
-						maybeTooMany.push(listedUnits[i2])
+						maybeMaxedOut.push(listedUnits[i2])
 					}
 				}
 				if (
@@ -4299,7 +4330,7 @@ class UnitEntriesFormContainer extends Component {
 				if (units[i].army_id === selectedArmy.value) {
 					if (
 						limitedDuplicateCount > 0 ||
-						maybeTooMany.length >= this.state.tooMany ||
+						maybeMaxedOut.length >= this.state.maximumCount ||
 						locked === true
 					) {
 						greyedOutUnits.push(units[i])

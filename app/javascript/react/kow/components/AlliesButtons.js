@@ -123,20 +123,25 @@ class AlliesButtons extends Component {
 
 		for (i = 0; i < units.length; i++) {	
 			if (units[i].army_id === army.id) {
-				for (i2 = units.length - 1; i2 >= 0; i2--) {
-					if (units[i2].limited_n > 0) {
-						units.splice(units.indexOf(units[i2]), 1)
-					}
-					if (units[i2].is_irregular === true) {
-						units.splice(units.indexOf(units[i2]), 1)
-					}
-				}
-				if (units[i].unlocking_class > 0) {
-					unitsInAlliedArmyTop.push(units[i])
-				} else {
-					unitsInAlliedArmyBottom.push(units[i])
-				}
+				unitsInAlliedArmy.push(units[i])
 			}
+		}
+		for (i = 0; i < unitsInAlliedArmy.length; i++) {
+			if (unitsInAlliedArmy[i].limited_n > 0) {
+				unitsInAlliedArmy.splice(unitsInAlliedArmy.indexOf(unitsInAlliedArmy[i]), 1)
+			}			
+		}
+		for (i = 0; i < unitsInAlliedArmy.length; i++) {
+			if (unitsInAlliedArmy[i].is_irregular === true) {
+				unitsInAlliedArmy.splice(unitsInAlliedArmy.indexOf(unitsInAlliedArmy[i]), 1)
+			}			
+		}
+		for (i = 0; i < unitsInAlliedArmy.length; i++) {
+			if (unitsInAlliedArmy[i].unlocking_class > 0) {
+				unitsInAlliedArmyTop.push(unitsInAlliedArmy[i])
+			} else {
+				unitsInAlliedArmyBottom.push(unitsInAlliedArmy[i])
+			}		
 		}
 
 		this.setState({

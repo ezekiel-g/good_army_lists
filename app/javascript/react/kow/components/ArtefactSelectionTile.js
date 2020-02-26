@@ -133,16 +133,16 @@ class ArtefactSelectionTile extends Component {
 
 		let artefactDisplay = sortedArtefacts.map(artefact => {
 			let greyedOut = false
-			// if (
-			// 	(
-			// 		(this.props.pointTotal + this.props.alliedPointTotal + artefact.points - selectedArtefactPoints) / 4 <
-			// 		this.props.alliedPointTotal
-			// 	) && (
-			// 		this.props.alliedPointTotal > 0
-			// 	)
-			// ) {
-			// 	greyedOut = true
-			// }
+			if (
+				(
+					(this.props.pointTotal + this.props.alliedPointTotal + artefact.points - selectedArtefactPoints) / 4 <
+					this.props.alliedPointTotal
+				) && (
+					this.props.alliedPointTotal > 0
+				)
+			) {
+				greyedOut = true
+			}
 			return (
 				<ArtefactSelectionLabel
 					key={artefact.id}

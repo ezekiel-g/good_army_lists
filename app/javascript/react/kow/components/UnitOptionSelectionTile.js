@@ -272,34 +272,29 @@ class UnitOptionSelectionTile extends Component {
 					highlighted = true
 				}
 			}
-			if (
-				this.props.alliedUnitObject != '' &&
-				this.props.alliedUnitObject != undefined && (
-					this.props.unitObject == '' || this.props.unitObject == undefined
-				)
-			) {
-				if (highlighted === true && unitObject === this.props.unitObject) {
-					if (
-						(
-							(this.props.pointTotal + this.props.alliedPointTotal - unitOption.points) / 4 <
-							this.props.alliedPointTotal
-						) && (
-							this.props.alliedPointTotal > 0
-						)
-					) {
-						greyedOut = true
-					}				
-				} else {
-					if (
-						(
-							(this.props.pointTotal + this.props.alliedPointTotal + unitOption.points) / 4 <
-							this.props.alliedPointTotal + unitOption.points
-						) && (
-							this.props.alliedPointTotal > 0
-						)
-					) {
-						greyedOut = true
-					}
+
+			if (highlighted === true && unitObject === this.props.unitObject) {
+				if (
+					(
+						(this.props.pointTotal + this.props.alliedPointTotal - unitOption.points) / 4 <
+						this.props.alliedPointTotal
+					) && (
+						this.props.alliedPointTotal > 0
+					)
+				) {
+					greyedOut = true
+				}	
+			}
+			if (highlighted === false && unitObject === this.props.alliedUnitObject) {		
+				if (
+					(
+						(this.props.pointTotal + this.props.alliedPointTotal + unitOption.points) / 4 <
+						this.props.alliedPointTotal + unitOption.points
+					) && (
+						this.props.alliedPointTotal > 0
+					)
+				) {
+					greyedOut = true
 				}
 			}
 

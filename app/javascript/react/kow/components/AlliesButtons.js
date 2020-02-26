@@ -10,7 +10,6 @@ class AlliesButtons extends Component {
 			selectedAlliedArmySingularName: '',
 			unitsInAlliedArmyTop: [],
 			unitsInAlliedArmyBottom: []
-			// greyedOutUnits: []
 		}
 		this.showAlliedUnitChoices = this.showAlliedUnitChoices.bind(this)
 		this.hideAlliedUnitChoices = this.hideAlliedUnitChoices.bind(this)
@@ -18,30 +17,14 @@ class AlliesButtons extends Component {
 
 	showAlliedUnitChoices(army, units, alliedListedUnits) {
 		let unitsInAlliedArmy = []
+		let unitsInAlliedArmyRegular = []
+		let unitsInAlliedArmyWithoutLimited = []
 		let unitsInAlliedArmyTop = []
 		let unitsInAlliedArmyBottom = []
-		let alliedGreyedOutUnits = []
-		let alliedHeroesOnList = []
-		let alliedWarEnginesOnList = []
-		let alliedMonstersOnList = []
-		let alliedLocked
-		let pointTotal = this.props.pointTotal
-		let alliedPointTotal = this.props.alliedPointTotal
-		let alliedTroopUnlocks = this.props.alliedTroopUnlocks
-		let alliedHeroUnlocks = this.props.alliedHeroUnlocks
-		let alliedWarEngineUnlocks = this.props.alliedWarEngineUnlocks
-		let alliedMonsterUnlocks = this.props.alliedMonsterUnlocks
-		let alliedUnlocksFromRegiments = this.props.alliedUnlocksFromRegiments
-		let alliedUnlocksFromLargeInfantry = this.props.alliedUnlocksFromLargeInfantry
-		let alliedHeroCount = this.props.alliedHeroCount
-		let alliedWarEngineCount = this.props.alliedWarEngineCount
-		let alliedMonsterCount = this.props.alliedMonsterCount
-		let alliedTitanCount = this.props.alliedTitanCount
-		let alliedInfantryHordeCount = this.props.alliedInfantryHordeCount
-		let alliedLargeInfantryHordeCount = this.props.alliedLargeInfantryHordeCount
 		let selectedAlliedArmySingularName
 		let i
 		let i2
+
 		if (army.name === 'Basileans') {
 			selectedAlliedArmySingularName = 'Basilean'
 		}
@@ -127,20 +110,20 @@ class AlliesButtons extends Component {
 			}
 		}
 		for (i = 0; i < unitsInAlliedArmy.length; i++) {
-			if (unitsInAlliedArmy[i].limited_n > 0) {
-				unitsInAlliedArmy.splice(unitsInAlliedArmy.indexOf(unitsInAlliedArmy[i]), 1)
+			if (unitsInAlliedArmy[i].is_irregular === false) {
+				unitsInAlliedArmyRegular.push(unitsInAlliedArmy[i])
+			}		
+		}
+		for (i = 0; i < unitsInAlliedArmyRegular.length; i++) {
+			if (unitsInAlliedArmyRegular[i].limited_n === 0 || unitsInAlliedArmyRegular[i].limited_n === null) {
+				unitsInAlliedArmyWithoutLimited.push(unitsInAlliedArmyRegular[i])
 			}			
 		}
-		for (i = 0; i < unitsInAlliedArmy.length; i++) {
-			if (unitsInAlliedArmy[i].is_irregular === true) {
-				unitsInAlliedArmy.splice(unitsInAlliedArmy.indexOf(unitsInAlliedArmy[i]), 1)
-			}			
-		}
-		for (i = 0; i < unitsInAlliedArmy.length; i++) {
-			if (unitsInAlliedArmy[i].unlocking_class > 0) {
-				unitsInAlliedArmyTop.push(unitsInAlliedArmy[i])
+		for (i = 0; i < unitsInAlliedArmyWithoutLimited.length; i++) {
+			if (unitsInAlliedArmyWithoutLimited[i].unlocking_class > 0) {
+				unitsInAlliedArmyTop.push(unitsInAlliedArmyWithoutLimited[i])
 			} else {
-				unitsInAlliedArmyBottom.push(unitsInAlliedArmy[i])
+				unitsInAlliedArmyBottom.push(unitsInAlliedArmyWithoutLimited[i])
 			}		
 		}
 
@@ -150,7 +133,6 @@ class AlliesButtons extends Component {
 			selectedAlliedArmySingularName: selectedAlliedArmySingularName,
 			unitsInAlliedArmyTop: unitsInAlliedArmyTop,
 			unitsInAlliedArmyBottom: unitsInAlliedArmyBottom
-			// greyedOutUnits: this.props.determineIfGreyedOut(this.props.alliedListedUnits, army)
 		})
 	}
 
@@ -161,7 +143,6 @@ class AlliesButtons extends Component {
 			selectedAlliedArmySingularName: '',
 			unitsInAlliedArmyTop: '',
 			unitsInAlliedArmyBottom: ''
-			// greyedOutUnits: ''
 		})
 	}
 
@@ -392,8 +373,6 @@ class AlliesButtons extends Component {
 						alliedListedUnits={this.props.alliedListedUnits}
 						determineIfGreyedOut={this.props.determineIfGreyedOut}
 						alliedArmy={this.props.alliedArmy}
-						// greyedOutUnits={this.state.greyedOutUnits}
-						// newGreyedOutUnits={this.props.greyedOutUnits}
 					/>
 				)
 			})
@@ -408,9 +387,7 @@ class AlliesButtons extends Component {
 						addToList={this.props.addToList}
 						alliedListedUnits={this.props.alliedListedUnits}
 						determineIfGreyedOut={this.props.determineIfGreyedOut}
-						alliedArmy={this.props.alliedArmy}		
-						// greyedOutUnits={this.state.greyedOutUnits}
-						// newGreyedOutUnits={this.props.greyedOutUnits}
+						alliedArmy={this.props.alliedArmy}
 					/>					
 				)
 			})

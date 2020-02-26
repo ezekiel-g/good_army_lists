@@ -771,6 +771,8 @@ class UnitEntriesFormContainer extends Component {
 					) || (
 						maybeMaxedOut.length >= this.state.maximumCount
 					) || (
+						limitedDuplicateCount > 0
+					) || (
 							units[i].name === 'Jarvis [1]' && (
 							limitedHeroCount > 0 || (
 								this.state.alliedListedUnits.length > 0 &&

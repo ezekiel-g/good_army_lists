@@ -8,7 +8,7 @@ const ArtefactSelectionLabel = props => {
 	}
 
 	let display
-	if (props.greyedOut === false) {
+	// if (props.greyedOut === false) {
 		display =
 			<table className="artefact-table">
 				<tbody>
@@ -31,26 +31,26 @@ const ArtefactSelectionLabel = props => {
 					</tr>
 				</tbody>
 			</table>
-	} else {
-		display =
-			<table className="artefact-table">
-			<tbody>
-				<tr className="greyed-out-unit-option">
-					<td valign="top">
-						{extraSpace}{props.artefact.points}
-					</td>
-					<td>
-						<span className="white-square"><img src={whiteSquare} width={"10"} height={"20"} /></span>
-					</td>
-					<td>
-						<span>
-							{props.artefact.display_name}
-						</span>
-					</td>
-				</tr>
-			</tbody>
-		</table>	
-	}
+	// } else {
+	// 	display =
+	// 		<table className="artefact-table">
+	// 		<tbody>
+	// 			<tr className="greyed-out-unit-option">
+	// 				<td valign="top">
+	// 					{extraSpace}{props.artefact.points}
+	// 				</td>
+	// 				<td>
+	// 					<span className="white-square"><img src={whiteSquare} width={"10"} height={"20"} /></span>
+	// 				</td>
+	// 				<td>
+	// 					<span>
+	// 						{props.artefact.display_name}
+	// 					</span>
+	// 				</td>
+	// 			</tr>
+	// 		</tbody>
+	// 	</table>	
+	// }
 
 	return (
 		<div>{display}</div>

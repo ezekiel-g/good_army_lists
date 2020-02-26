@@ -127,6 +127,9 @@ class AlliesButtons extends Component {
 					if (units[i2].limited_n > 0) {
 						units.splice(units.indexOf(units[i2]), 1)
 					}
+					if (units[i2].is_irregular === true) {
+						units.splice(units.indexOf(units[i2]), 1)
+					}
 				}
 				if (units[i].unlocking_class > 0) {
 					unitsInAlliedArmyTop.push(units[i])

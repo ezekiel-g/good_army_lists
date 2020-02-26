@@ -14,19 +14,26 @@ const AlliedUnitEntryButton = props => {
 	if (props.unit.limited_n > 0) {
 		limitNumber = ' ' + '[' + props.unit.limited_n + ']'
 	}
+	let greyedOutUnits = props.determineIfGreyedOut(props.alliedListedUnits, props.alliedArmy)
 	let greyedOut = false
 	let i
-	if (props.newGreyedOutUnits.length === 0 && props.alliedListedUnits.length === 0) {
-		for (i = 0; i < props.greyedOutUnits.length; i++) {
-			if (props.greyedOutUnits[i].id === props.unit.id) {
-				greyedOut = true
-			}
-		}		
-	} else {
-		for (i = 0; i < props.newGreyedOutUnits.length; i++) {
-			if (props.newGreyedOutUnits[i].id === props.unit.id) {
-				greyedOut = true
-			}
+	// if (props.newGreyedOutUnits.length === 0 && props.alliedListedUnits.length === 0) {
+	// 	for (i = 0; i < props.greyedOutUnits.length; i++) {
+	// 		if (props.greyedOutUnits[i].id === props.unit.id) {
+	// 			greyedOut = true
+	// 		}
+	// 	}		
+	// } else {
+	// 	for (i = 0; i < props.newGreyedOutUnits.length; i++) {
+	// 		if (props.newGreyedOutUnits[i].id === props.unit.id) {
+	// 			greyedOut = true
+	// 		}
+	// 	}
+	// }
+
+	for (i = 0; i < greyedOutUnits.length; i++) {
+		if (greyedOutUnits[i].id === props.unit.id) {
+			greyedOut = true
 		}
 	}
 

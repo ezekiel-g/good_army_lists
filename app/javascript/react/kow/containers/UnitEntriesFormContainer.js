@@ -625,7 +625,7 @@ class UnitEntriesFormContainer extends Component {
 			canOrCannotAdd.warEngine = ((liw > 0 && liu > 0) || regw > 0 || hw > 0);
 			canOrCannotAdd.titan = ((lit > 0 && liu > 0) || regt > 0 || ht > 0);
 			canOrCannotAdd.monster = ((lim > 0 && liu > 0) || regm > 0 || hm > 0);
-			canOrCannotAdd.troop = (utc.troopCount < uo.troopUnlocks);
+			canOrCannotAdd.troop = (uo.troopUnlocks > 0);
 			
 			return canOrCannotAdd;
 		}
@@ -699,6 +699,8 @@ class UnitEntriesFormContainer extends Component {
 						units[i].unit_type === 'Monstrous Infantry'
 					) && (
 						units[i].unit_size === 'Regiment'
+					) && (
+						units[i].is_irregular === false
 					)
 				) {
 					locked = false

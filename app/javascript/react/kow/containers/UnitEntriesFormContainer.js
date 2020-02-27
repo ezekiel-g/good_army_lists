@@ -336,106 +336,106 @@ class UnitEntriesFormContainer extends Component {
 					unlockObject.unlocksFromRegiments += 1
 				}
 			}
-			if (listedUnitArray[i].unit.unit_size === 'Troop' || listedUnitArray[i].unit.is_irregular === true) {
-				unlockObject.troopUnlocks += -1
-			}
-			if (listedUnitArray[i].unit.unit_type.includes('Hero')) {
-				if (unlockObject.heroUnlocks > 0) {
-					unlockObject.heroUnlocks += -1
-				} else {
-					if (
-						unlockObject.unlocksFromLargeInfantry > 0 
-						// && (
-						// 	(
-						// 		unitTypeCountObject.heroCount <= unitTypeCountObject.warEngineCount &&
-						// 		unitTypeCountObject.heroCount <= unitTypeCountObject.monsterCount &&
-						// 		unitTypeCountObject.heroCount <= unitTypeCountObject.titanCount
-						// 	) || (
-						// 		unitTypeCountObject.heroCount < unitTypeCountObject.largeInfantryCount
-						// 	)
-						// )
-					) 
-						{
-						unlockObject.unlocksFromLargeInfantry += -1
-					} else {
-						if (unlockObject.unlocksFromRegiments > 0) {
-							unlockObject.unlocksFromRegiments += -1
-						}
-					}
-				}
-			}
-			if (listedUnitArray[i].unit.unit_type === 'War Engine') {
-				if (unlockObject.warEngineUnlocks > 0) {
-					unlockObject.warEngineUnlocks  += -1
-				} else {
-					if (
-						unlockObject.unlocksFromLargeInfantry > 0
-						//  && (
-						// 	(
-						// 		unitTypeCountObject.warEngineCount <= unitTypeCountObject.heroCount &&
-						// 		unitTypeCountObject.warEngineCount <= unitTypeCountObject.monsterCount &&
-						// 		unitTypeCountObject.warEngineCount <= unitTypeCountObject.titanCount
-						// 	) || (
-						// 		unitTypeCountObject.warEngineCount < unitTypeCountObject.largeInfantryCount
-						// 	)
-						// )
-					) {
-						unlockObject.unlocksFromLargeInfantry += -1
-					} else {
-						if (unlockObject.unlocksFromRegiments > 0) {
-							unlockObject.unlocksFromRegiments += -1
-						}
-					}
-				}
-			}
-			if (listedUnitArray[i].unit.unit_type === 'Monster') {
-				if (unlockObject.monsterUnlocks > 0) {
-					unlockObject.monsterUnlocks  += -1
-				} else {
-					if (
-						unlockObject.unlocksFromLargeInfantry > 0
-						//  && (
-						// 	(
-						// 		unitTypeCountObject.monsterCount <= unitTypeCountObject.heroCount &&
-						// 		unitTypeCountObject.monsterCount <= unitTypeCountObject.warEngineCount &&
-						// 		unitTypeCountObject.monsterCount <= unitTypeCountObject.titanCount
-						// 	) || (
-						// 		unitTypeCountObject.monsterCount < unitTypeCountObject.largeInfantryCount
-						// 	)
-						// )
-					) {
-						unlockObject.unlocksFromLargeInfantry += -1
-					} else {
-						if (unlockObject.unlocksFromRegiments > 0) {
-							unlockObject.unlocksFromRegiments += -1
-						}
-					}
-				}
-			}
-			if (listedUnitArray[i].unit.unit_type === 'Titan') {
-				if (unlockObject.monsterUnlocks > 0) {
-					unlockObject.monsterUnlocks  += -1
-				} else {
-					if (
-						unlockObject.unlocksFromLargeInfantry > 0
-						//  && (
-						// 	(
-						// 		unitTypeCountObject.titanCount <= unitTypeCountObject.heroCount &&
-						// 		unitTypeCountObject.titanCount <= unitTypeCountObject.warEngineCount &&
-						// 		unitTypeCountObject.titanCount <= unitTypeCountObject.monsterCount
-						// 	) || (
-						// 		unitTypeCountObject.titanCount < unitTypeCountObject.largeInfantryCount
-						// 	)
-						// )
-					) {
-						unlockObject.unlocksFromLargeInfantry += -1
-					} else {
-						if (unlockObject.unlocksFromRegiments > 0) {
-							unlockObject.unlocksFromRegiments += -1
-						}
-					}
-				}
-			}
+		// 	if (listedUnitArray[i].unit.unit_size === 'Troop' || listedUnitArray[i].unit.is_irregular === true) {
+		// 		unlockObject.troopUnlocks += -1
+		// 	}
+		// 	if (listedUnitArray[i].unit.unit_type.includes('Hero')) {
+		// 		if (unlockObject.heroUnlocks > 0) {
+		// 			unlockObject.heroUnlocks += -1
+		// 		} else {
+		// 			if (
+		// 				unlockObject.unlocksFromLargeInfantry > 0 
+		// 				// && (
+		// 				// 	(
+		// 				// 		unitTypeCountObject.heroCount <= unitTypeCountObject.warEngineCount &&
+		// 				// 		unitTypeCountObject.heroCount <= unitTypeCountObject.monsterCount &&
+		// 				// 		unitTypeCountObject.heroCount <= unitTypeCountObject.titanCount
+		// 				// 	) || (
+		// 				// 		unitTypeCountObject.heroCount < unitTypeCountObject.largeInfantryCount
+		// 				// 	)
+		// 				// )
+		// 			) 
+		// 				{
+		// 				unlockObject.unlocksFromLargeInfantry += -1
+		// 			} else {
+		// 				if (unlockObject.unlocksFromRegiments > 0) {
+		// 					unlockObject.unlocksFromRegiments += -1
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// 	if (listedUnitArray[i].unit.unit_type === 'War Engine') {
+		// 		if (unlockObject.warEngineUnlocks > 0) {
+		// 			unlockObject.warEngineUnlocks  += -1
+		// 		} else {
+		// 			if (
+		// 				unlockObject.unlocksFromLargeInfantry > 0
+		// 				//  && (
+		// 				// 	(
+		// 				// 		unitTypeCountObject.warEngineCount <= unitTypeCountObject.heroCount &&
+		// 				// 		unitTypeCountObject.warEngineCount <= unitTypeCountObject.monsterCount &&
+		// 				// 		unitTypeCountObject.warEngineCount <= unitTypeCountObject.titanCount
+		// 				// 	) || (
+		// 				// 		unitTypeCountObject.warEngineCount < unitTypeCountObject.largeInfantryCount
+		// 				// 	)
+		// 				// )
+		// 			) {
+		// 				unlockObject.unlocksFromLargeInfantry += -1
+		// 			} else {
+		// 				if (unlockObject.unlocksFromRegiments > 0) {
+		// 					unlockObject.unlocksFromRegiments += -1
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// 	if (listedUnitArray[i].unit.unit_type === 'Monster') {
+		// 		if (unlockObject.monsterUnlocks > 0) {
+		// 			unlockObject.monsterUnlocks  += -1
+		// 		} else {
+		// 			if (
+		// 				unlockObject.unlocksFromLargeInfantry > 0
+		// 				//  && (
+		// 				// 	(
+		// 				// 		unitTypeCountObject.monsterCount <= unitTypeCountObject.heroCount &&
+		// 				// 		unitTypeCountObject.monsterCount <= unitTypeCountObject.warEngineCount &&
+		// 				// 		unitTypeCountObject.monsterCount <= unitTypeCountObject.titanCount
+		// 				// 	) || (
+		// 				// 		unitTypeCountObject.monsterCount < unitTypeCountObject.largeInfantryCount
+		// 				// 	)
+		// 				// )
+		// 			) {
+		// 				unlockObject.unlocksFromLargeInfantry += -1
+		// 			} else {
+		// 				if (unlockObject.unlocksFromRegiments > 0) {
+		// 					unlockObject.unlocksFromRegiments += -1
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// 	if (listedUnitArray[i].unit.unit_type === 'Titan') {
+		// 		if (unlockObject.monsterUnlocks > 0) {
+		// 			unlockObject.monsterUnlocks  += -1
+		// 		} else {
+		// 			if (
+		// 				unlockObject.unlocksFromLargeInfantry > 0
+		// 				//  && (
+		// 				// 	(
+		// 				// 		unitTypeCountObject.titanCount <= unitTypeCountObject.heroCount &&
+		// 				// 		unitTypeCountObject.titanCount <= unitTypeCountObject.warEngineCount &&
+		// 				// 		unitTypeCountObject.titanCount <= unitTypeCountObject.monsterCount
+		// 				// 	) || (
+		// 				// 		unitTypeCountObject.titanCount < unitTypeCountObject.largeInfantryCount
+		// 				// 	)
+		// 				// )
+		// 			) {
+		// 				unlockObject.unlocksFromLargeInfantry += -1
+		// 			} else {
+		// 				if (unlockObject.unlocksFromRegiments > 0) {
+		// 					unlockObject.unlocksFromRegiments += -1
+		// 				}
+		// 			}
+		// 		}
+		// 	}
 		}
 		return unlockObject
 	}
@@ -523,6 +523,113 @@ class UnitEntriesFormContainer extends Component {
 			alliedPointTotal = this.calculatePointTotal(listedUnitArray)
 		}
 
+		let determineIfCanAdd = (unitTypeCountObject, unlockObject) => {
+			let canOrCannotAdd = {
+				troop: false,
+				hero: false,
+				warEngine: false,
+				monster: false,
+				titan: false
+			};
+			
+			// Just to make typing faster...
+			let utc = unitTypeCountObject;
+			let uo = unlockObject;
+
+			let liHordes = uo.unlocksFromLargeInfantry / 2;
+			let liu = uo.unlocksFromLargeInfantry;
+			let lih = liHordes;
+			let liw = liHordes;
+			let lim = liHordes;
+			let lit = liHordes;
+
+			let regh = utc.regimentCount;
+			let regw = utc.regimentCount;
+			let regm = utc.regimentCount;
+			let regt = utc.regimentCount;
+			
+			// horde count does NOT include large/monstrous inf/cav
+			let rHordes = utc.hordeCount;
+			let hh = rHordes;
+			let hw = rHordes;
+			let hm = rHordes;
+			let ht = rHordes;
+
+			for(let i = 0; i < utc.heroCount; i++) {
+				if(lih > 0 && liu > 0) {
+					lih--;
+					liu--;
+				}
+				else if(regh > 0) {
+					regh--;
+					regw--;
+					regm--;
+					regt--;
+				}
+				else {
+					hh--;
+				}
+			}
+
+			for(let i = 0; i < utc.warEngineCount; i++) {
+				if(liw > 0 && liu > 0) {
+					liw--;
+					liu--;
+				}
+				else if(regw > 0) {
+					regh--;
+					regw--;
+					regm--;
+					regt--;
+				}
+				else {
+					hw--;
+				}
+			}
+
+			for(let i = 0; i < utc.monsterCount; i++) {
+				if(lim > 0 && liu > 0) {
+					lim--;
+					liu--;
+				}
+				else if(regm > 0) {
+					regh--;
+					regw--;
+					regm--;
+					regt--;
+				}
+				else {
+					hm--;
+					ht--;
+				}
+			}
+
+			for(let i = 0; i < utc.titanCount; i++) {
+				if(lit > 0 && liu > 0) {
+					lit--;
+					liu--;
+				}
+				else if(regt > 0) {
+					regh--;
+					regw--;
+					regm--;
+					regt--;
+				}
+				else {
+					hm--;
+					ht--;
+				}
+			}
+
+			canOrCannotAdd.hero = ((lih > 0 && liu > 0) || regh > 0 || hh > 0);
+			canOrCannotAdd.warEngine = ((liw > 0 && liu > 0) || regw > 0 || hw > 0);
+			canOrCannotAdd.titan = ((lit > 0 && liu > 0) || regt > 0 || ht > 0);
+			canOrCannotAdd.monster = ((lim > 0 && liu > 0) || regm > 0 || hm > 0);
+			canOrCannotAdd.troop = (utc.troopCount < uo.troopUnlocks);
+			
+			return canOrCannotAdd;
+		}
+
 		for (i = 0; i < units.length; i++) {
 			let limitedHeroCount = 0
 			let limitedAndLockedFromJarvisCount = 0
@@ -553,177 +660,234 @@ class UnitEntriesFormContainer extends Component {
 					maybeMaxedOut.push(listedUnitArray[i2])
 				}
 			}
-			if (
-				(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
-				units[i].unit_type.includes('Hero') ||
-				units[i].unit_type === 'War Engine' ||
-				units[i].unit_type === 'Monster' ||
-				units[i].unit_type === 'Titan'
-			) {
+			if (units[i].unlocking_class === 0) {
 				locked = true
-				if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && unlockObject.troopUnlocks > 0) {
+				if (
+					(units[i].unit_size === 'Troop' || units[i].is_irregular === true) &&
+					determineIfCanAdd(unitTypeCountObject, unlockObject).troop === true
+				) {
 					locked = false
-				} else {
-					if (units[i].unit_type.includes('Hero') && unlockObject.heroUnlocks > 0) {
-						locked = false
-					} else {
-						if (units[i].unit_type.includes('Hero') && unlockObject.unlocksFromLargeInfantry > 0) {
-							if (
-								(
-									unitTypeCountObject.heroCount +
-									unitTypeCountObject.warEngineCount +
-									unitTypeCountObject.monsterCount +
-									unitTypeCountObject.titanCount <
-									unlockObject.heroUnlocks +
-									unlockObject.warEngineUnlocks +
-									unlockObject.monsterUnlocks +
-									unlockObject.unlocksFromLargeInfantry && (
-										(
-											unitTypeCountObject.heroCount <= unitTypeCountObject.warEngineCount ||
-											unitTypeCountObject.heroCount <= unitTypeCountObject.monsterCount ||
-											unitTypeCountObject.heroCount <= unitTypeCountObject.titanCount
-										) && (
-											unitTypeCountObject.largeInfantryCount >
-											unitTypeCountObject.heroCount +
-											unitTypeCountObject.warEngineCount +
-											unitTypeCountObject.monsterCount +
-											unitTypeCountObject.titanCount
-										) 
-									) || (
-										unitTypeCountObject.heroCount <
-										unitTypeCountObject.hordeCount +
-										unitTypeCountObject.largeInfantryCount
-									)
-								)
-							) {
-								locked = false
-							}
-						}
-						if (units[i].unit_type.includes('Hero') && unlockObject.unlocksFromRegiments > 0) {
-							locked = false
-						}
-					}
-					if (units[i].unit_type === 'War Engine' && unlockObject.warEngineUnlocks > 0) {
-						locked = false
-					} else {
-						if (units[i].unit_type === 'War Engine' && unlockObject.unlocksFromLargeInfantry > 0) {
-							if (
-								(
-									unitTypeCountObject.heroCount +
-									unitTypeCountObject.warEngineCount +
-									unitTypeCountObject.monsterCount +
-									unitTypeCountObject.titanCount <
-									unlockObject.heroUnlocks +
-									unlockObject.warEngineUnlocks +
-									unlockObject.monsterUnlocks +
-									unlockObject.unlocksFromLargeInfantry && (										
-										(
-											unitTypeCountObject.warEngineCount <= unitTypeCountObject.heroCount ||
-											unitTypeCountObject.warEngineCount <= unitTypeCountObject.monsterCount ||
-											unitTypeCountObject.warEngineCount <= unitTypeCountObject.titanCount
-										) && (
-											unitTypeCountObject.largeInfantryCount >
-											unitTypeCountObject.heroCount +
-											unitTypeCountObject.warEngineCount +
-											unitTypeCountObject.monsterCount +
-											unitTypeCountObject.titanCount
-										)
-									) || (
-										unitTypeCountObject.warEngineCount <
-										unitTypeCountObject.hordeCount +
-										unitTypeCountObject.largeInfantryCount
-									)
-								)
-							) {
-								locked = false
-							}
-						}
-						if (units[i].unit_type === 'War Engine' && unlockObject.unlocksFromRegiments > 0) {
-							locked = false
-						}
-					}
-					if (units[i].unit_type === 'Monster' && unlockObject.monsterUnlocks > 0) {
-						locked = false
-					} else {
-						if (units[i].unit_type === 'Monster' && unlockObject.unlocksFromLargeInfantry > 0) {
-							if (
-								(
-									unitTypeCountObject.heroCount +
-									unitTypeCountObject.warEngineCount +
-									unitTypeCountObject.monsterCount +
-									unitTypeCountObject.titanCount <
-									unlockObject.heroUnlocks +
-									unlockObject.warEngineUnlocks +
-									unlockObject.monsterUnlocks +
-									unlockObject.unlocksFromLargeInfantry && (
-										(
-											unitTypeCountObject.monsterCount <= unitTypeCountObject.heroCount ||
-											unitTypeCountObject.monsterCount <= unitTypeCountObject.warEngineCount ||
-											unitTypeCountObject.monsterCount <= unitTypeCountObject.titanCount
-										) && (
-											unitTypeCountObject.largeInfantryCount >
-											unitTypeCountObject.heroCount +
-											unitTypeCountObject.warEngineCount +
-											unitTypeCountObject.monsterCount +
-											unitTypeCountObject.titanCount
-										)
-									) || (
-										unitTypeCountObject.monsterCount <
-										unitTypeCountObject.hordeCount +
-										unitTypeCountObject.largeInfantryCount
-									)
-								)
-							) {
-								locked = false
-							}
-
-						}
-						if (units[i].unit_type === 'Monster' && unlockObject.unlocksFromRegiments > 0) {
-							locked = false
-						}
-					}
-					if (units[i].unit_type === 'Titan' && unlockObject.monsterUnlocks > 0) {
-						locked = false
-					} else {
-						if (units[i].unit_type === 'Titan' && unlockObject.unlocksFromLargeInfantry > 0) {
-							if (
-								(
-									unitTypeCountObject.heroCount +
-									unitTypeCountObject.warEngineCount +
-									unitTypeCountObject.monsterCount +
-									unitTypeCountObject.titanCount <
-									unlockObject.heroUnlocks +
-									unlockObject.warEngineUnlocks +
-									unlockObject.monsterUnlocks +
-									unlockObject.unlocksFromLargeInfantry && (
-										(
-											unitTypeCountObject.titanCount <= unitTypeCountObject.heroCount ||
-											unitTypeCountObject.titanCount <= unitTypeCountObject.warEngineCount ||
-											unitTypeCountObject.titanCount <= unitTypeCountObject.monsterCount
-										) && (
-											unitTypeCountObject.largeInfantryCount >
-											unitTypeCountObject.heroCount +
-											unitTypeCountObject.warEngineCount +
-											unitTypeCountObject.monsterCount +
-											unitTypeCountObject.titanCount
-										)
-									) || (
-										unitTypeCountObject.titanCount <
-										unitTypeCountObject.hordeCount +
-										unitTypeCountObject.largeInfantryCount
-									)
-								)
-							) {
-								locked = false
-							}
-
-						}
-						if (units[i].unit_type === 'Titan' && unlockObject.unlocksFromRegiments > 0) {
-							locked = false
-						}
-					}						
+				}
+				if (
+					units[i].unit_type.includes('Hero') &&
+					determineIfCanAdd(unitTypeCountObject, unlockObject).hero === true
+				) {
+					locked = false
+				}
+				if (
+					units[i].unit_type === 'War Engine' &&
+					determineIfCanAdd(unitTypeCountObject, unlockObject).warEngine === true
+				) {
+					locked = false
+				}
+				if (
+					units[i].unit_type === 'Monster' &&
+					determineIfCanAdd(unitTypeCountObject, unlockObject).monster === true
+				) {
+					locked = false
+				}
+				if (
+					units[i].unit_type === 'Titan' &&
+					determineIfCanAdd(unitTypeCountObject, unlockObject).titan === true
+				) {
+					locked = false
+				}
+				if (
+					(
+						units[i].unit_type === 'Large Infantry' ||
+						units[i].unit_type === 'Large Cavalry' ||
+						units[i].unit_type === 'Monstrous Infantry'
+					) && (
+						units[i].unit_size === 'Regiment'
+					)
+				) {
+					locked = false
 				}
 			}
+
+
+
+
+
+
+
+
+			// if (
+			// 	(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
+			// 	units[i].unit_type.includes('Hero') ||
+			// 	units[i].unit_type === 'War Engine' ||
+			// 	units[i].unit_type === 'Monster' ||
+			// 	units[i].unit_type === 'Titan'
+			// ) {
+			// 	locked = true
+			// 	if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && unlockObject.troopUnlocks > 0) {
+			// 		locked = false
+			// 	} else {
+			// 		if (units[i].unit_type.includes('Hero') && unlockObject.heroUnlocks > 0) {
+			// 			locked = false
+			// 		} else {
+			// 			if (units[i].unit_type.includes('Hero') && unlockObject.unlocksFromLargeInfantry > 0) {
+			// 				if (
+			// 					(
+			// 						unitTypeCountObject.heroCount +
+			// 						unitTypeCountObject.warEngineCount +
+			// 						unitTypeCountObject.monsterCount +
+			// 						unitTypeCountObject.titanCount <
+			// 						unlockObject.heroUnlocks +
+			// 						unlockObject.warEngineUnlocks +
+			// 						unlockObject.monsterUnlocks +
+			// 						unlockObject.unlocksFromLargeInfantry && (
+			// 							(
+			// 								unitTypeCountObject.heroCount <= unitTypeCountObject.warEngineCount ||
+			// 								unitTypeCountObject.heroCount <= unitTypeCountObject.monsterCount ||
+			// 								unitTypeCountObject.heroCount <= unitTypeCountObject.titanCount
+			// 							) && (
+			// 								unitTypeCountObject.largeInfantryCount >
+			// 								unitTypeCountObject.heroCount +
+			// 								unitTypeCountObject.warEngineCount +
+			// 								unitTypeCountObject.monsterCount +
+			// 								unitTypeCountObject.titanCount
+			// 							) 
+			// 						) || (
+			// 							unitTypeCountObject.heroCount <
+			// 							unitTypeCountObject.hordeCount +
+			// 							unitTypeCountObject.largeInfantryCount
+			// 						)
+			// 					)
+			// 				) {
+			// 					locked = false
+			// 				}
+			// 			}
+			// 			if (units[i].unit_type.includes('Hero') && unlockObject.unlocksFromRegiments > 0) {
+			// 				locked = false
+			// 			}
+			// 		}
+			// 		if (units[i].unit_type === 'War Engine' && unlockObject.warEngineUnlocks > 0) {
+			// 			locked = false
+			// 		} else {
+			// 			if (units[i].unit_type === 'War Engine' && unlockObject.unlocksFromLargeInfantry > 0) {
+			// 				if (
+			// 					(
+			// 						unitTypeCountObject.heroCount +
+			// 						unitTypeCountObject.warEngineCount +
+			// 						unitTypeCountObject.monsterCount +
+			// 						unitTypeCountObject.titanCount <
+			// 						unlockObject.heroUnlocks +
+			// 						unlockObject.warEngineUnlocks +
+			// 						unlockObject.monsterUnlocks +
+			// 						unlockObject.unlocksFromLargeInfantry && (										
+			// 							(
+			// 								unitTypeCountObject.warEngineCount <= unitTypeCountObject.heroCount ||
+			// 								unitTypeCountObject.warEngineCount <= unitTypeCountObject.monsterCount ||
+			// 								unitTypeCountObject.warEngineCount <= unitTypeCountObject.titanCount
+			// 							) && (
+			// 								unitTypeCountObject.largeInfantryCount >
+			// 								unitTypeCountObject.heroCount +
+			// 								unitTypeCountObject.warEngineCount +
+			// 								unitTypeCountObject.monsterCount +
+			// 								unitTypeCountObject.titanCount
+			// 							)
+			// 						) || (
+			// 							unitTypeCountObject.warEngineCount <
+			// 							unitTypeCountObject.hordeCount +
+			// 							unitTypeCountObject.largeInfantryCount
+			// 						)
+			// 					)
+			// 				) {
+			// 					locked = false
+			// 				}
+			// 			}
+			// 			if (units[i].unit_type === 'War Engine' && unlockObject.unlocksFromRegiments > 0) {
+			// 				locked = false
+			// 			}
+			// 		}
+			// 		if (units[i].unit_type === 'Monster' && unlockObject.monsterUnlocks > 0) {
+			// 			locked = false
+			// 		} else {
+			// 			if (units[i].unit_type === 'Monster' && unlockObject.unlocksFromLargeInfantry > 0) {
+			// 				if (
+			// 					(
+			// 						unitTypeCountObject.heroCount +
+			// 						unitTypeCountObject.warEngineCount +
+			// 						unitTypeCountObject.monsterCount +
+			// 						unitTypeCountObject.titanCount <
+			// 						unlockObject.heroUnlocks +
+			// 						unlockObject.warEngineUnlocks +
+			// 						unlockObject.monsterUnlocks +
+			// 						unlockObject.unlocksFromLargeInfantry && (
+			// 							(
+			// 								unitTypeCountObject.monsterCount <= unitTypeCountObject.heroCount ||
+			// 								unitTypeCountObject.monsterCount <= unitTypeCountObject.warEngineCount ||
+			// 								unitTypeCountObject.monsterCount <= unitTypeCountObject.titanCount
+			// 							) && (
+			// 								unitTypeCountObject.largeInfantryCount >
+			// 								unitTypeCountObject.heroCount +
+			// 								unitTypeCountObject.warEngineCount +
+			// 								unitTypeCountObject.monsterCount +
+			// 								unitTypeCountObject.titanCount
+			// 							)
+			// 						) || (
+			// 							unitTypeCountObject.monsterCount <
+			// 							unitTypeCountObject.hordeCount +
+			// 							unitTypeCountObject.largeInfantryCount
+			// 						)
+			// 					)
+			// 				) {
+			// 					locked = false
+			// 				}
+
+			// 			}
+			// 			if (units[i].unit_type === 'Monster' && unlockObject.unlocksFromRegiments > 0) {
+			// 				locked = false
+			// 			}
+			// 		}
+			// 		if (units[i].unit_type === 'Titan' && unlockObject.monsterUnlocks > 0) {
+			// 			locked = false
+			// 		} else {
+			// 			if (units[i].unit_type === 'Titan' && unlockObject.unlocksFromLargeInfantry > 0) {
+			// 				if (
+			// 					(
+			// 						unitTypeCountObject.heroCount +
+			// 						unitTypeCountObject.warEngineCount +
+			// 						unitTypeCountObject.monsterCount +
+			// 						unitTypeCountObject.titanCount <
+			// 						unlockObject.heroUnlocks +
+			// 						unlockObject.warEngineUnlocks +
+			// 						unlockObject.monsterUnlocks +
+			// 						unlockObject.unlocksFromLargeInfantry && (
+			// 							(
+			// 								unitTypeCountObject.titanCount <= unitTypeCountObject.heroCount ||
+			// 								unitTypeCountObject.titanCount <= unitTypeCountObject.warEngineCount ||
+			// 								unitTypeCountObject.titanCount <= unitTypeCountObject.monsterCount
+			// 							) && (
+			// 								unitTypeCountObject.largeInfantryCount >
+			// 								unitTypeCountObject.heroCount +
+			// 								unitTypeCountObject.warEngineCount +
+			// 								unitTypeCountObject.monsterCount +
+			// 								unitTypeCountObject.titanCount
+			// 							)
+			// 						) || (
+			// 							unitTypeCountObject.titanCount <
+			// 							unitTypeCountObject.hordeCount +
+			// 							unitTypeCountObject.largeInfantryCount
+			// 						)
+			// 					)
+			// 				) {
+			// 					locked = false
+			// 				}
+
+			// 			}
+			// 			if (units[i].unit_type === 'Titan' && unlockObject.unlocksFromRegiments > 0) {
+			// 				locked = false
+			// 			}
+			// 		}						
+			// 	}
+			// }
+
+
+
+
+
 
 			if (is_ally === false) {
 				if (

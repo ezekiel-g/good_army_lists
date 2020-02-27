@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_085423) do
+ActiveRecord::Schema.define(version: 2020_02_27_084650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,31 @@ ActiveRecord::Schema.define(version: 2019_12_03_085423) do
     t.string "company", null: false
     t.string "game_type"
     t.string "abbreviation"
+  end
+
+  create_table "kowh_units", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "display_name", null: false
+    t.string "unit_type", null: false
+    t.integer "unit_type_index", null: false
+    t.string "unit_size"
+    t.integer "unit_strength", null: false
+    t.integer "points", null: false
+    t.integer "limited_n", null: false
+    t.integer "unlocking_class", null: false
+    t.boolean "is_irregular", default: false, null: false
+    t.boolean "is_army_specific", default: false, null: false
+    t.integer "spellcaster"
+    t.integer "height"
+    t.string "speed"
+    t.string "melee"
+    t.string "ranged"
+    t.string "defense"
+    t.string "attacks"
+    t.string "nerve"
+    t.text "special_rules"
+    t.string "spells"
+    t.string "options"
   end
 
   create_table "unit_options", force: :cascade do |t|

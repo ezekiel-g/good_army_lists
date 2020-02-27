@@ -14,7 +14,7 @@ const AlliedUnitEntryButton = props => {
 	if (props.unit.limited_n > 0) {
 		limitNumber = ' ' + '[' + props.unit.limited_n + ']'
 	}
-	let greyedOutUnits = props.determineIfGreyedOut(props.alliedListedUnits, props.alliedArmy)
+	let greyedOutUnits = props.determineIfGreyedOut('Ally', props.alliedListedUnits, props.alliedArmy)
 	let greyedOut = false
 	let i
 	// if (props.newGreyedOutUnits.length === 0 && props.alliedListedUnits.length === 0) {

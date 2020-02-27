@@ -77,14 +77,14 @@ class UnitEntriesFormContainer extends Component {
 		this.clearList()
 	}
 
-	calculatePointTotal(listedUnitArray, unitOptionArray, artefactArray) {
+	calculatePointTotal(allyString, listedUnitArray, unitOptionArray, artefactArray) {
 		let is_ally = false
+		if (allyString === 'Ally') {
+			is_ally = true
+		}
 		let pointTotal = 0
 		let i
 		if (listedUnitArray.length > 0 && listedUnitArray != undefined) {
-			if (listedUnitArray[0].unit.army_id !== this.state.selectedArmy.value) {
-				is_ally = true
-			}
 			for (i = 0; i < listedUnitArray.length; i++) {
 				pointTotal += listedUnitArray[i].unit.points
 			}
@@ -103,20 +103,22 @@ class UnitEntriesFormContainer extends Component {
 		if (artefactArray == undefined) {
 			artefactArray = this.state.selectedArtefacts
 		}
-		for (i = 0; i < artefactArray.length; i++) {
-			pointTotal += artefactArray[i].artefact.points
-		}			
+		if (is_ally === false) {
+			for (i = 0; i < artefactArray.length; i++) {
+				pointTotal += artefactArray[i].artefact.points
+			}
+		}
 		return pointTotal
 	}
 
-	calculateUnitStrengthTotal(listedUnitArray, unitOptionArray) {
+	calculateUnitStrengthTotal(allyString, listedUnitArray, unitOptionArray) {
 		let is_ally = false
+		if (allyString === 'Ally') {
+			is_ally = true
+		}
 		let unitStrengthTotal = 0
 		let i
 		if (listedUnitArray.length > 0 && listedUnitArray != undefined) {
-			if (listedUnitArray[0].unit.army_id !== this.state.selectedArmy.value) {
-				is_ally = true
-			}
 			for (i = 0; i < listedUnitArray.length; i++) {
 				unitStrengthTotal += listedUnitArray[i].unit.unit_strength
 			}
@@ -448,12 +450,12 @@ class UnitEntriesFormContainer extends Component {
 		let unitToAddWithIndex = { index: indexCount, unit: unitToAdd }
 		listedUnits.push(unitToAddWithIndex)
 		indexCount += 1
-		let pointTotal = this.calculatePointTotal(listedUnits)
+		let pointTotal = this.calculatePointTotal('Main army', listedUnits)
 		this.setState({
 			listedUnits: listedUnits,
 			indexCount: indexCount,
 			pointTotal: pointTotal,
-			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits),
+			unitStrengthTotal: this.calculateUnitStrengthTotal('Main army', listedUnits),
 			unitTypeCountObject: this.calculateUnitTypeCounts(listedUnits),
 			unlockObject: this.subtractUnlocks(listedUnits),
 			maximumCount: this.calculateMaximumCount(pointTotal + this.state.alliedPointTotal),
@@ -469,7 +471,7 @@ class UnitEntriesFormContainer extends Component {
 		let unitToAddWithIndex = { index: indexCount + 200000, unit: unitToAdd }
 		alliedListedUnits.push(unitToAddWithIndex)
 		indexCount += 1
-		let alliedPointTotal = this.calculatePointTotal(alliedListedUnits)
+		let alliedPointTotal = this.calculatePointTotal('Ally', alliedListedUnits)
 		let alliedUnitTypeCountObject = this.calculateUnitTypeCounts(alliedListedUnits)
 		let i
 
@@ -479,24 +481,25 @@ class UnitEntriesFormContainer extends Component {
 			alliedArmySingularName: alliedArmySingularName,
 			indexCount: indexCount,
 			alliedPointTotal: alliedPointTotal,
-			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal('Ally', alliedListedUnits),
 			alliedUnitTypeCountObject: this.calculateUnitTypeCounts(alliedListedUnits),
 			alliedUnlockObject: this.subtractUnlocks(alliedListedUnits),
 			maximumCount: this.calculateMaximumCount(this.state.pointTotal + alliedPointTotal),
-			alliedGreyedOutUnits: this.determineIfGreyedOut(alliedListedUnits, alliedArmy),
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', alliedListedUnits, alliedArmy),
 			unitOptionsVisible: false,
 			artefactsVisible: false
 		})
 	}
 
-	determineIfGreyedOut(listedUnitArray, alliedArmy) {
+	determineIfGreyedOut(allyString, listedUnitArray, alliedArmy) {
 		let is_ally = false
 		let alliedArmyId
-		if (alliedArmy != undefined && alliedArmy != '') {
+		if (allyString === 'Ally' && alliedArmy != undefined && alliedArmy != '') {
 			is_ally = true
 			alliedArmyId = alliedArmy.id
 		}
-		if (alliedArmy = '') {
+		if (allyString === 'Ally' && (alliedArmy == undefined || alliedArmy == '')) {
+			is_ally = false
 			alliedArmyId = ''
 		}
 
@@ -516,12 +519,12 @@ class UnitEntriesFormContainer extends Component {
 			}
 		}
 		if (is_ally === false) {
-			pointTotal = this.calculatePointTotal(listedUnitArray)
+			pointTotal = this.calculatePointTotal('Main army', listedUnitArray)
 			alliedPointTotal = this.state.alliedPointTotal		
 		}
 		if (is_ally === true) {
 			pointTotal = (this.state.pointTotal)
-			alliedPointTotal = this.calculatePointTotal(listedUnitArray)
+			alliedPointTotal = this.calculatePointTotal('Ally', listedUnitArray)
 		}
 
 		let determineIfCanAdd = (unitTypeCountObject, unlockObject) => {
@@ -802,8 +805,8 @@ class UnitEntriesFormContainer extends Component {
 		}
 
 		actuallyDeleteStuff(fakeListedUnits, fakeSelectedUnitOptions, fakeSelectedArtefacts)
-		pointTotal = this.calculatePointTotal(fakeListedUnits, fakeSelectedUnitOptions, fakeSelectedArtefacts)
-		unitStrengthTotal = this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions)
+		pointTotal = this.calculatePointTotal('Main army', fakeListedUnits, fakeSelectedUnitOptions, fakeSelectedArtefacts)
+		unitStrengthTotal = this.calculateUnitStrengthTotal('Main army', listedUnits, selectedUnitOptions)
 		unitTypeCountObject = this.calculateUnitTypeCounts(fakeListedUnits)
 		unlockObject = this.subtractUnlocks(fakeListedUnits)
 
@@ -933,10 +936,10 @@ class UnitEntriesFormContainer extends Component {
 			indexCount = this.state.indexCount
 		}
 
-		let oldPointTotal = this.calculatePointTotal(this.state.listedUnits, this.state.selectedUnitOptions, this.state.selectedArtefacts)
-		let oldAlliedPointTotal = this.calculatePointTotal(this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
-		pointTotal = this.calculatePointTotal(listedUnits, selectedUnitOptions, selectedArtefacts)
-		alliedPointTotal = this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions)
+		let oldPointTotal = this.calculatePointTotal('Main army', this.state.listedUnits, this.state.selectedUnitOptions, this.state.selectedArtefacts)
+		let oldAlliedPointTotal = this.calculatePointTotal('Ally', this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
+		pointTotal = this.calculatePointTotal('Main army', listedUnits, selectedUnitOptions, selectedArtefacts)
+		alliedPointTotal = this.calculatePointTotal('Ally', alliedListedUnits, alliedSelectedUnitOptions)
 		let maximumCountBefore = this.calculateMaximumCount(oldPointTotal + oldAlliedPointTotal)
 		let maximumCountAfter = this.calculateMaximumCount(pointTotal + alliedPointTotal)
 		if (maximumCountAfter < maximumCountBefore) {
@@ -967,21 +970,21 @@ class UnitEntriesFormContainer extends Component {
 			listedUnits: listedUnits,
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
-			pointTotal: this.calculatePointTotal(listedUnits, selectedUnitOptions, selectedArtefacts),
-			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions),
+			pointTotal: this.calculatePointTotal('Main army', listedUnits, selectedUnitOptions, selectedArtefacts),
+			unitStrengthTotal: this.calculateUnitStrengthTotal('Main army', listedUnits, selectedUnitOptions),
 			unitTypeCountObject: this.calculateUnitTypeCounts(listedUnits),
 			unlockObject: this.subtractUnlocks(listedUnits),
 			alliedArmy: alliedArmy,
 			alliedListedUnits: alliedListedUnits,
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
-			alliedPointTotal: this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions),
-			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits, alliedSelectedUnitOptions),
+			alliedPointTotal: this.calculatePointTotal('Ally', alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal('Ally', alliedListedUnits, alliedSelectedUnitOptions),
 			alliedUnitTypeCountObject: this.calculateUnitTypeCounts(alliedListedUnits),
 			alliedUnlockObject: this.subtractUnlocks(alliedListedUnits),
 			alliesVisible: alliesVisible,
 			indexCount: indexCount,
 			maximumCount: this.calculateMaximumCount(pointTotal + alliedPointTotal),
-			alliedGreyedOutUnits: this.determineIfGreyedOut(alliedListedUnits, this.state.alliedArmy)
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', alliedListedUnits, this.state.alliedArmy)
 		})
 	}
 
@@ -1022,8 +1025,8 @@ class UnitEntriesFormContainer extends Component {
 		}
 
 		actuallyDeleteStuff(fakeListedUnits, fakeSelectedUnitOptions)
-		alliedPointTotal = this.calculatePointTotal(fakeListedUnits, fakeSelectedUnitOptions)
-		alliedUnitStrengthTotal = this.calculateUnitStrengthTotal(fakeListedUnits, fakeSelectedUnitOptions)
+		alliedPointTotal = this.calculatePointTotal('Ally', fakeListedUnits, fakeSelectedUnitOptions)
+		alliedUnitStrengthTotal = this.calculateUnitStrengthTotal('Ally', fakeListedUnits, fakeSelectedUnitOptions)
 		alliedUnitTypeCountObject = this.calculateUnitTypeCounts(fakeListedUnits)
 		alliedUnlockObject = this.subtractUnlocks(fakeListedUnits)
 
@@ -1070,13 +1073,12 @@ class UnitEntriesFormContainer extends Component {
 		}
 
 		if (
-			(this.state.pointTotal + alliedPointTotal + unitObject.unit.points) / 4 <
-			alliedPointTotal + unitObject.unit.points
+			(this.state.pointTotal + alliedPointTotal) / 4 < alliedPointTotal
 		) {
+
 			alliedListedUnits = this.state.alliedListedUnits
 			alliedSelectedUnitOptions = this.state.alliedSelectedUnitOptions				
 		}
-
 		alliedUnitTypeCountObject = this.calculateUnitTypeCounts(alliedListedUnits)
 		alliedUnlockObject = this.subtractUnlocks(alliedListedUnits)
 
@@ -1093,11 +1095,11 @@ class UnitEntriesFormContainer extends Component {
 			alliedArmySingularName: alliedArmySingularName,
 			alliedListedUnits: alliedListedUnits,
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
-			alliedPointTotal: this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions),
-			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits, alliedSelectedUnitOptions),
+			alliedPointTotal: this.calculatePointTotal('Ally', alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal('Ally', alliedListedUnits, alliedSelectedUnitOptions),
 			alliedUnitTypeCountObject: alliedUnitTypeCountObject,
 			alliedUnlockObject: alliedUnlockObject,	
-			alliedGreyedOutUnits: this.determineIfGreyedOut(alliedListedUnits, alliedArmy)
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', alliedListedUnits, alliedArmy)
 		})
 	}
 
@@ -1150,10 +1152,10 @@ class UnitEntriesFormContainer extends Component {
 		this.setState({
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
-			pointTotal: this.calculatePointTotal(this.state.listedUnits, selectedUnitOptions, selectedArtefacts),
-			unitStrengthTotal: this.calculateUnitStrengthTotal(this.state.listedUnits, selectedUnitOptions),
+			pointTotal: this.calculatePointTotal('Main army', this.state.listedUnits, selectedUnitOptions, selectedArtefacts),
+			unitStrengthTotal: this.calculateUnitStrengthTotal('Main army', this.state.listedUnits, selectedUnitOptions),
 			unitBeingGivenOption: '',
-			alliedGreyedOutUnits: this.determineIfGreyedOut(this.state.alliedListedUnits, this.state.alliedArmy)
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
 		})
 		this.toggleUnitOptions()
 	}
@@ -1187,10 +1189,10 @@ class UnitEntriesFormContainer extends Component {
 
 		this.setState({
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
-			alliedPointTotal: this.calculatePointTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
-			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
+			alliedPointTotal: this.calculatePointTotal('Ally', this.state.alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal('Ally', this.state.alliedListedUnits, alliedSelectedUnitOptions),
 			alliedUnitBeingGivenOption: '',
-			alliedGreyedOutUnits: this.determineIfGreyedOut(this.state.alliedListedUnits, this.state.alliedArmy)
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
 		})
 		this.toggleUnitOptions()
 	}
@@ -1278,10 +1280,10 @@ class UnitEntriesFormContainer extends Component {
 		this.setState({
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
-			pointTotal: this.calculatePointTotal(this.state.listedUnits, selectedUnitOptions, selectedArtefacts),
-			unitStrengthTotal: this.calculateUnitStrengthTotal(this.state.listedUnits, selectedUnitOptions),
+			pointTotal: this.calculatePointTotal('Main army', this.state.listedUnits, selectedUnitOptions, selectedArtefacts),
+			unitStrengthTotal: this.calculateUnitStrengthTotal('Main army', this.state.listedUnits, selectedUnitOptions),
 			unitBeingGivenArtefact: '',
-			alliedGreyedOutUnits: this.determineIfGreyedOut(this.state.alliedListedUnits, this.state.alliedArmy)
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
 		})
 		this.toggleArtefacts()
 	}
@@ -1299,16 +1301,16 @@ class UnitEntriesFormContainer extends Component {
 			}
 		}
 
-		pointTotal = this.calculatePointTotal(this.state.listedUnits, selectedUnitOptions)
+		pointTotal = this.calculatePointTotal('Main army', this.state.listedUnits, selectedUnitOptions)
 		if ((pointTotal + this.state.alliedPointTotal) / 4 < this.state.alliedPointTotal) {
 			selectedUnitOptions = this.state.selectedUnitOptions
 		}
 
 		this.setState({
 			selectedUnitOptions: selectedUnitOptions,
-			pointTotal: this.calculatePointTotal(this.state.listedUnits, selectedUnitOptions),
-			unitStrengthTotal: this.calculateUnitStrengthTotal(this.state.listedUnits, selectedUnitOptions),
-			alliedGreyedOutUnits: this.determineIfGreyedOut(this.state.alliedListedUnits, this.state.alliedArmy)
+			pointTotal: this.calculatePointTotal('Main army', this.state.listedUnits, selectedUnitOptions),
+			unitStrengthTotal: this.calculateUnitStrengthTotal('Main army', this.state.listedUnits, selectedUnitOptions),
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
 		})
 	}
 
@@ -1326,9 +1328,9 @@ class UnitEntriesFormContainer extends Component {
 		
 		this.setState({
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
-			alliedPointTotal: this.calculatePointTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
-			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
-			alliedGreyedOutUnits: this.determineIfGreyedOut(this.state.alliedListedUnits, this.state.alliedArmy)
+			alliedPointTotal: this.calculatePointTotal('Ally', this.state.alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal('Ally', this.state.alliedListedUnits, alliedSelectedUnitOptions),
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
 		})
 	}
 
@@ -1342,15 +1344,15 @@ class UnitEntriesFormContainer extends Component {
 			}
 		}
 
-		pointTotal = this.calculatePointTotal(this.state.listedUnits, this.state.selectedUnitOptions, selectedArtefacts)
+		pointTotal = this.calculatePointTotal('Main army', this.state.listedUnits, this.state.selectedUnitOptions, selectedArtefacts)
 		if ((pointTotal + this.state.alliedPointTotal) / 4 < this.state.alliedPointTotal) {
 			selectedArtefacts = this.state.selectedArtefacts
 		}
 
 		this.setState({
 			selectedArtefacts: selectedArtefacts,
-			pointTotal: this.calculatePointTotal(this.state.listedUnits, this.state.selectedUnitOptions, selectedArtefacts),
-			alliedGreyedOutUnits: this.determineIfGreyedOut(this.state.alliedListedUnits, this.state.alliedArmy)
+			pointTotal: this.calculatePointTotal('Main army', this.state.listedUnits, this.state.selectedUnitOptions, selectedArtefacts),
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
 		})
 	}
 
@@ -1661,7 +1663,7 @@ class UnitEntriesFormContainer extends Component {
 					}
 				}
 			}
-			let greyedOutUnits = this.determineIfGreyedOut(this.state.listedUnits, '')
+			let greyedOutUnits = this.determineIfGreyedOut('Main army', this.state.listedUnits, '')
 
 			let alliesTitle
 			if (this.state.alliesVisible === false) {

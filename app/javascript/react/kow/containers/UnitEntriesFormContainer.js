@@ -29,18 +29,8 @@ class UnitEntriesFormContainer extends Component {
 			alliesVisible: false,
 			unitBeingGivenOption: '',
 			unitBeingGivenArtefact: '',
-			troopUnlocks: 0,
-			heroUnlocks: 0,
-			warEngineUnlocks: 0,
-			monsterUnlocks: 0,
-			unlocksFromRegiments: 0,
-			unlocksFromLargeInfantry: 0,
-			heroCount: 0,
-			warEngineCount: 0,
-			monsterCount: 0,
-			titanCount: 0,
-			hordeCount: 0,
-			largeInfantryCount: 0,
+			unitTypeCountObject: {},
+			unlockObject: {},
 			maximumCount: 3,
 			alliedArmy: '',
 			alliedArmySingularName: '',
@@ -49,18 +39,8 @@ class UnitEntriesFormContainer extends Component {
 			alliedUnitBeingGivenOption: '',
 			alliedPointTotal: 0,
 			alliedUnitStrengthTotal: 0,
-			alliedTroopUnlocks: 0,
-			alliedHeroUnlocks: 0,
-			alliedWarEngineUnlocks: 0,
-			alliedMonsterUnlocks: 0,
-			alliedUnlocksFromRegiments: 0,
-			alliedUnlocksFromLargeInfantry: 0,
-			alliedHeroCount: 0,
-			alliedWarEngineCount: 0,
-			alliedMonsterCount: 0,
-			alliedTitanCount: 0,
-			alliedHordeCount: 0,
-			alliedLargeInfantryCount: 0,
+			alliedUnitTypeCountObject: {},
+			alliedUnlockObject: {},
 			alliedGreyedOutUnits: []
 		}
 		this.updateSelectedArmy = this.updateSelectedArmy.bind(this)
@@ -349,7 +329,7 @@ class UnitEntriesFormContainer extends Component {
 					if (listedUnitArray[i].unit.unit_size === 'Legion') {
 						unlockObject.troopUnlocks += 4
 					}
-					unlockObject.unlocksFromLargeInfantry += 1
+					unlockObject.unlocksFromLargeInfantry += 2
 				}
 				if (listedUnitArray[i].unit.unlocking_class === 1) {
 					unlockObject.troopUnlocks += 2
@@ -364,16 +344,18 @@ class UnitEntriesFormContainer extends Component {
 					unlockObject.heroUnlocks += -1
 				} else {
 					if (
-						unlockObject.unlocksFromLargeInfantry > 0 && (
-							(
-								unitTypeCountObject.heroCount <= unitTypeCountObject.warEngineCount &&
-								unitTypeCountObject.heroCount <= unitTypeCountObject.monsterCount &&
-								unitTypeCountObject.heroCount <= unitTypeCountObject.titanCount
-							) || (
-								unitTypeCountObject.heroCount < unitTypeCountObject.largeInfantryCount
-							)
-						)
-					) {
+						unlockObject.unlocksFromLargeInfantry > 0 
+						// && (
+						// 	(
+						// 		unitTypeCountObject.heroCount <= unitTypeCountObject.warEngineCount &&
+						// 		unitTypeCountObject.heroCount <= unitTypeCountObject.monsterCount &&
+						// 		unitTypeCountObject.heroCount <= unitTypeCountObject.titanCount
+						// 	) || (
+						// 		unitTypeCountObject.heroCount < unitTypeCountObject.largeInfantryCount
+						// 	)
+						// )
+					) 
+						{
 						unlockObject.unlocksFromLargeInfantry += -1
 					} else {
 						if (unlockObject.unlocksFromRegiments > 0) {
@@ -387,15 +369,16 @@ class UnitEntriesFormContainer extends Component {
 					unlockObject.warEngineUnlocks  += -1
 				} else {
 					if (
-						unlockObject.unlocksFromLargeInfantry > 0 && (
-							(
-								unitTypeCountObject.warEngineCount <= unitTypeCountObject.heroCount &&
-								unitTypeCountObject.warEngineCount <= unitTypeCountObject.monsterCount &&
-								unitTypeCountObject.warEngineCount <= unitTypeCountObject.titanCount
-							) || (
-								unitTypeCountObject.warEngineCount < unitTypeCountObject.largeInfantryCount
-							)
-						)
+						unlockObject.unlocksFromLargeInfantry > 0
+						//  && (
+						// 	(
+						// 		unitTypeCountObject.warEngineCount <= unitTypeCountObject.heroCount &&
+						// 		unitTypeCountObject.warEngineCount <= unitTypeCountObject.monsterCount &&
+						// 		unitTypeCountObject.warEngineCount <= unitTypeCountObject.titanCount
+						// 	) || (
+						// 		unitTypeCountObject.warEngineCount < unitTypeCountObject.largeInfantryCount
+						// 	)
+						// )
 					) {
 						unlockObject.unlocksFromLargeInfantry += -1
 					} else {
@@ -410,15 +393,16 @@ class UnitEntriesFormContainer extends Component {
 					unlockObject.monsterUnlocks  += -1
 				} else {
 					if (
-						unlockObject.unlocksFromLargeInfantry > 0 && (
-							(
-								unitTypeCountObject.monsterCount <= unitTypeCountObject.heroCount &&
-								unitTypeCountObject.monsterCount <= unitTypeCountObject.warEngineCount &&
-								unitTypeCountObject.monsterCount <= unitTypeCountObject.titanCount
-							) || (
-								unitTypeCountObject.monsterCount < unitTypeCountObject.largeInfantryCount
-							)
-						)
+						unlockObject.unlocksFromLargeInfantry > 0
+						//  && (
+						// 	(
+						// 		unitTypeCountObject.monsterCount <= unitTypeCountObject.heroCount &&
+						// 		unitTypeCountObject.monsterCount <= unitTypeCountObject.warEngineCount &&
+						// 		unitTypeCountObject.monsterCount <= unitTypeCountObject.titanCount
+						// 	) || (
+						// 		unitTypeCountObject.monsterCount < unitTypeCountObject.largeInfantryCount
+						// 	)
+						// )
 					) {
 						unlockObject.unlocksFromLargeInfantry += -1
 					} else {
@@ -433,15 +417,16 @@ class UnitEntriesFormContainer extends Component {
 					unlockObject.monsterUnlocks  += -1
 				} else {
 					if (
-						unlockObject.unlocksFromLargeInfantry > 0 && (
-							(
-								unitTypeCountObject.titanCount <= unitTypeCountObject.heroCount &&
-								unitTypeCountObject.titanCount <= unitTypeCountObject.warEngineCount &&
-								unitTypeCountObject.titanCount <= unitTypeCountObject.monsterCount
-							) || (
-								unitTypeCountObject.titanCount < unitTypeCountObject.largeInfantryCount
-							)
-						)
+						unlockObject.unlocksFromLargeInfantry > 0
+						//  && (
+						// 	(
+						// 		unitTypeCountObject.titanCount <= unitTypeCountObject.heroCount &&
+						// 		unitTypeCountObject.titanCount <= unitTypeCountObject.warEngineCount &&
+						// 		unitTypeCountObject.titanCount <= unitTypeCountObject.monsterCount
+						// 	) || (
+						// 		unitTypeCountObject.titanCount < unitTypeCountObject.largeInfantryCount
+						// 	)
+						// )
 					) {
 						unlockObject.unlocksFromLargeInfantry += -1
 					} else {
@@ -462,26 +447,14 @@ class UnitEntriesFormContainer extends Component {
 		listedUnits.push(unitToAddWithIndex)
 		indexCount += 1
 		let pointTotal = this.calculatePointTotal(listedUnits)
-		let unitTypeCountObject = this.calculateUnitTypeCounts(listedUnits)
-		let unlockObject = this.calculateUnlocks(listedUnits)
 		this.setState({
 			listedUnits: listedUnits,
 			indexCount: indexCount,
 			pointTotal: pointTotal,
 			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits),
-			heroCount: unitTypeCountObject.heroCount,
-			warEngineCount: unitTypeCountObject.warEngineCount,
-			monsterCount: unitTypeCountObject.monsterCount,
-			titanCount: unitTypeCountObject.titanCount,
-			hordeCount: unitTypeCountObject.hordeCount,
-			largeInfantryCount: unitTypeCountObject.largeInfantryCount,
+			unitTypeCountObject: this.calculateUnitTypeCounts(listedUnits),
+			unlockObject: this.calculateUnlocks(listedUnits),
 			maximumCount: this.calculateMaximumCount(pointTotal + this.state.alliedPointTotal),
-			troopUnlocks: unlockObject.troopUnlocks,
-			heroUnlocks: unlockObject.heroUnlocks,
-			warEngineUnlocks: unlockObject.warEngineUnlocks,
-			monsterUnlocks: unlockObject.monsterUnlocks,
-			unlocksFromLargeInfantry: unlockObject.unlocksFromLargeInfantry,
-			unlocksFromRegiments: unlockObject.unlocksFromRegiments,
 			unitOptionsVisible: false,
 			artefactsVisible: false,
 			alliesVisible: false
@@ -506,19 +479,9 @@ class UnitEntriesFormContainer extends Component {
 			indexCount: indexCount,
 			alliedPointTotal: alliedPointTotal,
 			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits),
-			alliedHeroCount: alliedUnitTypeCountObject.heroCount,
-			alliedWarEngineCount: alliedUnitTypeCountObject.warEngineCount,
-			alliedMonsterCount: alliedUnitTypeCountObject.monsterCount,
-			alliedTitanCount: alliedUnitTypeCountObject.titanCount,
-			alliedHordeCount: alliedUnitTypeCountObject.hordeCount,
-			alliedLargeInfantryCount: alliedUnitTypeCountObject.largeInfantryCount,
+			alliedUnitTypeCountObject: this.calculateUnitTypeCounts(alliedListedUnits),
+			alliedUnlockObject: this.calculateUnlocks(alliedListedUnits),
 			maximumCount: this.calculateMaximumCount(this.state.pointTotal + alliedPointTotal),
-			alliedTroopUnlocks: alliedUnlockObject.troopUnlocks,
-			alliedHeroUnlocks: alliedUnlockObject.heroUnlocks,
-			alliedWarEngineUnlocks: alliedUnlockObject.warEngineUnlocks,
-			alliedMonsterUnlocks: alliedUnlockObject.monsterUnlocks,
-			alliedUnlocksFromLargeInfantry: alliedUnlockObject.unlocksFromLargeInfantry,
-			alliedUnlocksFromRegiments: alliedUnlockObject.unlocksFromRegiments,
 			alliedGreyedOutUnits: this.determineIfGreyedOut(alliedListedUnits, alliedArmy),
 			unitOptionsVisible: false,
 			artefactsVisible: false
@@ -1044,50 +1007,25 @@ class UnitEntriesFormContainer extends Component {
 			}
 		}
 
-		unitTypeCountObject = this.calculateUnitTypeCounts(listedUnits)
-		unlockObject = this.calculateUnlocks(listedUnits)
-		alliedUnitTypeCountObject = this.calculateUnitTypeCounts(alliedListedUnits)
-		alliedUnlockObject = this.calculateUnlocks(alliedListedUnits)
-
 		this.setState({
 			listedUnits: listedUnits,
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
 			pointTotal: this.calculatePointTotal(listedUnits, selectedUnitOptions, selectedArtefacts),
 			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions),
-			heroCount: unitTypeCountObject.heroCount,
-			warEngineCount: unitTypeCountObject.warEngineCount,
-			monsterCount: unitTypeCountObject.monsterCount,
-			titanCount: unitTypeCountObject.titanCount,
-			hordeCount: unitTypeCountObject.hordeCount,
-			largeInfantryCount: unitTypeCountObject.largeInfantryCount,
-			troopUnlocks: unlockObject.troopUnlocks,
-			heroUnlocks: unlockObject.heroUnlocks,
-			warEngineUnlocks: unlockObject.warEngineUnlocks,
-			monsterUnlocks: unlockObject.monsterUnlocks,
-			unlocksFromLargeInfantry: unlockObject.unlocksFromLargeInfantry,
-			unlocksFromRegiments: unlockObject.unlocksFromRegiments,
+			unitTypeCountObject: this.calculateUnitTypeCounts(listedUnits),
+			unlockObject: this.calculateUnlocks(listedUnits),
 			alliedArmy: alliedArmy,
 			alliedListedUnits: alliedListedUnits,
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
 			alliedPointTotal: this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions),
 			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits, alliedSelectedUnitOptions),
-			alliedHeroCount: alliedUnitTypeCountObject.heroCount,
-			alliedWarEngineCount: alliedUnitTypeCountObject.warEngineCount,
-			alliedMonsterCount: alliedUnitTypeCountObject.monsterCount,
-			alliedTitanCount: alliedUnitTypeCountObject.titanCount,
-			alliedHordeCount: alliedUnitTypeCountObject.hordeCount,
-			alliedLargeInfantryCount: alliedUnitTypeCountObject.largeInfantryCount,
-			alliedTroopUnlocks: alliedUnlockObject.troopUnlocks,
-			alliedHeroUnlocks: alliedUnlockObject.heroUnlocks,
-			alliedWarEngineUnlocks: alliedUnlockObject.warEngineUnlocks,
-			alliedMonsterUnlocks: alliedUnlockObject.monsterUnlocks,
-			alliedUnlocksFromRegiments: alliedUnlockObject.unlocksFromRegiments,
-			alliedUnlocksFromLargeInfantry: alliedUnlockObject.unlocksFromLargeInfantry,
+			alliedUnitTypeCountObject: this.calculateUnitTypeCounts(alliedListedUnits),
+			alliedUnlockObject: this.calculateUnlocks(alliedListedUnits),
 			alliesVisible: alliesVisible,
 			indexCount: indexCount,
-			alliedGreyedOutUnits: this.determineIfGreyedOut(alliedListedUnits, this.state.alliedArmy),
-			maximumCount: this.calculateMaximumCount(pointTotal + alliedPointTotal)
+			maximumCount: this.calculateMaximumCount(pointTotal + alliedPointTotal),
+			alliedGreyedOutUnits: this.determineIfGreyedOut(alliedListedUnits, this.state.alliedArmy)
 		})
 	}
 
@@ -1229,18 +1167,8 @@ class UnitEntriesFormContainer extends Component {
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
 			alliedPointTotal: this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions),
 			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits, alliedSelectedUnitOptions),
-			alliedHeroCount: alliedUnitTypeCountObject.heroCount,
-			alliedWarEngineCount: alliedUnitTypeCountObject.warEngineCount,
-			alliedMonsterCount: alliedUnitTypeCountObject.monsterCount,
-			alliedTitanCount: alliedUnitTypeCountObject.titanCount,
-			alliedHordeCount: alliedUnitTypeCountObject.hordeCount,
-			alliedLargeInfantryCount: alliedUnitTypeCountObject.largeInfantryCount,
-			alliedTroopUnlocks: alliedUnlockObject.troopUnlocks,
-			alliedHeroUnlocks: alliedUnlockObject.heroUnlocks,
-			alliedWarEngineUnlocks: alliedUnlockObject.warEngineUnlocks,
-			alliedMonsterUnlocks: alliedUnlockObject.monsterUnlocks,
-			alliedUnlocksFromRegiments: alliedUnlockObject.unlocksFromRegiments,
-			alliedUnlocksFromLargeInfantry: alliedUnlockObject.unlocksFromLargeInfantry,
+			alliedUnitTypeCountObject: alliedUnitTypeCountObject,
+			alliedUnlockObject: alliedUnlockObject,	
 			alliedGreyedOutUnits: this.determineIfGreyedOut(alliedListedUnits, alliedArmy)
 		})
 	}
@@ -1569,41 +1497,24 @@ class UnitEntriesFormContainer extends Component {
 			pointTotal: 0,
 			unitStrengthTotal: 0,
 			indexCount: 0,
-			troopUnlocks: 0,
-			heroUnlocks: 0,
-			warEngineUnlocks: 0,
-			monsterUnlocks: 0,
-			unlocksFromRegiments: 0,
-			unlocksFromLargeInfantry: 0,
-			heroCount: 0,
-			warEngineCount: 0,
-			monsterCount: 0,
-			titanCount: 0,
-			hordeCount: 0,
-			largeInfantryCount: 0,
-			maximumCount: 3,
-			formattedListVisible: false,
 			unitOptionsVisible: false,
 			artefactsVisible: false,
+			formattedListVisible: false,
 			alliesVisible: false,
+			unitBeingGivenOption: '',
+			unitBeingGivenArtefact: '',
+			unitTypeCountObject: {},
+			unlockObject: {},
+			maximumCount: 3,
 			alliedArmy: '',
 			alliedArmySingularName: '',
 			alliedListedUnits: [],
 			alliedSelectedUnitOptions: [],
+			alliedUnitBeingGivenOption: '',
 			alliedPointTotal: 0,
 			alliedUnitStrengthTotal: 0,
-			alliedTroopUnlocks: 0,
-			alliedHeroUnlocks: 0,
-			alliedWarEngineUnlocks: 0,
-			alliedMonsterUnlocks: 0,
-			alliedUnlocksFromRegiments: 0,
-			alliedUnlocksFromLargeInfantry: 0,
-			alliedHeroCount: 0,
-			alliedWarEngineCount: 0,
-			alliedMonsterCount: 0,
-			alliedTitanCount: 0,
-			alliedHordeCount: 0,
-			alliedLargeInfantryCount: 0,
+			alliedUnitTypeCountObject: {},
+			alliedUnlockObject: {},
 			alliedGreyedOutUnits: []
 		})
 	}

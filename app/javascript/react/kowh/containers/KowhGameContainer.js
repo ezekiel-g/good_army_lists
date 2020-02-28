@@ -31,37 +31,21 @@ class KowhGameContainer extends Component {
 		})
 		.catch(error => console.error(`Error in fetch: ${error.message}`))
 	
-		// fetch('/api/v1/kowh_unit_options')
-		// .then(response => {
-		// 	if (response.ok) {
-		// 		return response
-		// 	} else {
-		// 		let errorMessage = `${response.status} (${response.statusText})`,
-		// 		error = new Error(errorMessage)
-		// 		throw(error)
-		// 	}
-		// })
-		// .then(response => response.json())
-		// .then(body => {
-		// 	this.setState({ kowhUnitOptions: body })
-		// })
-		// .catch(error => console.error(`Error in fetch: ${error.message}`))
-
-		// fetch('/api/v1/veteran_abilities')
-		// .then(response => {
-		// 	if (response.ok) {
-		// 		return response
-		// 	} else {
-		// 		let errorMessage = `${response.status} (${response.statusText})`,
-		// 		error = new Error(errorMessage)
-		// 		throw(error)
-		// 	}
-		// })
-		// .then(response => response.json())
-		// .then(body => {
-		// 	this.setState({ veteranAbilities: body })
-		// })
-		// .catch(error => console.error(`Error in fetch: ${error.message}`))
+		fetch('/api/v1/kowh_unit_options')
+		.then(response => {
+			if (response.ok) {
+				return response
+			} else {
+				let errorMessage = `${response.status} (${response.statusText})`,
+				error = new Error(errorMessage)
+				throw(error)
+			}
+		})
+		.then(response => response.json())
+		.then(body => {
+			this.setState({ unitOptions: body })
+		})
+		.catch(error => console.error(`Error in fetch: ${error.message}`))
 	}
 
 	render() {
@@ -70,7 +54,6 @@ class KowhGameContainer extends Component {
 				<ListContainer
 					units={this.state.units}
 					unitOptions={this.state.unitOptions}
-					updateSelectedArmy={this.updateSelectedArmy}
 					dropdownStyle={this.props.dropdownStyle}
 				/>
 			</div>

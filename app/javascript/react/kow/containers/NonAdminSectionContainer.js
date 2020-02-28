@@ -10,7 +10,6 @@ class NonAdminSectionContainer extends Component {
 		this.state = {
 			armies: [],
 			units: [],
-			artefacts: [],
 			unitOptions: []
 		}
 	}
@@ -72,7 +71,6 @@ class NonAdminSectionContainer extends Component {
 					armies={this.state.armies}
 					units={this.state.units}
 					unitOptions={this.state.unitOptions}
-					updateSelectedArmy={this.updateSelectedArmy}
 					dropdownStyle={this.props.dropdownStyle}
 				/>
 			</div>

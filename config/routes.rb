@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 			resources :unit_options, only: [:index, :show]
 
 			resources :kowh_units, only: [:index, :show]
+			resources :kowh_unit_options, only: [:index, :show]
+			resources :veteran_abilities, only: [:index, :show]
 		end
 	end
 end

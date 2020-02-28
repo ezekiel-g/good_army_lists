@@ -1466,9 +1466,6 @@ class UnitEntriesFormContainer extends Component {
 		} else {
 			hidden = ''
 		}
-		let allUnits = this.props.units.sort((a, b) => {
-			return (b.points - a.points)
-		})
 		let unitOptionSelectionTile
 		let artefactSelectionTile
 		let clearListDiv
@@ -1653,7 +1650,9 @@ class UnitEntriesFormContainer extends Component {
 					<h3 className="unit-entry-button-title">Available Units</h3>
 				</div>
 
-			let units = this.props.units
+			let units = this.props.units.sort((a, b) => {
+				return ( b.points - a.points )
+			})
 			let unitsInArmyTop = []
 			let unitsInArmyBottom = []
 			for (i = 0; i < units.length; i++) {	
@@ -1696,7 +1695,7 @@ class UnitEntriesFormContainer extends Component {
 					<AlliesButtons
 						armies={this.props.armies}
 						selectedArmy={this.state.selectedArmy}
-						units={allUnits}
+						units={units}
 						listedUnits={this.state.listedUnits}
 						alliedListedUnits={this.state.alliedListedUnits}
 						addToList={this.addAlliedUnitToList}

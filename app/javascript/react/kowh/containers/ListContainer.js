@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
 import Modal from 'react-modal'
-// import UnitEntryButton from '../components/UnitEntryButton'
-// import UnitOptionIcon from '../components/UnitOptionIcon'
-// import VeteranAbilityIcon from '../components/VeteranAbilityIcon'
-// import UnitEntryNameTile from '../components/UnitEntryNameTile'
-// import UnitOptionSelectionTile from '../components/UnitOptionSelectionTile'
+import UnitEntryButton from '../components/UnitEntryButton'
+import UnitOptionIcon from '../components/UnitOptionIcon'
+import VeteranAbilityIcon from '../components/VeteranAbilityIcon'
+import UnitEntryNameTile from '../components/UnitEntryNameTile'
+import UnitOptionSelectionTile from '../components/UnitOptionSelectionTile'
+import VeteranAbilitySelectionTile from '../components/VeteranAbilitySelectionTile'
 import FormattedList from '../components/FormattedList'
-// import VeteranAbilitySelectionTile from '../components/VeteranAbilitySelectionTile'
-// import whiteSquare from '../../../../assets/images/whiteSquare.png'
+import whiteSquare from '../../../../assets/images/whiteSquare.png'
 import paypal from '../../../../assets/images/paypal.gif'
 
 class ListContainer extends Component {
@@ -394,10 +394,11 @@ class ListContainer extends Component {
 		let unitToAddWithIndex = { index: indexCount, unit: unitToAdd }
 		listedUnits.push(unitToAddWithIndex)
 		indexCount += 1
+		let pointTotal = this.calculatePointTotal(listedUnits)
 		this.setState({
 			listedUnits: listedUnits,
 			indexCount: indexCount,
-			pointTotal: this.calculatePointTotal(listedUnits),
+			pointTotal: pointTotal,
 			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits),
 			unitTypeCountObject: this.calculateUnitTypeCounts(listedUnits),
 			unlockObject: this.subtractUnlocks(listedUnits),
@@ -746,7 +747,6 @@ class ListContainer extends Component {
 			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions),
 			unitTypeCountObject: this.calculateUnitTypeCounts(listedUnits),
 			unlockObject: this.subtractUnlocks(listedUnits),
-			indexCount: indexCount,
 			maximumCount: this.calculateMaximumCount(pointTotal)
 		})
 	}
@@ -971,9 +971,6 @@ class ListContainer extends Component {
 		if (selectedArmy === 'Master List') {
 			hidden = ''
 		}
-		let allUnits = this.props.units.sort((a, b) => {
-			return (b.points - a.points)
-		})
 		let unitOptionSelectionTile
 		let veteranAbilitySelectionTile
 		let clearListDiv
@@ -1030,7 +1027,7 @@ class ListContainer extends Component {
 		})
 		let idsOfUnitsThatCanHaveOptions = []
 		for (i = 0; i < this.props.unitOptions.length; i++) {
-			idsOfUnitsThatCanHaveOptions.push(this.props.unitOptions[i].unit_id)
+			idsOfUnitsThatCanHaveOptions.push(this.props.unitOptions[i].kowh_unit_id)
 		}
 		let listedUnitsThatCanHaveOptions = []
 		for (i = 0; i < this.state.listedUnits.length; i++) {
@@ -1063,15 +1060,11 @@ class ListContainer extends Component {
 				<div className="unit-option-selection-tile">
 					<UnitOptionSelectionTile
 						unitObject={this.state.unitBeingGivenOption}
-						alliedUnitObject={this.state.alliedUnitBeingGivenOption}
 						unitOptions={this.props.unitOptions}
 						selectUnitOptions={this.selectUnitOptions}
-						selectAlliedUnitOptions={this.selectAlliedUnitOptions}
 						selectedUnitOptions={this.state.selectedUnitOptions}
-						alliedSelectedUnitOptions={this.state.alliedSelectedUnitOptions}
 						toggleUnitOptions={this.toggleUnitOptions}
 						pointTotal={this.state.pointTotal}
-						alliedPointTotal={this.state.alliedPointTotal}
 					/>
 				</div>
 		}
@@ -1084,11 +1077,10 @@ class ListContainer extends Component {
 						selectVeteranAbility={this.selectVeteranAbility}
 						toggleVeteranAbilities={this.toggleVeteranAbilities}
 						pointTotal={this.state.pointTotal}
-						alliedPointTotal={this.state.alliedPointTotal}
 					/>
 				</div>
 		}
-		if (this.state.selectedArmy !== '') {
+		if (this.state.selectedArmy.label === 'Master List') {
 			clearListDiv =
 				<div className="clear-list-div">
 					<span onClick={this.clearList} className="clear-or-cancel-label">Clear List</span>
@@ -1098,11 +1090,13 @@ class ListContainer extends Component {
 					<h3 className="unit-entry-button-title">Available Units</h3>
 				</div>
 
-			let units = this.props.units
+			let units = this.props.units.sort((a, b) => {
+				return ( a.display_name - b.display_name )
+			})
 			let unitsInArmyTop = []
 			let unitsInArmyBottom = []
 			for (i = 0; i < units.length; i++) {	
-				if (units[i].army_id === selectedArmy.value) {
+				if (units[i].is_army_specific === false) {
 					if (units[i].unlocking_class > 0) {
 						unitsInArmyTop.push(units[i])
 					} else {
@@ -1118,7 +1112,7 @@ class ListContainer extends Component {
 						key={unit.id}
 						id={unit.id}
 						unit={unit}
-						addToList={this.addToList}
+						addUnitToList={this.addUnitToList}
 						greyedOutUnits={greyedOutUnits}
 					/>
 				)			
@@ -1129,7 +1123,7 @@ class ListContainer extends Component {
 						key={unit.id}
 						id={unit.id}
 						unit={unit}
-						addToList={this.addToList}
+						addUnitToList={this.addUnitToList}
 						greyedOutUnits={greyedOutUnits}
 					/>
 				)			
@@ -1356,7 +1350,7 @@ class ListContainer extends Component {
 						</tbody>
 					</table>
 					{viewListButtonDisplay}
-				</div>		
+				</div>
 		}
 
 		let display =
@@ -1372,7 +1366,7 @@ class ListContainer extends Component {
 					</div>
 					<div>
 						<div className="list-output-side column">
-							<div className="list-title-bar">
+							<div className="list-title-bar-kowh">
 								<h3 className="list-title">{this.state.selectedArmy.label}</h3>
 							</div><br />
 							{listOutputSide}

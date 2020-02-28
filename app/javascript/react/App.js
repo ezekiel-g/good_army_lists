@@ -21,6 +21,9 @@ class App extends Component {
 						<div className="main-page-game">
 							<span className="main-page-game-label">
 								<a href="/kow">Kings of War</a>
+							</span><br />
+							<span className="main-page-game-label">
+								<a href="/kowh">Kings of War Historical</a>
 							</span>
 						</div>
 					</div>

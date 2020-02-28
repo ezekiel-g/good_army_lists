@@ -547,6 +547,15 @@ hr {
 	background-color: #FFFFFF;
 }
 
+.veteran-ability-selection-tile {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	user-select: none;
+	line-height: 120%;
+	background-color: #FFFFFF;
+}
+
 .artefact-selections {
 	text-align: left;
 	line-height: 120%;
@@ -582,16 +591,16 @@ hr {
 
 }
 
-.artefact-selection-label {
+.artefact-selection-label, .veteran-ability-selection-label {
 	cursor: pointer;
 	padding: 2px 0px 2px 0px;
 }
 
-.artefact-selection-label:hover {
+.artefact-selection-label:hover, .veteran-ability-selection-label:hover {
 	background-color: #D3D3D3;
 }
 
-.artefact-selection-label:active {
+.artefact-selection-label:active, .veteran-ability-selection-label:hover {
 
 }
 

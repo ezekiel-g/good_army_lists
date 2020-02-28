@@ -65,18 +65,7 @@ class NonAdminSectionContainer extends Component {
 		.catch(error => console.error(`Error in fetch: ${error.message}`))
 	}
 
-	updateSelectedArmy(selectedArmy) {
-		this.setState({ selectedArmy })
-	}
-
 	render() {
-		let armyOptions = this.state.armies.map(armyOption => {
-			return (
-				{ label: armyOption.name, value: armyOption.id }
-			)
-		})
-		let selectedArmy = this.state.selectedArmy
-
 		return (
 			<div className="sections-container">	
 				<UnitEntriesFormContainer

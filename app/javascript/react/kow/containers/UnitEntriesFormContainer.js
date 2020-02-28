@@ -761,6 +761,8 @@ class UnitEntriesFormContainer extends Component {
 		let removedUnitOptionObjects = []
 		let removedArtefactObject
 		let pointTotal
+		let oldPointTotal
+		let oldAlliedPointTotal
 		let unitStrengthTotal
 		let unitTypeCountObject
 		let unlockObject
@@ -936,8 +938,8 @@ class UnitEntriesFormContainer extends Component {
 			indexCount = this.state.indexCount
 		}
 
-		let oldPointTotal = this.calculatePointTotal('Main army', this.state.listedUnits, this.state.selectedUnitOptions, this.state.selectedArtefacts)
-		let oldAlliedPointTotal = this.calculatePointTotal('Ally', this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
+		oldPointTotal = this.calculatePointTotal('Main army', this.state.listedUnits, this.state.selectedUnitOptions, this.state.selectedArtefacts)
+		oldAlliedPointTotal = this.calculatePointTotal('Ally', this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
 		pointTotal = this.calculatePointTotal('Main army', listedUnits, selectedUnitOptions, selectedArtefacts)
 		alliedPointTotal = this.calculatePointTotal('Ally', alliedListedUnits, alliedSelectedUnitOptions)
 		let maximumCountBefore = this.calculateMaximumCount(oldPointTotal + oldAlliedPointTotal)

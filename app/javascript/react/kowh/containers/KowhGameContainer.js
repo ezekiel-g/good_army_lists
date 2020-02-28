@@ -8,31 +8,14 @@ class KowhGameContainer extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			armies: [],
 			units: [],
-			artefacts: [],
-			unitOptions: []
+			unitOptions: [],
+			veteranAbilities: []
 		}
 	}
 
 	componentDidMount() {
-		fetch('/api/v1/armies')
-		.then(response => {
-			if (response.ok) {
-				return response
-			} else {
-				let errorMessage = `${response.status} (${response.statusText})`,
-				error = new Error(errorMessage)
-				throw(error)
-			}
-		})
-		.then(response => response.json())
-		.then(body => {
-			this.setState({ armies: body })
-		})
-		.catch(error => console.error(`Error in fetch: ${error.message}`))
-
-		fetch('/api/v1/units')
+		fetch('/api/v1/kowh_units')
 		.then(response => {
 			if (response.ok) {
 				return response
@@ -48,39 +31,43 @@ class KowhGameContainer extends Component {
 		})
 		.catch(error => console.error(`Error in fetch: ${error.message}`))
 	
-		fetch('/api/v1/unit_options')
-		.then(response => {
-			if (response.ok) {
-				return response
-			} else {
-				let errorMessage = `${response.status} (${response.statusText})`,
-				error = new Error(errorMessage)
-				throw(error)
-			}
-		})
-		.then(response => response.json())
-		.then(body => {
-			this.setState({ unitOptions: body })
-		})
-		.catch(error => console.error(`Error in fetch: ${error.message}`))
-	}
+		// fetch('/api/v1/kowh_unit_options')
+		// .then(response => {
+		// 	if (response.ok) {
+		// 		return response
+		// 	} else {
+		// 		let errorMessage = `${response.status} (${response.statusText})`,
+		// 		error = new Error(errorMessage)
+		// 		throw(error)
+		// 	}
+		// })
+		// .then(response => response.json())
+		// .then(body => {
+		// 	this.setState({ kowhUnitOptions: body })
+		// })
+		// .catch(error => console.error(`Error in fetch: ${error.message}`))
 
-	updateSelectedArmy(selectedArmy) {
-		this.setState({ selectedArmy })
+		// fetch('/api/v1/veteran_abilities')
+		// .then(response => {
+		// 	if (response.ok) {
+		// 		return response
+		// 	} else {
+		// 		let errorMessage = `${response.status} (${response.statusText})`,
+		// 		error = new Error(errorMessage)
+		// 		throw(error)
+		// 	}
+		// })
+		// .then(response => response.json())
+		// .then(body => {
+		// 	this.setState({ veteranAbilities: body })
+		// })
+		// .catch(error => console.error(`Error in fetch: ${error.message}`))
 	}
 
 	render() {
-		let armyOptions = this.state.armies.map(armyOption => {
-			return (
-				{ label: armyOption.name, value: armyOption.id }
-			)
-		})
-		let selectedArmy = this.state.selectedArmy
-
 		return (
 			<div className="sections-container">	
 				<ListContainer
-					armies={this.state.armies}
 					units={this.state.units}
 					unitOptions={this.state.unitOptions}
 					updateSelectedArmy={this.updateSelectedArmy}

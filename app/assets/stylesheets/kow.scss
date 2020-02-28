@@ -76,6 +76,14 @@ hr {
 	border: 1px solid #000000;
 }
 
+.main-title-box-kowh {
+	background-color: #204A87;
+	border-radius: 6px;
+	overflow: hidden;
+	margin-bottom: 10px;
+	border: 1px solid #000000;
+}
+
 .main-title {
 	text-align: center; 
 	user-select: none;
@@ -104,6 +112,10 @@ hr {
 
 .pastel-red {
 	color: #FF5349;
+}
+
+.blue-grey {
+	color: #3465A4;
 }
 
 .greyed-out {
@@ -219,6 +231,14 @@ hr {
 .unit-entry-button-title-bar {
 	border-radius: 6px;
 	background-color: #A41F26;
+	color: #FFFFFF;
+	border: 1px solid #000000;
+	margin-bottom: 7px;
+}
+
+.unit-entry-button-title-bar-kowh {
+	border-radius: 6px;
+	background-color: #204A87;
 	color: #FFFFFF;
 	border: 1px solid #000000;
 	margin-bottom: 7px;
@@ -375,6 +395,14 @@ hr {
 	margin-bottom: 2px;
 }
 
+.list-title-bar-kowh {
+	border-radius: 6px;
+	background-color: #204A87;
+	color: #FFFFFF;
+	border: 1px solid #000000;
+	margin-bottom: 2px;
+}
+
 .list-title {
 	text-align: center;
 	margin-bottom: -0.5px;
@@ -470,6 +498,13 @@ hr {
 	position: relative;
 }
 
+.list-entry-label-kowh {
+	cursor: crosshair;
+	color: #204A87;
+	font-weight: bolder;
+	position: relative;
+}
+
 .unit-option-entry-label {
 	cursor: crosshair;
 	font-style: italic;
@@ -498,6 +533,11 @@ hr {
 	font-weight: bolder;
 }
 
+.unit-option-title-kowh {
+	color: #204A87;
+	font-weight: bolder;
+}
+
 .artefact-selection-tile {
 	text-align: center;
 	margin-left: auto;
@@ -519,6 +559,12 @@ hr {
 
 .artefact-title {
 	color: #A41F26;
+	font-weight: bolder;
+	margin-bottom: 15px;
+}
+
+.veteran-ability-title {
+	color: #204A87;
 	font-weight: bolder;
 	margin-bottom: 15px;
 }

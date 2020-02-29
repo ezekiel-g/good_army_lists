@@ -79,19 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
-document.addEventListener('DOMContentLoaded', () => {
-    let kowh = document.getElementById('kowh')
+// document.addEventListener('DOMContentLoaded', () => {
+//     let kowh = document.getElementById('kowh')
 
-    if (kowh) {
-        if(window.railsEnv && window.railsEnv === 'development'){
-            try {
-                render(<KowhGameContainer dropdownStyle={dropdownStyle} />, kowh)
-            } catch (error) {
-                render(<RedBox error={error} />, kowh)
-            }
-        }
-        else {
-            render(<KowhGameContainer dropdownStyle={dropdownStyle} />, kowh)
-        }
-    }
-})
+//     if (kowh) {
+//         if(window.railsEnv && window.railsEnv === 'development'){
+//             try {
+//                 render(<KowhGameContainer dropdownStyle={dropdownStyle} />, kowh)
+//             } catch (error) {
+//                 render(<RedBox error={error} />, kowh)
+//             }
+//         }
+//         else {
+//             render(<KowhGameContainer dropdownStyle={dropdownStyle} />, kowh)
+//         }
+//     }
+// })

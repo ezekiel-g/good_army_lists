@@ -11,7 +11,14 @@ Rails.application.routes.draw do
 			resources :armies, only: [:index, :show]
 			resources :units, only: [:index, :show]
 			resources :artefacts, only: [:index, :show]
-			resources :unit_options
+			resources :unit_options, only: [:index, :show]
+
+			resources :kowh_units, only: [:index, :show]
+			resources :kowh_unit_options, only: [:index, :show]
+			resources :veteran_abilities, only: [:index, :show]
+
+			resources :gg_units, only: [:index, :show]
+			resources :gg_unit_options, only: [:index, :show]			
 		end
 	end
 end

@@ -1,7 +1,7 @@
 import React from 'react'
 import whiteSquare from '../../../../assets/images/whiteSquare.png'
 
-const AlliedUnitEntryButton = props => {
+const UnitEntryButton = props => {
 	let extraSpace
 	if (props.unit.points < 100) {
 		extraSpace = <span className="hidden">{'_'}</span>
@@ -14,25 +14,10 @@ const AlliedUnitEntryButton = props => {
 	if (props.unit.limited_n > 0) {
 		limitNumber = ' ' + '[' + props.unit.limited_n + ']'
 	}
-	let greyedOutUnits = props.determineIfGreyedOut('Ally', props.alliedListedUnits, props.alliedArmy)
 	let greyedOut = false
 	let i
-	// if (props.newGreyedOutUnits.length === 0 && props.alliedListedUnits.length === 0) {
-	// 	for (i = 0; i < props.greyedOutUnits.length; i++) {
-	// 		if (props.greyedOutUnits[i].id === props.unit.id) {
-	// 			greyedOut = true
-	// 		}
-	// 	}		
-	// } else {
-	// 	for (i = 0; i < props.newGreyedOutUnits.length; i++) {
-	// 		if (props.newGreyedOutUnits[i].id === props.unit.id) {
-	// 			greyedOut = true
-	// 		}
-	// 	}
-	// }
-
-	for (i = 0; i < greyedOutUnits.length; i++) {
-		if (greyedOutUnits[i].id === props.unit.id) {
+	for (i = 0; i < props.greyedOutUnits.length; i++) {
+		if (props.greyedOutUnits[i].id === props.unit.id) {
 			greyedOut = true
 		}
 	}
@@ -45,14 +30,14 @@ const AlliedUnitEntryButton = props => {
 					<tr>
 						<td valign="top">
 							{extraSpace}
-							<span className="pastel-red">{props.unit.points}{' '}</span>
+							<span className="blue-grey">{props.unit.points}{' '}</span>
 						</td>
 						<td>
 							<span className="white-square"><img src={whiteSquare} width={"10"} height={"20"} /></span>
 						</td>
 						<td valign="top">
 							<span
-								onClick={() => props.addToList(props.unit, props.army, props.armySingularName)}
+								onClick={() => props.addUnitToList(props.unit)}
 								className="unit-entry-button-label"
 							>
 								{props.unit.display_name}{asterisk}{limitNumber}
@@ -90,4 +75,4 @@ const AlliedUnitEntryButton = props => {
 	)
 }
 
-export default AlliedUnitEntryButton
+export default UnitEntryButton

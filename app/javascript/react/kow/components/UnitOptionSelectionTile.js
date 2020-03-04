@@ -272,6 +272,7 @@ class UnitOptionSelectionTile extends Component {
 					highlighted = true
 				}
 			}
+
 			if (highlighted === true && unitObject === this.props.unitObject) {
 				if (
 					(
@@ -282,8 +283,9 @@ class UnitOptionSelectionTile extends Component {
 					)
 				) {
 					greyedOut = true
-				}				
-			} else {
+				}	
+			}
+			if (highlighted === false && unitObject === this.props.alliedUnitObject) {		
 				if (
 					(
 						(this.props.pointTotal + this.props.alliedPointTotal + unitOption.points) / 4 <
@@ -326,29 +328,36 @@ class UnitOptionSelectionTile extends Component {
 					highlighted = true
 				}
 			}
-			if (highlighted === false) {
-				if (
-					(
-						(this.props.pointTotal + this.props.alliedPointTotal + unitOption.points) / 4 <
-						this.props.alliedPointTotal + unitOption.points
-					) && (
-						this.props.alliedUnitObject != '' && this.props.alliedUnitObject != undefined
-					)
-				) {
-					greyedOut = true
+			if (
+				this.props.alliedUnitObject != '' &&
+				this.props.alliedUnitObject != undefined && (
+					this.props.unitObject == '' || this.props.unitObject == undefined
+				)
+			) {
+				if (highlighted === false) {
+					if (
+						(
+							(this.props.pointTotal + this.props.alliedPointTotal + unitOption.points) / 4 <
+							this.props.alliedPointTotal + unitOption.points
+						) && (
+							this.props.alliedUnitObject != '' && this.props.alliedUnitObject != undefined
+						)
+					) {
+						greyedOut = true
+					}
 				}
-			}
-			if (highlighted === true) {
-				if (
-					(
-						(this.props.pointTotal + this.props.alliedPointTotal - unitOption.points) / 4 <
-						this.props.alliedPointTotal - unitOption.points
-					) && (
-						this.props.alliedUnitObject != '' && this.props.alliedUnitObject != undefined
-					)
-				) {
-					greyedOut = true
-				}				
+				if (highlighted === true) {
+					if (
+						(
+							(this.props.pointTotal + this.props.alliedPointTotal - unitOption.points) / 4 <
+							this.props.alliedPointTotal - unitOption.points
+						) && (
+							this.props.alliedUnitObject != '' && this.props.alliedUnitObject != undefined
+						)
+					) {
+						greyedOut = true
+					}				
+				}
 			}
 
 			return (

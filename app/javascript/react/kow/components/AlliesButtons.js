@@ -9,38 +9,22 @@ class AlliesButtons extends Component {
 			selectedAlliedArmy: '',
 			selectedAlliedArmySingularName: '',
 			unitsInAlliedArmyTop: [],
-			unitsInAlliedArmyBottom: [],
-			greyedOutUnits: []
+			unitsInAlliedArmyBottom: []
 		}
 		this.showAlliedUnitChoices = this.showAlliedUnitChoices.bind(this)
 		this.hideAlliedUnitChoices = this.hideAlliedUnitChoices.bind(this)
 	}
 
 	showAlliedUnitChoices(army, units, alliedListedUnits) {
-		let alliedFilteredUnits = []
-		let alliedFilteredUnitsUnlocked = []
-		let alliedGreyedOutUnits = []
-		let alliedHeroesOnList = []
-		let alliedWarEnginesOnList = []
-		let alliedMonstersOnList = []
-		let alliedLocked
-		let pointTotal = this.props.pointTotal
-		let alliedPointTotal = this.props.alliedPointTotal
-		let alliedTroopUnlocks = this.props.alliedTroopUnlocks
-		let alliedHeroUnlocks = this.props.alliedHeroUnlocks
-		let alliedWarEngineUnlocks = this.props.alliedWarEngineUnlocks
-		let alliedMonsterUnlocks = this.props.alliedMonsterUnlocks
-		let alliedUnlocksFromRegiments = this.props.alliedUnlocksFromRegiments
-		let alliedUnlocksFromLargeInfantry = this.props.alliedUnlocksFromLargeInfantry
-		let alliedHeroCount = this.props.alliedHeroCount
-		let alliedWarEngineCount = this.props.alliedWarEngineCount
-		let alliedMonsterCount = this.props.alliedMonsterCount
-		let alliedTitanCount = this.props.alliedTitanCount
-		let alliedInfantryHordeCount = this.props.alliedInfantryHordeCount
-		let alliedLargeInfantryHordeCount = this.props.alliedLargeInfantryHordeCount
+		let unitsInAlliedArmy = []
+		let unitsInAlliedArmyRegular = []
+		let unitsInAlliedArmyWithoutLimited = []
+		let unitsInAlliedArmyTop = []
+		let unitsInAlliedArmyBottom = []
 		let selectedAlliedArmySingularName
 		let i
 		let i2
+
 		if (army.name === 'Basileans') {
 			selectedAlliedArmySingularName = 'Basilean'
 		}
@@ -119,235 +103,36 @@ class AlliesButtons extends Component {
 		if (army.name === 'Varangur') {
 			selectedAlliedArmySingularName = 'Varangur'
 		}
-		if (army.name === 'Crap') {
-			selectedAlliedArmySingularName = 'Crap'
-		}
-		if (army.name === 'The Capgun Crew') {
-			selectedAlliedArmySingularName = 'Capgun Crew'
-		}
-		if (army.name === 'League of Good') {
-			selectedAlliedArmySingularName = 'League of Good'
-		}
 
-		for (i = 0; i < units.length; i++) {
-			let limitedUnits = []
-			let maybeTooMany = []
-			alliedLocked = false
-			for (i2 = 0; i2 < alliedListedUnits.length; i2++) {
-				if (units[i].limited_n > 0) {
-					limitedUnits.push(alliedListedUnits[i2])
-				}
-				if (
-					(units[i].unit_type.includes('Hero') && alliedListedUnits[i2].unit.id === units[i].id) ||
-					(units[i].unit_type === 'War Engine' && alliedListedUnits[i2].unit.id === units[i].id) ||
-					(units[i].unit_type === 'Monster' && alliedListedUnits[i2].unit.id === units[i].id) ||
-					(units[i].unit_type === 'Titan' && alliedListedUnits[i2].unit.id === units[i].id)
-				) {
-					maybeTooMany.push(alliedListedUnits[i2])
-				}
-			}
-			if (
-				(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
-				units[i].unit_type.includes('Hero') ||
-				units[i].unit_type === 'War Engine' ||
-				units[i].unit_type === 'Monster' ||
-				units[i].unit_type === 'Titan'
-			) {
-				alliedLocked = true
-				if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && alliedTroopUnlocks > 0) {
-					alliedLocked = false
-				} else {
-					if (units[i].unit_type.includes('Hero') && alliedHeroUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type.includes('Hero') && alliedUnlocksFromLargeInfantry > 0) {
-							if (
-								(
-									alliedHeroCount +
-									alliedWarEngineCount +
-									alliedMonsterCount +
-									alliedTitanCount <
-									alliedHeroUnlocks +
-									alliedWarEngineUnlocks +
-									alliedMonsterUnlocks +
-									alliedUnlocksFromLargeInfantry && (
-										(
-											alliedHeroCount <= alliedWarEngineCount ||
-											alliedHeroCount <= alliedMonsterCount ||
-											alliedHeroCount <= alliedTitanCount
-										) && (
-											alliedLargeInfantryHordeCount >
-											alliedHeroCount +
-											alliedWarEngineCount +
-											alliedMonsterCount +
-											alliedTitanCount
-										) 
-									) || (
-										alliedHeroCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
-									)
-								)
-							) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type.includes('Hero') && alliedUnlocksFromRegiments > 0) {
-							alliedLocked = false
-						}
-					}
-					if (units[i].unit_type === 'War Engine' && alliedWarEngineUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type === 'War Engine' && alliedUnlocksFromLargeInfantry > 0) {
-							if (
-								(
-									alliedHeroCount +
-									alliedWarEngineCount +
-									alliedMonsterCount +
-									alliedTitanCount <
-									alliedHeroUnlocks +
-									alliedWarEngineUnlocks +
-									alliedMonsterUnlocks +
-									alliedUnlocksFromLargeInfantry && (										
-										(
-											alliedWarEngineCount <= alliedHeroCount ||
-											alliedWarEngineCount <= alliedMonsterCount ||
-											alliedWarEngineCount <= alliedTitanCount
-										) && (
-											alliedLargeInfantryHordeCount >
-											alliedHeroCount +
-											alliedWarEngineCount +
-											alliedMonsterCount +
-											alliedTitanCount
-										)
-									) || (
-										alliedWarEngineCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
-									)
-								)
-							) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'War Engine' && alliedUnlocksFromRegiments > 0) {
-							alliedLocked = false
-						}
-					}
-					if (units[i].unit_type === 'Monster' && alliedMonsterUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type === 'Monster' && alliedUnlocksFromLargeInfantry > 0) {
-							if (
-								(
-									alliedHeroCount +
-									alliedWarEngineCount +
-									alliedMonsterCount +
-									alliedTitanCount <
-									alliedHeroUnlocks +
-									alliedWarEngineUnlocks +
-									alliedMonsterUnlocks +
-									alliedUnlocksFromLargeInfantry && (
-										(
-											alliedMonsterCount <= alliedHeroCount ||
-											alliedMonsterCount <= alliedWarEngineCount ||
-											alliedMonsterCount <= alliedTitanCount
-										) && (
-											alliedLargeInfantryHordeCount >
-											alliedHeroCount + alliedWarEngineCount + alliedMonsterCount + alliedTitanCount
-										)
-									) || (
-										alliedMonsterCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
-									)
-								)
-							) {
-								alliedLocked = false
-							}
-
-						}
-						if (units[i].unit_type === 'Monster' && alliedUnlocksFromRegiments > 0) {
-							alliedLocked = false
-						}
-					}
-					if (units[i].unit_type === 'Titan' && alliedMonsterUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type === 'Titan' && alliedUnlocksFromLargeInfantry > 0) {
-							if (
-								(
-									alliedHeroCount +
-									alliedWarEngineCount +
-									alliedMonsterCount +
-									alliedTitanCount <
-									alliedHeroUnlocks +
-									alliedWarEngineUnlocks +
-									alliedMonsterUnlocks +
-									alliedUnlocksFromLargeInfantry && (
-										(
-											alliedTitanCount <= alliedHeroCount ||
-											alliedTitanCount <= alliedWarEngineCount ||
-											alliedTitanCount <= alliedMonsterCount
-										) && (
-											alliedLargeInfantryHordeCount >
-											alliedHeroCount + alliedWarEngineCount + alliedMonsterCount + alliedTitanCount
-										)
-									) || (
-										alliedTitanCount < alliedInfantryHordeCount + alliedLargeInfantryHordeCount
-									)
-								)
-							) {
-								alliedLocked = false
-							}
-
-						}
-						if (units[i].unit_type === 'Titan' && alliedUnlocksFromRegiments > 0) {
-							alliedLocked = false
-						}
-					}						
-				}
-			}		
+		for (i = 0; i < units.length; i++) {	
 			if (units[i].army_id === army.id) {
-				if (
-					alliedLocked === true ||
-					(pointTotal + alliedPointTotal + units[i].points) / 4 < alliedPointTotal + units[i].points ||
-					limitedUnits.length >= 1 ||
-					maybeTooMany.length >= 1
-				) {
-					alliedGreyedOutUnits.push(units[i])
-				}
-				if (
-					(units[i].unit_size === 'Legion' && units[i].is_irregular === false) ||
-					(units[i].unit_size === 'Horde' && units[i].is_irregular === false) ||
-					(units[i].unit_size === 'Regiment' && units[i].is_irregular === false &&
-						(
-							units[i].unit_type === 'Infantry' ||
-							units[i].unit_type === 'Heavy Infantry' ||
-							units[i].unit_type === 'Cavalry' ||
-							units[i].unit_type === 'Chariot'
-						)
-					)
-				) {
-					alliedFilteredUnits.push(units[i])
-				} else {
-					if (
-						(
-							units[i].limited_n < 1 ||
-							units[i].limited_n === undefined ||
-							units[i].limited_n === null
-						) && (
-							units[i].is_irregular === false
-						)
-					) {
-						alliedFilteredUnitsUnlocked.push(units[i])
-					}
-				}
+				unitsInAlliedArmy.push(units[i])
 			}
+		}
+		for (i = 0; i < unitsInAlliedArmy.length; i++) {
+			if (unitsInAlliedArmy[i].is_irregular === false) {
+				unitsInAlliedArmyRegular.push(unitsInAlliedArmy[i])
+			}		
+		}
+		for (i = 0; i < unitsInAlliedArmyRegular.length; i++) {
+			if (unitsInAlliedArmyRegular[i].limited_n === 0 || unitsInAlliedArmyRegular[i].limited_n === null) {
+				unitsInAlliedArmyWithoutLimited.push(unitsInAlliedArmyRegular[i])
+			}			
+		}
+		for (i = 0; i < unitsInAlliedArmyWithoutLimited.length; i++) {
+			if (unitsInAlliedArmyWithoutLimited[i].unlocking_class > 0) {
+				unitsInAlliedArmyTop.push(unitsInAlliedArmyWithoutLimited[i])
+			} else {
+				unitsInAlliedArmyBottom.push(unitsInAlliedArmyWithoutLimited[i])
+			}		
 		}
 
 		this.setState({
 			alliedUnitChoicesVisible: true,
 			selectedAlliedArmy: army,
 			selectedAlliedArmySingularName: selectedAlliedArmySingularName,
-			unitsInAlliedArmyTop: alliedFilteredUnits,
-			unitsInAlliedArmyBottom: alliedFilteredUnitsUnlocked,
-			greyedOutUnits: alliedGreyedOutUnits
+			unitsInAlliedArmyTop: unitsInAlliedArmyTop,
+			unitsInAlliedArmyBottom: unitsInAlliedArmyBottom
 		})
 	}
 
@@ -357,8 +142,7 @@ class AlliesButtons extends Component {
 			selectedAlliedArmy: '',
 			selectedAlliedArmySingularName: '',
 			unitsInAlliedArmyTop: '',
-			unitsInAlliedArmyBottom: '',
-			greyedOutUnits: ''
+			unitsInAlliedArmyBottom: ''
 		})
 	}
 
@@ -385,9 +169,7 @@ class AlliesButtons extends Component {
 				this.props.selectedArmy.label === 'Northern Alliance' ||
 				this.props.selectedArmy.label === 'Free Dwarfs' ||
 				this.props.selectedArmy.label === 'Order of the Brothermark' ||
-				this.props.selectedArmy.label === 'Salamanders' ||
-				this.props.selectedArmy.label === 'Crap' ||
-				this.props.selectedArmy.label === 'The Capgun Crew'
+				this.props.selectedArmy.label === 'Salamanders'
 			) {
 				mainArmyAlignment = 'Good'
 			}
@@ -399,8 +181,7 @@ class AlliesButtons extends Component {
 				this.props.selectedArmy.label === 'Kingdoms of Men' ||
 				this.props.selectedArmy.label === 'League of Rhordia' ||
 				this.props.selectedArmy.label === 'Order of the Green Lady' ||
-				this.props.selectedArmy.label === 'Sylvan Kin' ||
-				this.props.selectedArmy.label === 'League of Good'
+				this.props.selectedArmy.label === 'Sylvan Kin'
 			) {
 				mainArmyAlignment = 'Neutral'
 			}
@@ -505,9 +286,9 @@ class AlliesButtons extends Component {
 				}
 			}
 		}
-		if (this.props.selectedArmy.label === 'Free Dwarfs' || this.props.selectedArmy.label === 'The Capgun Crew') {
+		if (this.props.selectedArmy.label === 'Free Dwarfs') {
 			for (i3 = 0; i3 < allyChoices.length; i3++) {
-				if (allyChoices[i3].name === 'Dwarfs' || allyChoices[i3].name === 'Crap') {
+				if (allyChoices[i3].name === 'Dwarfs') {
 					allyChoices.splice(allyChoices.indexOf(allyChoices[i3]), 1)
 				}
 			}
@@ -528,7 +309,7 @@ class AlliesButtons extends Component {
 		}
 		if (this.props.selectedArmy.label === 'League of Rhordia') {
 			for (i3 = 0; i3 < allyChoices.length; i3++) {
-				if (allyChoices[i3].name === 'Kingdoms of Men' || allyChoices[i3].name === 'League of Good') {
+				if (allyChoices[i3].name === 'Kingdoms of Men') {
 					allyChoices.splice(allyChoices.indexOf(allyChoices[i3]), 1)
 				}
 			}
@@ -590,8 +371,8 @@ class AlliesButtons extends Component {
 						unit={unit}
 						addToList={this.props.addToList}
 						alliedListedUnits={this.props.alliedListedUnits}
-						greyedOutUnits={this.state.greyedOutUnits}
-						newGreyedOutUnits={this.props.greyedOutUnits}		
+						determineIfGreyedOut={this.props.determineIfGreyedOut}
+						alliedArmy={this.props.alliedArmy}
 					/>
 				)
 			})
@@ -605,8 +386,8 @@ class AlliesButtons extends Component {
 						unit={unit}
 						addToList={this.props.addToList}
 						alliedListedUnits={this.props.alliedListedUnits}
-						greyedOutUnits={this.state.greyedOutUnits}
-						newGreyedOutUnits={this.props.greyedOutUnits}					
+						determineIfGreyedOut={this.props.determineIfGreyedOut}
+						alliedArmy={this.props.alliedArmy}
 					/>					
 				)
 			})

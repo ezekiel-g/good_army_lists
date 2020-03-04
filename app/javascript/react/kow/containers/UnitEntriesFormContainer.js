@@ -29,18 +29,8 @@ class UnitEntriesFormContainer extends Component {
 			alliesVisible: false,
 			unitBeingGivenOption: '',
 			unitBeingGivenArtefact: '',
-			troopUnlocks: 0,
-			heroUnlocks: 0,
-			warEngineUnlocks: 0,
-			monsterUnlocks: 0,
-			unlocksFromRegiments: 0,
-			unlocksFromLargeInfantry: 0,
-			heroCount: 0,
-			warEngineCount: 0,
-			monsterCount: 0,
-			titanCount: 0,
-			hordeCount: 0,
-			largeInfantryCount: 0,
+			unitTypeCountObject: '',
+			unlockObject: '',
 			maximumCount: 3,
 			alliedArmy: '',
 			alliedArmySingularName: '',
@@ -49,18 +39,8 @@ class UnitEntriesFormContainer extends Component {
 			alliedUnitBeingGivenOption: '',
 			alliedPointTotal: 0,
 			alliedUnitStrengthTotal: 0,
-			alliedTroopUnlocks: 0,
-			alliedHeroUnlocks: 0,
-			alliedWarEngineUnlocks: 0,
-			alliedMonsterUnlocks: 0,
-			alliedUnlocksFromRegiments: 0,
-			alliedUnlocksFromLargeInfantry: 0,
-			alliedHeroCount: 0,
-			alliedWarEngineCount: 0,
-			alliedMonsterCount: 0,
-			alliedTitanCount: 0,
-			alliedHordeCount: 0,
-			alliedLargeInfantryCount: 0,
+			alliedUnitTypeCountObject: '',
+			alliedUnlockObject: '',
 			alliedGreyedOutUnits: []
 		}
 		this.updateSelectedArmy = this.updateSelectedArmy.bind(this)
@@ -68,27 +48,28 @@ class UnitEntriesFormContainer extends Component {
 		this.calculateUnitStrengthTotal = this.calculateUnitStrengthTotal.bind(this)
 		this.calculateUnitTypeCounts = this.calculateUnitTypeCounts.bind(this)
 		this.calculateMaximumCount = this.calculateMaximumCount.bind(this)
-		this.calculateUnlocks = this.calculateUnlocks.bind(this)
-		this.calculateAlliedUnlocks = this.calculateAlliedUnlocks.bind(this)
+		this.addUnlocks = this.addUnlocks.bind(this)
+		this.subtractUnlocks = this.subtractUnlocks.bind(this)
 		this.addToList = this.addToList.bind(this)
 		this.addAlliedUnitToList = this.addAlliedUnitToList.bind(this)
+		this.determineIfGreyedOut = this.determineIfGreyedOut.bind(this)
 		this.removeFromList = this.removeFromList.bind(this)
 		this.removeAlliedUnitFromList = this.removeAlliedUnitFromList.bind(this)
-		this.toggleUnitOptions = this.toggleUnitOptions.bind(this)
-		this.toggleArtefacts = this.toggleArtefacts.bind(this)
-		this.toggleAllies = this.toggleAllies.bind(this)
-		this.updateUnitBeingGivenOption = this.updateUnitBeingGivenOption.bind(this)
-		this.updateAlliedUnitBeingGivenOption = this.updateAlliedUnitBeingGivenOption.bind(this)
-		this.updateUnitBeingGivenArtefact = this.updateUnitBeingGivenArtefact.bind(this)
 		this.selectUnitOptions = this.selectUnitOptions.bind(this)
 		this.selectAlliedUnitOptions = this.selectAlliedUnitOptions.bind(this)
 		this.selectArtefact = this.selectArtefact.bind(this)
 		this.removeUnitOption = this.removeUnitOption.bind(this)
 		this.removeAlliedUnitOption = this.removeAlliedUnitOption.bind(this)
 		this.removeArtefact = this.removeArtefact.bind(this)
-		this.clearList = this.clearList.bind(this)
+		this.toggleUnitOptions = this.toggleUnitOptions.bind(this)
+		this.toggleArtefacts = this.toggleArtefacts.bind(this)
+		this.toggleAllies = this.toggleAllies.bind(this)
+		this.updateUnitBeingGivenOption = this.updateUnitBeingGivenOption.bind(this)
+		this.updateAlliedUnitBeingGivenOption = this.updateAlliedUnitBeingGivenOption.bind(this)
+		this.updateUnitBeingGivenArtefact = this.updateUnitBeingGivenArtefact.bind(this)
 		this.showFormattedList = this.showFormattedList.bind(this)
 		this.hideFormattedList = this.hideFormattedList.bind(this)
+		this.clearList = this.clearList.bind(this)
 	}
 
 	updateSelectedArmy(selectedArmy) {
@@ -96,14 +77,14 @@ class UnitEntriesFormContainer extends Component {
 		this.clearList()
 	}
 
-	calculatePointTotal(listedUnitArray, unitOptionArray, artefactArray) {
+	calculatePointTotal(allyString, listedUnitArray, unitOptionArray, artefactArray) {
 		let is_ally = false
+		if (allyString === 'Ally') {
+			is_ally = true
+		}
 		let pointTotal = 0
 		let i
 		if (listedUnitArray.length > 0 && listedUnitArray != undefined) {
-			if (listedUnitArray[0].unit.army_id !== this.state.selectedArmy.value) {
-				is_ally = true
-			}
 			for (i = 0; i < listedUnitArray.length; i++) {
 				pointTotal += listedUnitArray[i].unit.points
 			}
@@ -122,20 +103,22 @@ class UnitEntriesFormContainer extends Component {
 		if (artefactArray == undefined) {
 			artefactArray = this.state.selectedArtefacts
 		}
-		for (i = 0; i < artefactArray.length; i++) {
-			pointTotal += artefactArray[i].artefact.points
-		}			
+		if (is_ally === false) {
+			for (i = 0; i < artefactArray.length; i++) {
+				pointTotal += artefactArray[i].artefact.points
+			}
+		}
 		return pointTotal
 	}
 
-	calculateUnitStrengthTotal(listedUnitArray, unitOptionArray) {
+	calculateUnitStrengthTotal(allyString, listedUnitArray, unitOptionArray) {
 		let is_ally = false
+		if (allyString === 'Ally') {
+			is_ally = true
+		}
 		let unitStrengthTotal = 0
 		let i
 		if (listedUnitArray.length > 0 && listedUnitArray != undefined) {
-			if (listedUnitArray[0].unit.army_id !== this.state.selectedArmy.value) {
-				is_ally = true
-			}
 			for (i = 0; i < listedUnitArray.length; i++) {
 				unitStrengthTotal += listedUnitArray[i].unit.unit_strength
 			}
@@ -315,651 +298,150 @@ class UnitEntriesFormContainer extends Component {
 		return maximumCount
 	}
 
-	calculateUnlocks(unit) {
-		let listedUnits = this.state.listedUnits
-		let troopUnlocks = this.state.troopUnlocks
-		let unlocksFromRegiments = this.state.unlocksFromRegiments
-		let heroUnlocks = this.state.heroUnlocks
-		let warEngineUnlocks = this.state.warEngineUnlocks
-		let monsterUnlocks = this.state.monsterUnlocks
-		let unlocksFromLargeInfantry = this.state.unlocksFromLargeInfantry
+	addUnlocks(listedUnitArray) {
+		let unitTypeCountObject = this.calculateUnitTypeCounts(listedUnitArray)
+		let unlockObject = {
+			troopUnlocks: 0,
+			heroUnlocks: 0,
+			warEngineUnlocks: 0,
+			monsterUnlocks: 0,
+			unlocksFromLargeInfantry: 0,
+			unlocksFromRegiments: 0
+		}
 		let i
 
-		if (unit.is_irregular === false) {
-			if (
-				(
-					unit.unit_size === 'Regiment'  && (
-						unit.unit_type === 'Infantry' ||
-						unit.unit_type === 'Heavy Infantry' ||
-						unit.unit_type === 'Cavalry' ||
-						unit.unit_type === 'Chariot'
-					)
-				) || (
-					unit.unit_size === 'Horde' && (
-						unit.unit_type === 'Large Infantry' ||
-						unit.unit_type === 'Monstrous Infantry' ||
-						unit.unit_type === 'Large Cavalry'
-					)
-				)
-			) {
-				troopUnlocks += 2
-			}
-			if (
-				(
-					(unit.unit_size === 'Horde' || unit.unit_size === 'Legion') && (
-						unit.unit_type === 'Infantry' ||
-						unit.unit_type === 'Heavy Infantry' ||
-						unit.unit_type === 'Cavalry' ||
-						unit.unit_type === 'Chariot'
-					)
-				) || (
-					unit.unit_size === 'Legion' && (
-						unit.unit_type === 'Large Infantry' ||
-						unit.unit_type === 'Monstrous Infantry' ||
-						unit.unit_type === 'Large Cavalry'							
-					)
-				)
-			) {
-				troopUnlocks += 4
-			}
-			if (
-				(
-					unit.unit_size === 'Regiment'  && (
-						unit.unit_type === 'Infantry' ||
-						unit.unit_type === 'Heavy Infantry' ||
-						unit.unit_type === 'Cavalry' ||
-						unit.unit_type === 'Chariot'
-					)
-				)
-			) {
-				unlocksFromRegiments += 1
-			}
-			if (
-				(
-					(unit.unit_size === 'Horde' || unit.unit_size === 'Legion') && (
-						unit.unit_type === 'Infantry' ||
-						unit.unit_type === 'Heavy Infantry' ||
-						unit.unit_type === 'Cavalry' ||
-						unit.unit_type === 'Chariot'
-					)
-				)
-			) {
-				heroUnlocks += 1
-				warEngineUnlocks += 1
-				monsterUnlocks += 1
-			}
-			if (
-				(
-					(unit.unit_size === 'Horde' || unit.unit_size === 'Legion') && (
-						unit.unit_type === 'Large Infantry' ||
-						unit.unit_type === 'Monstrous Infantry' ||
-						unit.unit_type === 'Large Cavalry'		
-					)
-				)
-			) {
-				unlocksFromLargeInfantry += 2
-			}
-		}
-		if (unit.unit_size === 'Troop' || unit.is_irregular === true) {
-			troopUnlocks -= 1
-		}
-		if (unit.unit_type.includes('Hero')) {
-			if (heroUnlocks > 0) {
-				heroUnlocks -= 1
-			} else {
-				if (
-					unlocksFromLargeInfantry > 0 && (
-						(
-							this.state.heroCount <= this.state.warEngineCount &&
-							this.state.heroCount <= this.state.monsterCount &&
-							this.state.heroCount <= this.state.titanCount
-						) || (
-							this.state.heroCount < this.state.largeInfantryCount
-						)
-					)
-				) {
-					unlocksFromLargeInfantry -= 1
-				} else {
-					if (unlocksFromRegiments > 0) {
-						unlocksFromRegiments -= 1
-					}
-				}
-			}
-		}
-		if (unit.unit_type === 'War Engine') {
-			if (warEngineUnlocks > 0) {
-				warEngineUnlocks  -= 1
-			} else {
-				if (
-					unlocksFromLargeInfantry > 0 && (
-						(
-							this.state.warEngineCount <= this.state.heroCount &&
-							this.state.warEngineCount <= this.state.monsterCount &&
-							this.state.warEngineCount <= this.state.titanCount
-						) || (
-							this.state.warEngineCount < this.state.largeInfantryCount
-						)
-					)
-				) {
-					unlocksFromLargeInfantry -= 1
-				} else {
-					if (unlocksFromRegiments > 0) {
-						unlocksFromRegiments -= 1
-					}
-				}
-			}
-		}
-		if (unit.unit_type === 'Monster') {
-			if (monsterUnlocks > 0) {
-				monsterUnlocks  -= 1
-			} else {
-				if (
-					unlocksFromLargeInfantry > 0 && (
-						(
-							this.state.monsterCount <= this.state.heroCount &&
-							this.state.monsterCount <= this.state.warEngineCount &&
-							this.state.monsterCount <= this.state.titanCount
-						) || (
-							this.state.monsterCount < this.state.largeInfantryCount
-						)
-					)
-				) {
-					unlocksFromLargeInfantry -= 1
-				} else {
-					if (unlocksFromRegiments > 0) {
-						unlocksFromRegiments -= 1
-					}
-				}
-			}
-		}
-		if (unit.unit_type === 'Titan') {
-			if (monsterUnlocks > 0) {
-				monsterUnlocks  -= 1
-			} else {
-				if (
-					unlocksFromLargeInfantry > 0 && (
-						(
-							this.state.titanCount <= this.state.heroCount &&
-							this.state.titanCount <= this.state.warEngineCount &&
-							this.state.titanCount <= this.state.monsterCount
-						) || (
-							this.state.titanCount < this.state.largeInfantryCount
-						)
-					)
-				) {
-					unlocksFromLargeInfantry -= 1
-				} else {
-					if (unlocksFromRegiments > 0) {
-						unlocksFromRegiments -= 1
-					}
-				}
-			}
-		}
+		for (i = 0; i < listedUnitArray.length; i++) {
+			if (listedUnitArray[i].unit.is_irregular === false) {
+				if (listedUnitArray[i].unit.unlocking_class === 3) {
+					unlockObject.troopUnlocks += 4
+					unlockObject.heroUnlocks += 1
+					unlockObject.warEngineUnlocks += 1
+					unlockObject.monsterUnlocks += 1
 
-		this.setState({
-			listedUnits: listedUnits,
-			troopUnlocks: troopUnlocks,
-			heroUnlocks: heroUnlocks,
-			warEngineUnlocks: warEngineUnlocks,
-			monsterUnlocks: monsterUnlocks,
-			unlocksFromRegiments: unlocksFromRegiments,
-			unlocksFromLargeInfantry: unlocksFromLargeInfantry,
-			pointTotal: this.calculatePointTotal(listedUnits),
-			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits)
-		})
+				}
+				if (listedUnitArray[i].unit.unlocking_class === 2) {
+					if (listedUnitArray[i].unit.unit_size === 'Horde') {
+						unlockObject.troopUnlocks += 2
+					}
+					if (listedUnitArray[i].unit.unit_size === 'Legion') {
+						unlockObject.troopUnlocks += 4
+					}
+					unlockObject.unlocksFromLargeInfantry += 2
+				}
+				if (listedUnitArray[i].unit.unlocking_class === 1) {
+					unlockObject.troopUnlocks += 2
+					unlockObject.unlocksFromRegiments += 1
+				}
+			}
+		}
+		return unlockObject
 	}
 
-	calculateAlliedUnlocks(unit, alliedArmy) {
-		let alliedListedUnits = this.state.alliedListedUnits
-		let alliedTroopUnlocks = this.state.alliedTroopUnlocks
-		let alliedUnlocksFromRegiments = this.state.alliedUnlocksFromRegiments
-		let alliedHeroUnlocks = this.state.alliedHeroUnlocks
-		let alliedWarEngineUnlocks = this.state.alliedWarEngineUnlocks
-		let alliedMonsterUnlocks = this.state.alliedMonsterUnlocks
-		let alliedUnlocksFromLargeInfantry = this.state.alliedUnlocksFromLargeInfantry
+	subtractUnlocks(listedUnitArray) {
+		let unitTypeCountObject = this.calculateUnitTypeCounts(listedUnitArray)
+		let unlockObject = this.addUnlocks(listedUnitArray)
+
+		let largeInfantryToHero = unlockObject.unlocksFromLargeInfantry / 2
+		let largeInfantryToWarEngine = unlockObject.unlocksFromLargeInfantry / 2
+		let largeInfantryToMonster = unlockObject.unlocksFromLargeInfantry / 2
+		let largeInfantryToTitan = unlockObject.unlocksFromLargeInfantry / 2
+
+		let regimentToHero = unitTypeCountObject.regimentCount
+		let regimentToWarEngine = unitTypeCountObject.regimentCount
+		let regimentToMonster = unitTypeCountObject.regimentCount
+		let regimentToTitan = unitTypeCountObject.regimentCount
+		
+		let hordeToHero = unitTypeCountObject.hordeCount
+		let hordeToWarEngine = unitTypeCountObject.hordeCount
+		let hordeToMonster = unitTypeCountObject.hordeCount
+		let hordeToTitan = unitTypeCountObject.hordeCount
+
 		let i
-
-		if (unit.is_irregular === false) {
-			if (
-				(
-					unit.unit_size === 'Regiment'  && (
-						unit.unit_type === 'Infantry' ||
-						unit.unit_type === 'Heavy Infantry' ||
-						unit.unit_type === 'Cavalry' ||
-						unit.unit_type === 'Chariot'
-					)
-				) || (
-					unit.unit_size === 'Horde' && (
-						unit.unit_type === 'Large Infantry' ||
-						unit.unit_type === 'Monstrous Infantry' ||
-						unit.unit_type === 'Large Cavalry'
-					)
-				)
-			) {
-				alliedTroopUnlocks += 2
+		for (i = 0; i < unitTypeCountObject.heroCount; i++) {
+			if (hordeToHero > 0) {
+				hordeToHero--
 			}
-			if (
-				(
-					(unit.unit_size === 'Horde' || unit.unit_size === 'Legion') && (
-						unit.unit_type === 'Infantry' ||
-						unit.unit_type === 'Heavy Infantry' ||
-						unit.unit_type === 'Cavalry' ||
-						unit.unit_type === 'Chariot'
-					)
-				) || (
-					unit.unit_size === 'Legion' && (
-						unit.unit_type === 'Large Infantry' ||
-						unit.unit_type === 'Monstrous Infantry' ||
-						unit.unit_type === 'Large Cavalry'							
-					)
-				)
-			) {
-				alliedTroopUnlocks += 4
+			else if (largeInfantryToHero > 0 && unlockObject.unlocksFromLargeInfantry > 0) {
+				largeInfantryToHero--
+				unlockObject.unlocksFromLargeInfantry--
 			}
-			if (
-				(
-					unit.unit_size === 'Regiment'  && (
-						unit.unit_type === 'Infantry' ||
-						unit.unit_type === 'Heavy Infantry' ||
-						unit.unit_type === 'Cavalry' ||
-						unit.unit_type === 'Chariot'
-					)
-				)
-			) {
-				alliedUnlocksFromRegiments += 1
-			}
-			if (
-				(
-					(unit.unit_size === 'Horde' || unit.unit_size === 'Legion') && (
-						unit.unit_type === 'Infantry' ||
-						unit.unit_type === 'Heavy Infantry' ||
-						unit.unit_type === 'Cavalry' ||
-						unit.unit_type === 'Chariot'
-					)
-				)
-			) {
-				alliedHeroUnlocks += 1
-				alliedWarEngineUnlocks += 1
-				alliedMonsterUnlocks += 1
-			}
-			if (
-				(
-					(unit.unit_size === 'Horde' || unit.unit_size === 'Legion') && (
-						unit.unit_type === 'Large Infantry' ||
-						unit.unit_type === 'Monstrous Infantry' ||
-						unit.unit_type === 'Large Cavalry'		
-					)
-				)
-			) {
-				alliedUnlocksFromLargeInfantry += 2
-			}
-		}
-		if (unit.unit_size === 'Troop' || unit.is_irregular === true) {
-			alliedTroopUnlocks -= 1
-		}
-		if (unit.unit_type.includes('Hero')) {
-			if (alliedHeroUnlocks > 0) {
-				alliedHeroUnlocks -= 1
-			} else {
-				if (
-					alliedUnlocksFromLargeInfantry > 0 && (
-						(
-							this.state.alliedHeroCount <= this.state.alliedWarEngineCount &&
-							this.state.alliedHeroCount <= this.state.alliedMonsterCount &&
-							this.state.alliedHeroCount <= this.state.alliedTitanCount
-						) || (
-							this.state.alliedHeroCount < this.state.alliedLargeInfantryCount
-						)
-					)
-				) {
-					alliedUnlocksFromLargeInfantry -= 1
-				} else {
-					if (alliedUnlocksFromRegiments > 0) {
-						alliedUnlocksFromRegiments -= 1
-					}
-				}
-			}
-		}
-		if (unit.unit_type === 'War Engine') {
-			if (alliedWarEngineUnlocks > 0) {
-				alliedWarEngineUnlocks  -= 1
-			} else {
-				if (
-					alliedUnlocksFromLargeInfantry > 0 && (
-						(
-							this.state.alliedWarEngineCount <= this.state.alliedHeroCount &&
-							this.state.alliedWarEngineCount <= this.state.alliedMonsterCount &&
-							this.state.alliedWarEngineCount <= this.state.alliedTitanCount
-						) || (
-							this.state.alliedWarEngineCount < this.state.alliedLargeInfantryCount
-						)
-					)
-				) {
-					alliedUnlocksFromLargeInfantry -= 1
-				} else {
-					if (alliedUnlocksFromRegiments > 0) {
-						alliedUnlocksFromRegiments -= 1
-					}
-				}
-			}
-		}
-		if (unit.unit_type === 'Monster') {
-			if (alliedMonsterUnlocks > 0) {
-				alliedMonsterUnlocks  -= 1
-			} else {
-				if (
-					alliedUnlocksFromLargeInfantry > 0 && (
-						(
-							this.state.alliedMonsterCount <= this.state.alliedHeroCount &&
-							this.state.alliedMonsterCount <= this.state.alliedWarEngineCount &&
-							this.state.alliedMonsterCount <= this.state.alliedTitanCount
-						) || (
-							this.state.alliedMonsterCount < this.state.alliedLargeInfantryCount
-						)
-					)
-				) {
-					alliedUnlocksFromLargeInfantry -= 1
-				} else {
-					if (alliedUnlocksFromRegiments > 0) {
-						alliedUnlocksFromRegiments -= 1
-					}
-				}
-			}
-		}
-		if (unit.unit_type === 'Titan') {
-			if (alliedMonsterUnlocks > 0) {
-				alliedMonsterUnlocks  -= 1
-			} else {
-				if (
-					alliedUnlocksFromLargeInfantry > 0 && (
-						(
-							this.state.alliedTitanCount <= this.state.alliedHeroCount &&
-							this.state.alliedTitanCount <= this.state.alliedWarEngineCount &&
-							this.state.alliedTitanCount <= this.state.alliedMonsterCount
-						) || (
-							this.state.alliedTitanCount < this.state.alliedLargeInfantryCount
-						)
-					)
-				) {
-					alliedUnlocksFromLargeInfantry -= 1
-				} else {
-					if (alliedUnlocksFromRegiments > 0) {
-						alliedUnlocksFromRegiments -= 1
-					}
-				}
+			else {
+				regimentToHero--
+				regimentToWarEngine--
+				regimentToMonster--
+				regimentToTitan--
 			}
 		}
 
-
-		let units = this.props.units
-		let pointTotal = 0
-		let alliedPointTotal = 0
-		let alliedGreyedOutUnits = []
-		let alliedHeroesOnList = []
-		let alliedWarEnginesOnList = []
-		let alliedMonstersOnList = []
-		let alliedLocked
-		let alliedHeroCount = 0
-		let alliedWarEngineCount = 0
-		let alliedMonsterCount = 0
-		let alliedTitanCount = 0
-		let alliedHordeCount = 0
-		let alliedLargeInfantryCount = 0
-		let i2
-
-		let getUnitTypeCounts = array => {
-			alliedHeroCount = 0
-			alliedWarEngineCount = 0
-			alliedMonsterCount = 0
-			alliedTitanCount = 0
-			alliedHordeCount = 0
-			alliedLargeInfantryCount = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (array[i4].unit.unit_type.includes('Hero')) {
-					alliedHeroCount += 1
-				}
-				if (array[i4].unit.unit_type === 'War Engine') {
-					alliedWarEngineCount += 1
-				}	
-				if (array[i4].unit.unit_type === 'Monster') {
-					alliedMonsterCount += 1
-				}
-				if (array[i4].unit.unit_type === 'Titan') {
-					alliedTitanCount += 1
-				}
-				if (array[i4].unit.is_irregular === false) {
-					if (
-						(
-							array[i4].unit.unit_type === 'Infantry' ||
-							array[i4].unit.unit_type === 'Heavy Infantry' ||
-							array[i4].unit.unit_type === 'Cavalry' ||
-							array[i4].unit.unit_type === 'Chariot'
-						) && (
-							array[i4].unit.unit_size === 'Horde' || 
-							array[i4].unit.unit_size === 'Legion'					
-						)
-					) {
-						alliedHordeCount += 1
-					}
-					if (
-						(
-							array[i4].unit.unit_type === 'Large Infantry' ||
-							array[i4].unit.unit_type === 'Monstrous Infantry' ||
-							array[i4].unit.unit_type === 'Large Cavalry'
-						) && (
-							array[i4].unit.unit_size === 'Horde' || 
-							array[i4].unit.unit_size === 'Legion'
-						)
-					) {
-						alliedLargeInfantryCount += 1
-					}
-				}
+		for (i = 0; i < unitTypeCountObject.warEngineCount; i++) {
+			if (hordeToWarEngine > 0) {
+				hordeToWarEngine--
+			}
+			else if (largeInfantryToWarEngine > 0 && unlockObject.unlocksFromLargeInfantry > 0) {
+				largeInfantryToWarEngine--
+				unlockObject.unlocksFromLargeInfantry--
+			}
+			else {
+				regimentToHero--
+				regimentToWarEngine--
+				regimentToMonster--
+				regimentToTitan--
 			}
 		}
 
-		getUnitTypeCounts(alliedListedUnits)
-		pointTotal += this.calculatePointTotal(this.state.listedUnits, this.state.selectedUnitOptions)
-		alliedPointTotal += this.calculatePointTotal(this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
-
-		for (i = 0; i < units.length; i++) {
-			let limitedUnits = []
-			let maybeMaxedOut = []
-			alliedLocked = false
-			for (i2 = 0; i2 < alliedListedUnits.length; i2++) {
-				if (units[i].limited_n > 0) {
-					limitedUnits.push(alliedListedUnits[i2])
-				}
-				if (
-					(units[i].unit_type.includes('Hero') && alliedListedUnits[i2].unit.id === units[i].id) ||
-					(units[i].unit_type === 'War Engine' && alliedListedUnits[i2].unit.id === units[i].id) ||
-					(units[i].unit_type === 'Monster' && alliedListedUnits[i2].unit.id === units[i].id) ||
-					(units[i].unit_type === 'Titan' && alliedListedUnits[i2].unit.id === units[i].id)
-				) {
-					maybeMaxedOut.push(alliedListedUnits[i2])
-				}
+		for (i = 0; i < unitTypeCountObject.monsterCount; i++) {
+			if (hordeToMonster > 0) {
+				hordeToMonster--
+				hordeToTitan--
 			}
-			if (
-				(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
-				units[i].unit_type.includes('Hero') ||
-				units[i].unit_type === 'War Engine' ||
-				units[i].unit_type === 'Monster' ||
-				units[i].unit_type === 'Titan'
-			) {
-				alliedLocked = true
-				if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && alliedTroopUnlocks > 0) {
-					alliedLocked = false
-				} else {
-					if (units[i].unit_type.includes('Hero') && alliedHeroUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type.includes('Hero') && alliedUnlocksFromLargeInfantry > 0) {
-							if (
-								(
-									alliedHeroCount +
-									alliedWarEngineCount +
-									alliedMonsterCount +
-									alliedTitanCount <
-									alliedHeroUnlocks +
-									alliedWarEngineUnlocks +
-									alliedMonsterUnlocks +
-									alliedUnlocksFromLargeInfantry && (
-										(
-											alliedHeroCount <= alliedWarEngineCount ||
-											alliedHeroCount <= alliedMonsterCount ||
-											alliedHeroCount <= alliedTitanCount
-										) && (
-											alliedLargeInfantryCount >
-											alliedHeroCount +
-											alliedWarEngineCount +
-											alliedMonsterCount +
-											alliedTitanCount
-										) 
-									) || (
-										alliedHeroCount < alliedHordeCount + alliedLargeInfantryCount
-									)
-								)
-							) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type.includes('Hero') && alliedUnlocksFromRegiments > 0) {
-							alliedLocked = false
-						}
-					}
-					if (units[i].unit_type === 'War Engine' && alliedWarEngineUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type === 'War Engine' && alliedUnlocksFromLargeInfantry > 0) {
-							if (
-								(
-									alliedHeroCount +
-									alliedWarEngineCount +
-									alliedMonsterCount +
-									alliedTitanCount <
-									alliedHeroUnlocks +
-									alliedWarEngineUnlocks +
-									alliedMonsterUnlocks +
-									alliedUnlocksFromLargeInfantry && (										
-										(
-											alliedWarEngineCount <= alliedHeroCount ||
-											alliedWarEngineCount <= alliedMonsterCount ||
-											alliedWarEngineCount <= alliedTitanCount
-										) && (
-											alliedLargeInfantryCount >
-											alliedHeroCount +
-											alliedWarEngineCount +
-											alliedMonsterCount +
-											alliedTitanCount
-										)
-									) || (
-										alliedWarEngineCount < alliedHordeCount + alliedLargeInfantryCount
-									)
-								)
-							) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'War Engine' && alliedUnlocksFromRegiments > 0) {
-							alliedLocked = false
-						}
-					}
-					if (units[i].unit_type === 'Monster' && alliedMonsterUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type === 'Monster' && alliedUnlocksFromLargeInfantry > 0) {
-							if (
-								(
-									alliedHeroCount +
-									alliedWarEngineCount +
-									alliedMonsterCount +
-									alliedTitanCount <
-									alliedHeroUnlocks +
-									alliedWarEngineUnlocks +
-									alliedMonsterUnlocks +
-									alliedUnlocksFromLargeInfantry && (
-										(
-											alliedMonsterCount <= alliedHeroCount ||
-											alliedMonsterCount <= alliedWarEngineCount ||
-											alliedMonsterCount <= alliedTitanCount
-										) && (
-											alliedLargeInfantryCount >
-											alliedHeroCount + alliedWarEngineCount + alliedMonsterCount + alliedTitanCount
-										)
-									) || (
-										alliedMonsterCount < alliedHordeCount + alliedLargeInfantryCount
-									)
-								)
-							) {
-								alliedLocked = false
-							}
-
-						}
-						if (units[i].unit_type === 'Monster' && alliedUnlocksFromRegiments > 0) {
-							alliedLocked = false
-						}
-					}
-					if (units[i].unit_type === 'Titan' && alliedMonsterUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type === 'Titan' && alliedUnlocksFromLargeInfantry > 0) {
-							if (
-								(
-									alliedHeroCount +
-									alliedWarEngineCount +
-									alliedMonsterCount +
-									alliedTitanCount <
-									alliedHeroUnlocks +
-									alliedWarEngineUnlocks +
-									alliedMonsterUnlocks +
-									alliedUnlocksFromLargeInfantry && (
-										(
-											alliedTitanCount <= alliedHeroCount ||
-											alliedTitanCount <= alliedWarEngineCount ||
-											alliedTitanCount <= alliedMonsterCount
-										) && (
-											alliedLargeInfantryCount >
-											alliedHeroCount + alliedWarEngineCount + alliedMonsterCount + alliedTitanCount
-										)
-									) || (
-										alliedTitanCount < alliedHordeCount + alliedLargeInfantryCount
-									)
-								)
-							) {
-								alliedLocked = false
-							}
-
-						}
-						if (units[i].unit_type === 'Titan' && alliedUnlocksFromRegiments > 0) {
-							alliedLocked = false
-						}
-					}						
-				}
+			else if (largeInfantryToMonster > 0 && unlockObject.unlocksFromLargeInfantry > 0) {
+				largeInfantryToMonster--
+				unlockObject.unlocksFromLargeInfantry--
 			}
-	
-			if (
-				alliedLocked === true ||
-				units[i].army_id !== alliedArmy.id ||
-				(pointTotal + alliedPointTotal + units[i].points) / 4 < alliedPointTotal + units[i].points ||
-				limitedUnits.length >= 1 ||
-				maybeMaxedOut.length >= 1
-			) {
-				alliedGreyedOutUnits.push(units[i])
+			else {
+				regimentToHero--
+				regimentToWarEngine--
+				regimentToMonster--
+				regimentToTitan--
 			}
 		}
 
-		this.setState({
-			alliedListedUnits: alliedListedUnits,
-			alliedTroopUnlocks: alliedTroopUnlocks,
-			alliedHeroUnlocks: alliedHeroUnlocks,
-			alliedWarEngineUnlocks: alliedWarEngineUnlocks,
-			alliedMonsterUnlocks: alliedMonsterUnlocks,
-			alliedUnlocksFromRegiments: alliedUnlocksFromRegiments,
-			alliedUnlocksFromLargeInfantry: alliedUnlocksFromLargeInfantry,
-			alliedPointTotal: this.calculatePointTotal(alliedListedUnits),
-			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits),
-			alliedGreyedOutUnits: alliedGreyedOutUnits
-		})
+		for (i = 0; i < unitTypeCountObject.titanCount; i++) {
+			if (hordeToTitan > 0) {
+				hordeToMonster--
+				hordeToTitan--
+			}
+			else if (largeInfantryToTitan > 0 && unlockObject.unlocksFromLargeInfantry > 0) {
+				largeInfantryToTitan--
+				unlockObject.unlocksFromLargeInfantry--
+			}
+			else {
+				regimentToHero--
+				regimentToWarEngine--
+				regimentToMonster--
+				regimentToTitan--
+			}
+		}
+		
+		let heroTotals = [regimentToHero, hordeToHero]
+		let warEngineTotals = [regimentToWarEngine, hordeToWarEngine]
+		let monsterTotals = [regimentToMonster, hordeToMonster]
+		let titanTotals = [regimentToTitan, hordeToTitan]
+
+		if (unlockObject.unlocksFromLargeInfantry > 0) {
+			heroTotals.push(largeInfantryToHero)
+			warEngineTotals.push(largeInfantryToWarEngine)
+			monsterTotals.push(largeInfantryToMonster)
+			titanTotals.push(largeInfantryToTitan)
+		}
+
+		unlockObject.troopUnlocks = (unlockObject.troopUnlocks - unitTypeCountObject.troopCount)
+		unlockObject.heroUnlocks = Math.max.apply(null, heroTotals)
+		unlockObject.warEngineUnlocks = Math.max.apply(null, warEngineTotals)
+		unlockObject.monsterUnlocks = Math.max.apply(null, monsterTotals)
+		unlockObject.unlocksFromRegiments = regimentToHero
+
+		return unlockObject
 	}
 
 	addToList(unitToAdd) {
@@ -968,25 +450,19 @@ class UnitEntriesFormContainer extends Component {
 		let unitToAddWithIndex = { index: indexCount, unit: unitToAdd }
 		listedUnits.push(unitToAddWithIndex)
 		indexCount += 1
-		let pointTotal = this.calculatePointTotal(listedUnits)
-		let unitTypeCountObject = this.calculateUnitTypeCounts(listedUnits)
+		let pointTotal = this.calculatePointTotal('Main army', listedUnits)
 		this.setState({
 			listedUnits: listedUnits,
 			indexCount: indexCount,
 			pointTotal: pointTotal,
-			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits),
-			heroCount: unitTypeCountObject.heroCount,
-			warEngineCount: unitTypeCountObject.warEngineCount,
-			monsterCount: unitTypeCountObject.monsterCount,
-			titanCount: unitTypeCountObject.titanCount,
-			hordeCount: unitTypeCountObject.hordeCount,
-			largeInfantryCount: unitTypeCountObject.largeInfantryCount,
+			unitStrengthTotal: this.calculateUnitStrengthTotal('Main army', listedUnits),
+			unitTypeCountObject: this.calculateUnitTypeCounts(listedUnits),
+			unlockObject: this.subtractUnlocks(listedUnits),
 			maximumCount: this.calculateMaximumCount(pointTotal + this.state.alliedPointTotal),
 			unitOptionsVisible: false,
 			artefactsVisible: false,
 			alliesVisible: false
 		})
-		this.calculateUnlocks(unitToAdd)
 	}
 
 	addAlliedUnitToList(unitToAdd, alliedArmy, alliedArmySingularName) {
@@ -995,26 +471,287 @@ class UnitEntriesFormContainer extends Component {
 		let unitToAddWithIndex = { index: indexCount + 200000, unit: unitToAdd }
 		alliedListedUnits.push(unitToAddWithIndex)
 		indexCount += 1
-		let alliedPointTotal = this.calculatePointTotal(alliedListedUnits)
+		let alliedPointTotal = this.calculatePointTotal('Ally', alliedListedUnits)
 		let alliedUnitTypeCountObject = this.calculateUnitTypeCounts(alliedListedUnits)
+		let i
+
 		this.setState({
 			alliedListedUnits: alliedListedUnits,
 			alliedArmy: alliedArmy,
 			alliedArmySingularName: alliedArmySingularName,
 			indexCount: indexCount,
 			alliedPointTotal: alliedPointTotal,
-			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits),
-			alliedHeroCount: alliedUnitTypeCountObject.heroCount,
-			alliedWarEngineCount: alliedUnitTypeCountObject.warEngineCount,
-			alliedMonsterCount: alliedUnitTypeCountObject.monsterCount,
-			alliedTitanCount: alliedUnitTypeCountObject.titanCount,
-			alliedHordeCount: alliedUnitTypeCountObject.hordeCount,
-			alliedLargeInfantryCount: alliedUnitTypeCountObject.largeInfantryCount,
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal('Ally', alliedListedUnits),
+			alliedUnitTypeCountObject: this.calculateUnitTypeCounts(alliedListedUnits),
+			alliedUnlockObject: this.subtractUnlocks(alliedListedUnits),
 			maximumCount: this.calculateMaximumCount(this.state.pointTotal + alliedPointTotal),
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', alliedListedUnits, alliedArmy),
 			unitOptionsVisible: false,
 			artefactsVisible: false
 		})
-		this.calculateAlliedUnlocks(unitToAdd, alliedArmy)
+	}
+
+	determineIfGreyedOut(allyString, listedUnitArray, alliedArmy) {
+		let is_ally = false
+		let alliedArmyId
+		if (allyString === 'Ally' && alliedArmy != undefined && alliedArmy != '') {
+			is_ally = true
+			alliedArmyId = alliedArmy.id
+		}
+		if (allyString === 'Ally' && (alliedArmy == undefined || alliedArmy == '')) {
+			is_ally = false
+			alliedArmyId = ''
+		}
+
+		let units = this.props.units
+		let greyedOutUnits = []
+		let locked
+		let pointTotal
+		let alliedPointTotal
+		let unitTypeCountObject = this.calculateUnitTypeCounts(listedUnitArray)
+		let unlockObject = this.addUnlocks(listedUnitArray)
+		let i
+		let i2
+
+		if (listedUnitArray.length > 0 && listedUnitArray != undefined) {
+			if (listedUnitArray[0].unit.army_id !== this.state.selectedArmy.value) {
+				is_ally = true
+			}
+		}
+		if (is_ally === false) {
+			pointTotal = this.calculatePointTotal('Main army', listedUnitArray)
+			alliedPointTotal = this.state.alliedPointTotal		
+		}
+		if (is_ally === true) {
+			pointTotal = (this.state.pointTotal)
+			alliedPointTotal = this.calculatePointTotal('Ally', listedUnitArray)
+		}
+
+		let determineIfCanAdd = (unitTypeCountObject, unlockObject) => {
+			let canOrCannotAdd = {
+				troop: false,
+				hero: false,
+				warEngine: false,
+				monster: false,
+				titan: false
+			};
+			
+			// Just to make typing faster...
+			let utc = unitTypeCountObject;
+			let uo = unlockObject;
+
+			let liHordes = uo.unlocksFromLargeInfantry / 2;
+			let liu = uo.unlocksFromLargeInfantry;
+			let lih = liHordes;
+			let liw = liHordes;
+			let lim = liHordes;
+			let lit = liHordes;
+
+			let regh = utc.regimentCount;
+			let regw = utc.regimentCount;
+			let regm = utc.regimentCount;
+			let regt = utc.regimentCount;
+			
+			// horde count does NOT include large/monstrous inf/cav
+			let rHordes = utc.hordeCount;
+			let hh = rHordes;
+			let hw = rHordes;
+			let hm = rHordes;
+			let ht = rHordes;
+
+			for(let i = 0; i < utc.heroCount; i++) {
+				if(lih > 0 && liu > 0) {
+					lih--;
+					liu--;
+				}
+				else if(regh > 0) {
+					regh--;
+					regw--;
+					regm--;
+					regt--;
+				}
+				else {
+					hh--;
+				}
+			}
+
+			for(let i = 0; i < utc.warEngineCount; i++) {
+				if(liw > 0 && liu > 0) {
+					liw--;
+					liu--;
+				}
+				else if(regw > 0) {
+					regh--;
+					regw--;
+					regm--;
+					regt--;
+				}
+				else {
+					hw--;
+				}
+			}
+
+			for(let i = 0; i < utc.monsterCount; i++) {
+				if(lim > 0 && liu > 0) {
+					lim--;
+					liu--;
+				}
+				else if(regm > 0) {
+					regh--;
+					regw--;
+					regm--;
+					regt--;
+				}
+				else {
+					hm--;
+					ht--;
+				}
+			}
+
+			for(let i = 0; i < utc.titanCount; i++) {
+				if(lit > 0 && liu > 0) {
+					lit--;
+					liu--;
+				}
+				else if(regt > 0) {
+					regh--;
+					regw--;
+					regm--;
+					regt--;
+				}
+				else {
+					hm--;
+					ht--;
+				}
+			}
+			
+			canOrCannotAdd.hero = ((lih > 0 && liu > 0) || regh > 0 || hh > 0);
+			canOrCannotAdd.warEngine = ((liw > 0 && liu > 0) || regw > 0 || hw > 0);
+			canOrCannotAdd.titan = ((lit > 0 && liu > 0) || regt > 0 || ht > 0);
+			canOrCannotAdd.monster = ((lim > 0 && liu > 0) || regm > 0 || hm > 0);
+			canOrCannotAdd.troop = (utc.troopCount < uo.troopUnlocks);
+			
+			return canOrCannotAdd;
+		}
+
+		for (i = 0; i < units.length; i++) {
+			let limitedHeroCount = 0
+			let limitedAndLockedFromJarvisCount = 0
+			let limitedDuplicateCount = 0
+			let maybeMaxedOut = []
+			let limitedUnits = []
+			locked = false
+			for (i2 = 0; i2 < listedUnitArray.length; i2++) {
+				if (listedUnitArray[i2].unit.limited_n > 0 && listedUnitArray[i2].unit.unit_type.includes('Hero')) {
+					limitedHeroCount += 1
+				}
+				if (
+					units[i].limited_n > 0 &&
+					units[i].unit_type.includes('Hero') &&
+					listedUnitArray[i2].unit.name === 'Jarvis [1]'
+				) {
+					limitedAndLockedFromJarvisCount += 1
+				}
+				if (units[i].limited_n > 0 && listedUnitArray[i2].unit.id === units[i].id) {
+					limitedDuplicateCount += 1
+				}
+				if (
+					(units[i].unit_type.includes('Hero') && listedUnitArray[i2].unit.id === units[i].id) ||
+					(units[i].unit_type === 'War Engine' && listedUnitArray[i2].unit.id === units[i].id) ||
+					(units[i].unit_type === 'Monster' && listedUnitArray[i2].unit.id === units[i].id) ||
+					(units[i].unit_type === 'Titan' && listedUnitArray[i2].unit.id === units[i].id)
+				) {
+					maybeMaxedOut.push(listedUnitArray[i2])
+				}
+			}
+
+			if (units[i].unlocking_class === 0) {
+				locked = true
+				if (
+					(units[i].unit_size === 'Troop' || units[i].is_irregular === true) &&
+					determineIfCanAdd(unitTypeCountObject, unlockObject).troop === true
+				) {
+					locked = false
+				}
+				if (
+					units[i].unit_type.includes('Hero') &&
+					determineIfCanAdd(unitTypeCountObject, unlockObject).hero === true
+				) {
+					locked = false
+				}
+				if (
+					units[i].unit_type === 'War Engine' &&
+					determineIfCanAdd(unitTypeCountObject, unlockObject).warEngine === true
+				) {
+					locked = false
+				}
+				if (
+					units[i].unit_type === 'Monster' &&
+					determineIfCanAdd(unitTypeCountObject, unlockObject).monster === true
+				) {
+					locked = false
+				}
+				if (
+					units[i].unit_type === 'Titan' &&
+					determineIfCanAdd(unitTypeCountObject, unlockObject).titan === true
+				) {
+					locked = false
+				}
+				if (
+					(
+						units[i].unit_type === 'Large Infantry' ||
+						units[i].unit_type === 'Large Cavalry' ||
+						units[i].unit_type === 'Monstrous Infantry'
+					) && (
+						units[i].unit_size === 'Regiment'
+					) && (
+						units[i].is_irregular === false
+					)
+				) {
+					locked = false
+				}
+			}
+
+			if (is_ally === false) {
+				if (
+					(
+						units[i].limited_n > 0 &&
+						units[i].unit_type.includes('Hero') &&
+						limitedAndLockedFromJarvisCount > 0
+					) || (
+						maybeMaxedOut.length >= this.state.maximumCount
+					) || (
+						limitedDuplicateCount > 0
+					) || (
+							units[i].name === 'Jarvis [1]' && (
+							limitedHeroCount > 0 || (
+								this.state.alliedListedUnits.length > 0 &&
+								this.state.alliedArmy.alignment === 'Good'
+							)
+						)
+					)
+				) {
+					locked = true
+				}
+			}
+			if (is_ally === true) {
+				if (units[i].limited_n > 0 && units[i].army_id === alliedArmyId) {
+					limitedUnits.push(units[i])
+				}
+				if (
+					limitedUnits.length > 0 ||
+					maybeMaxedOut.length > 0 ||
+					(units[i].army_id !== alliedArmyId) ||
+					((pointTotal + alliedPointTotal + units[i].points) / 4 < alliedPointTotal + units[i].points)
+				) {
+					locked = true
+				}
+			}
+			if (locked === true) {
+				greyedOutUnits.push(units[i])
+			}
+		}
+		return greyedOutUnits
 	}
 
 	removeFromList(unitObject) {
@@ -1023,232 +760,22 @@ class UnitEntriesFormContainer extends Component {
 		let selectedArtefacts = this.state.selectedArtefacts
 		let removedUnitOptionObjects = []
 		let removedArtefactObject
-		let pointTotal = 0
-		let unitStrengthTotal = 0
-		let troopUnlocks = 0
-		let heroUnlocks = 0
-		let warEngineUnlocks = 0
-		let monsterUnlocks = 0
-		let unlocksFromLargeInfantry = 0
-		let unlocksFromRegiments = 0
-		let heroCount = 0
-		let warEngineCount = 0
-		let monsterCount = 0
-		let titanCount = 0
-		let hordeCount = 0
-		let largeInfantryCount = 0
+		let pointTotal
+		let oldPointTotal
+		let oldAlliedPointTotal
+		let unitStrengthTotal
+		let unitTypeCountObject
+		let unlockObject
+		let alliedUnitTypeCountObject
+		let alliedUnlockObject
 		let i
 		let i2
 		let i3
-
-		let doesUnitUnlock = unit => {
-			let result
-			if (
-				unit.is_irregular === false && (
-					(
-						unit.unit_size === 'Regiment'  && (
-							unit.unit_type === 'Infantry' ||
-							unit.unit_type === 'Heavy Infantry' ||
-							unit.unit_type === 'Cavalry' ||
-							unit.unit_type === 'Chariot'
-						)
-					) || (
-						(unit.unit_size === 'Horde' || unit.unit_size === 'Legion') && (
-							unit.unit_type === 'Infantry' ||
-							unit.unit_type === 'Heavy Infantry' ||
-							unit.unit_type === 'Cavalry' ||
-							unit.unit_type === 'Chariot' ||
-							unit.unit_type === 'Large Infantry' ||
-							unit.unit_type === 'Monstrous Infantry' ||
-							unit.unit_type === 'Large Cavalry'		
-						)
-					)
-				)			
-			) {
-				result = true
-			} else {
-				result = false
-			}
-			return result
-		}
-
-		let addTroopUnlocks = array => {
-			troopUnlocks = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (array[i4].unit.is_irregular === false) {
-					if (
-						(
-							array[i4].unit.unit_size === 'Regiment'  && (
-								array[i4].unit.unit_type === 'Infantry' ||
-								array[i4].unit.unit_type === 'Heavy Infantry' ||
-								array[i4].unit.unit_type === 'Cavalry' ||
-								array[i4].unit.unit_type === 'Chariot'
-							)
-						) || (
-							array[i4].unit.unit_size === 'Horde' && (
-								array[i4].unit.unit_type === 'Large Infantry' ||
-								array[i4].unit.unit_type === 'Monstrous Infantry' ||
-								array[i4].unit.unit_type === 'Large Cavalry'
-							)
-						)
-					) {
-						troopUnlocks += 2
-					}
-					if (
-						(
-							(
-								array[i4].unit.unit_size === 'Horde' ||
-								array[i4].unit.unit_size === 'Legion'
-							) && (
-								array[i4].unit.unit_type === 'Infantry' ||
-								array[i4].unit.unit_type === 'Heavy Infantry' ||
-								array[i4].unit.unit_type === 'Cavalry' ||
-								array[i4].unit.unit_type === 'Chariot'
-							)
-						) || (
-							array[i4].unit.unit_size === 'Legion' && (
-								array[i4].unit.unit_type === 'Large Infantry' ||
-								array[i4].unit.unit_type === 'Monstrous Infantry' ||
-								array[i4].unit.unit_type === 'Large Cavalry'
-							)						
-						)
-
-					) {
-						troopUnlocks += 4
-					}	
-				}
-			}
-		}
-
-		let addHeroWarEngineMonsterUnlocks = array => {
-			heroUnlocks = 0
-			warEngineUnlocks = 0
-			monsterUnlocks = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (
-					array[i4].unit.is_irregular === false &&
-					(
-						(
-							array[i4].unit.unit_size === 'Horde' ||
-							array[i4].unit.unit_size === 'Legion'
-						) && (
-							array[i4].unit.unit_type === 'Infantry' ||
-							array[i4].unit.unit_type === 'Heavy Infantry' ||
-							array[i4].unit.unit_type === 'Cavalry' ||
-							array[i4].unit.unit_type === 'Chariot'
-						)
-					)
-				) {
-					heroUnlocks += 1
-					warEngineUnlocks += 1
-					monsterUnlocks += 1
-				}
-			}
-		}
-
-		let addUnlocksFromLargeInfantry = array => {
-			unlocksFromLargeInfantry = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (
-					array[i4].unit.is_irregular === false &&
-					(
-						(
-							array[i4].unit.unit_size === 'Horde' ||
-							array[i4].unit.unit_size === 'Legion'
-						) && (
-							array[i4].unit.unit_type === 'Large Infantry' ||
-							array[i4].unit.unit_type === 'Monstrous Infantry' ||
-							array[i4].unit.unit_type === 'Large Cavalry'		
-						)
-					)
-				) {
-					unlocksFromLargeInfantry += 2
-				}				
-			}	
-		}
-
-		let addUnlocksFromRegiments = array => {
-			unlocksFromRegiments = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (
-					array[i4].unit.is_irregular === false &&
-					(
-						array[i4].unit.unit_size === 'Regiment'  && (
-							array[i4].unit.unit_type === 'Infantry' ||
-							array[i4].unit.unit_type === 'Heavy Infantry' ||
-							array[i4].unit.unit_type === 'Cavalry' ||
-							array[i4].unit.unit_type === 'Chariot'
-						)
-					)
-				) {
-					unlocksFromRegiments += 1
-				}
-			}
-		}
-
-		let subtractUnlocks = array => {
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (
-					array[i4].unit.unit_size === 'Troop' ||
-					array[i4].unit.is_irregular === true
-				) {
-					troopUnlocks -= 1
-				}
-				if (array[i4].unit.unit_type.includes('Hero')) {
-					if (heroUnlocks > 0) {
-						heroUnlocks -= 1
-					} else {
-						if (unlocksFromLargeInfantry > 0) {
-							unlocksFromLargeInfantry -= 1
-						} else {
-							if (unlocksFromRegiments > 0) {
-								unlocksFromRegiments -= 1
-							}
-						}
-					}
-				}
-				if (array[i4].unit.unit_type === 'War Engine') {
-					if (warEngineUnlocks > 0) {
-						warEngineUnlocks  -= 1
-					} else {
-						if (unlocksFromLargeInfantry > 0) {
-							unlocksFromLargeInfantry -= 1
-						} else {
-							if (unlocksFromRegiments > 0) {
-								unlocksFromRegiments -= 1
-							}
-						}
-					}
-				}
-				if (
-					array[i4].unit.unit_type === 'Monster' ||
-					array[i4].unit.unit_type === 'Titan'
-				) {
-					if (monsterUnlocks > 0) {
-						monsterUnlocks  -= 1
-					} else {
-						if (unlocksFromLargeInfantry > 0) {
-							unlocksFromLargeInfantry -= 1
-						} else {
-							if (unlocksFromRegiments > 0) {
-								unlocksFromRegiments -= 1
-							}
-						}
-					}
-				}
-			}
-		}
 
 		let actuallyDeleteStuff = (unitArray, unitOptionArray, artefactArray) => {
 			let i4
 			for (i4 = unitArray.length - 1; i4 >= 0; i4--) {
 				if (unitArray[i4].index === unitObject.index) {
-					unitStrengthTotal -= unitArray[i4].unit.unit_strength
 					unitArray.splice(unitArray.indexOf(unitArray[i4]), 1)
 				}
 			}
@@ -1266,57 +793,6 @@ class UnitEntriesFormContainer extends Component {
 			}				
 		}
 
-		let getUnitTypeCounts = array => {
-			heroCount = 0
-			warEngineCount = 0
-			monsterCount = 0
-			titanCount = 0
-			hordeCount = 0
-			largeInfantryCount = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (array[i4].unit.unit_type.includes('Hero')) {
-					heroCount += 1
-				}
-				if (array[i4].unit.unit_type === 'War Engine') {
-					warEngineCount += 1
-				}	
-				if (array[i4].unit.unit_type === 'Monster') {
-					monsterCount += 1
-				}
-				if (array[i4].unit.unit_type === 'Titan') {
-					titanCount += 1
-				}
-				if (array[i4].unit.is_irregular === false) {
-					if (
-						(
-							array[i4].unit.unit_type === 'Infantry' ||
-							array[i4].unit.unit_type === 'Heavy Infantry' ||
-							array[i4].unit.unit_type === 'Cavalry' ||
-							array[i4].unit.unit_type === 'Chariot'
-						) && (
-							array[i4].unit.unit_size === 'Horde' || 
-							array[i4].unit.unit_size === 'Legion'					
-						)
-					) {
-						hordeCount += 1
-					}
-					if (
-						(
-							array[i4].unit.unit_type === 'Large Infantry' ||
-							array[i4].unit.unit_type === 'Monstrous Infantry' ||
-							array[i4].unit.unit_type === 'Large Cavalry'
-						) && (
-							array[i4].unit.unit_size === 'Horde' || 
-							array[i4].unit.unit_size === 'Legion'
-						)
-					) {
-						largeInfantryCount += 1
-					}
-				}
-			}
-		}
-
 		let fakeListedUnits = []
 		for (i = 0; i < listedUnits.length; i++) {
 			fakeListedUnits.push(listedUnits[i])
@@ -1331,85 +807,53 @@ class UnitEntriesFormContainer extends Component {
 		}
 
 		actuallyDeleteStuff(fakeListedUnits, fakeSelectedUnitOptions, fakeSelectedArtefacts)
-		addTroopUnlocks(fakeListedUnits)
-		addHeroWarEngineMonsterUnlocks(fakeListedUnits)
-		addUnlocksFromLargeInfantry(fakeListedUnits)
-		addUnlocksFromRegiments(fakeListedUnits)
-		subtractUnlocks(fakeListedUnits)
-		getUnitTypeCounts(fakeListedUnits)
-		pointTotal = this.calculatePointTotal(fakeListedUnits, fakeSelectedUnitOptions, fakeSelectedArtefacts)
+		pointTotal = this.calculatePointTotal('Main army', fakeListedUnits, fakeSelectedUnitOptions, fakeSelectedArtefacts)
+		unitStrengthTotal = this.calculateUnitStrengthTotal('Main army', listedUnits, selectedUnitOptions)
+		unitTypeCountObject = this.calculateUnitTypeCounts(fakeListedUnits)
+		unlockObject = this.subtractUnlocks(fakeListedUnits)
 
 		if ((pointTotal + this.state.alliedPointTotal) / 4 < this.state.alliedPointTotal) {
 			listedUnits = this.state.listedUnits
 			selectedUnitOptions = this.state.selectedUnitOptions
 			selectedArtefacts = this.state.selectedArtefacts				
 		} else {
-			if (doesUnitUnlock(unitObject.unit) === true) {
+			if (unitObject.unit.unlocking_class > 0) {
 				listedUnits = fakeListedUnits
 				selectedUnitOptions = fakeSelectedUnitOptions
 				selectedArtefacts = fakeSelectedArtefacts
-
-				if (troopUnlocks < 0) {
+				if (unlockObject.troopUnlocks < 0) {
 					listedUnits = this.state.listedUnits
 					selectedUnitOptions = this.state.selectedUnitOptions
 					selectedArtefacts = this.state.selectedArtefacts
 				}
-				if (this.state.heroUnlocks <= 0) {
-					if (
-						this.state.unlocksFromLargeInfantry <= 0 || (
-							this.state.heroCount > this.state.warEngineCount &&
-							this.state.heroCount > this.state.monsterCount &&
-							this.state.heroCount > this.state.titanCount &&
-							this.state.heroCount >= this.state.largeInfantryCount
-						)
-					) {
-						if (this.state.unlocksFromRegiments <= 0) {
+				if (this.state.unlockObject.heroUnlocks <= 0) {
+					if (this.state.unlockObject.unlocksFromLargeInfantry <= 0) {
+						if (this.state.unlockObject.unlocksFromRegiments <= 0) {
 							listedUnits = this.state.listedUnits
 							selectedUnitOptions = this.state.selectedUnitOptions
 							selectedArtefacts = this.state.selectedArtefacts						
 						}
 					}
 				}
-				if (this.state.warEngineUnlocks <= 0) {
-					if (
-						this.state.unlocksFromLargeInfantry <= 0 || (
-							this.state.warEngineCount > this.state.heroCount &&
-							this.state.warEngineCount > this.state.monsterCount &&
-							this.state.warEngineCount > this.state.titanCount &&
-							this.state.warEngineCount >= this.state.largeInfantryCount
-						)
-					) {
-						if (this.state.unlocksFromRegiments <= 0) {
+				if (this.state.unlockObject.warEngineUnlocks <= 0) {
+					if (this.state.unlockObject.unlocksFromLargeInfantry <= 0) {
+						if (this.state.unlockObject.unlocksFromRegiments <= 0) {
 							listedUnits = this.state.listedUnits
 							selectedUnitOptions = this.state.selectedUnitOptions
 							selectedArtefacts = this.state.selectedArtefacts						
 						}
 					}
 				}
-				if (this.state.monsterUnlocks <= 0) {
-					if (
-						this.state.unlocksFromLargeInfantry <= 0 || (
-							this.state.monsterCount > this.state.heroCount &&
-							this.state.monsterCount > this.state.warEngineCount &&
-							this.state.monsterCount > this.state.titanCount &&
-							this.state.monsterCount >= this.state.largeInfantryCount
-						)
-					) {
-						if (this.state.unlocksFromRegiments <= 0) {
+				if (this.state.unlockObject.monsterUnlocks <= 0) {
+					if (this.state.unlockObject.unlocksFromLargeInfantry <= 0) {
+						if (this.state.unlockObject.unlocksFromRegiments <= 0) {
 							listedUnits = this.state.listedUnits
 							selectedUnitOptions = this.state.selectedUnitOptions
 							selectedArtefacts = this.state.selectedArtefacts						
 						}
 					}
-					if (
-						this.state.unlocksFromLargeInfantry <= 0 || (
-							this.state.titanCount > this.state.heroCount &&
-							this.state.titanCount > this.state.warEngineCount &&
-							this.state.titanCount > this.state.monsterCount &&
-							this.state.titanCount >= this.state.largeInfantryCount
-						)
-					) {
-						if (this.state.unlocksFromRegiments <= 0) {
+					if (this.state.unlockObject.unlocksFromLargeInfantry <= 0) {
+						if (this.state.unlockObject.unlocksFromRegiments <= 0) {
 							listedUnits = this.state.listedUnits
 							selectedUnitOptions = this.state.selectedUnitOptions
 							selectedArtefacts = this.state.selectedArtefacts						
@@ -1433,7 +877,6 @@ class UnitEntriesFormContainer extends Component {
 			selectedArtefacts = this.state.selectedArtefacts			
 		}
 
-		unitStrengthTotal = this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions)
 		let alliedArmy
 		let alliedListedUnits = this.state.alliedListedUnits
 		let alliedSelectedUnitOptions = this.state.alliedSelectedUnitOptions
@@ -1495,10 +938,10 @@ class UnitEntriesFormContainer extends Component {
 			indexCount = this.state.indexCount
 		}
 
-		let oldPointTotal = this.calculatePointTotal(this.state.listedUnits, this.state.selectedUnitOptions, this.state.selectedArtefacts)
-		let oldAlliedPointTotal = this.calculatePointTotal(this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
-		pointTotal = this.calculatePointTotal(listedUnits, selectedUnitOptions, selectedArtefacts)
-		alliedPointTotal = this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions)
+		oldPointTotal = this.calculatePointTotal('Main army', this.state.listedUnits, this.state.selectedUnitOptions, this.state.selectedArtefacts)
+		oldAlliedPointTotal = this.calculatePointTotal('Ally', this.state.alliedListedUnits, this.state.alliedSelectedUnitOptions)
+		pointTotal = this.calculatePointTotal('Main army', listedUnits, selectedUnitOptions, selectedArtefacts)
+		alliedPointTotal = this.calculatePointTotal('Ally', alliedListedUnits, alliedSelectedUnitOptions)
 		let maximumCountBefore = this.calculateMaximumCount(oldPointTotal + oldAlliedPointTotal)
 		let maximumCountAfter = this.calculateMaximumCount(pointTotal + alliedPointTotal)
 		if (maximumCountAfter < maximumCountBefore) {
@@ -1525,289 +968,44 @@ class UnitEntriesFormContainer extends Component {
 			}
 		}
 
-		addTroopUnlocks(listedUnits)
-		addHeroWarEngineMonsterUnlocks(listedUnits)
-		addUnlocksFromLargeInfantry(listedUnits)
-		addUnlocksFromRegiments(listedUnits)
-		subtractUnlocks(listedUnits)
-
-		getUnitTypeCounts(listedUnits)
-
-		pointTotal = this.calculatePointTotal(listedUnits, selectedUnitOptions, selectedArtefacts)
-		alliedPointTotal = this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions)
-
 		this.setState({
 			listedUnits: listedUnits,
 			selectedUnitOptions: selectedUnitOptions,
 			selectedArtefacts: selectedArtefacts,
-			pointTotal: pointTotal,
-			unitStrengthTotal: this.calculateUnitStrengthTotal(listedUnits, selectedUnitOptions),
-			troopUnlocks: troopUnlocks,
-			heroUnlocks: heroUnlocks,
-			warEngineUnlocks: warEngineUnlocks,
-			monsterUnlocks: monsterUnlocks,
-			unlocksFromLargeInfantry: unlocksFromLargeInfantry,
-			unlocksFromRegiments: unlocksFromRegiments,
-			heroCount: heroCount,
-			warEngineCount: warEngineCount,
-			monsterCount: monsterCount,
-			titanCount: titanCount,
-			hordeCount: hordeCount,
-			largeInfantryCount: largeInfantryCount,
+			pointTotal: this.calculatePointTotal('Main army', listedUnits, selectedUnitOptions, selectedArtefacts),
+			unitStrengthTotal: this.calculateUnitStrengthTotal('Main army', listedUnits, selectedUnitOptions),
+			unitTypeCountObject: this.calculateUnitTypeCounts(listedUnits),
+			unlockObject: this.subtractUnlocks(listedUnits),
 			alliedArmy: alliedArmy,
 			alliedListedUnits: alliedListedUnits,
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
-			alliedPointTotal: alliedPointTotal,
-			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits, alliedSelectedUnitOptions),
-			alliedTroopUnlocks: alliedTroopUnlocks,
-			alliedHeroUnlocks: alliedHeroUnlocks,
-			alliedWarEngineUnlocks: alliedWarEngineUnlocks,
-			alliedMonsterUnlocks: alliedMonsterUnlocks,
-			alliedUnlocksFromRegiments: alliedUnlocksFromRegiments,
-			alliedUnlocksFromLargeInfantry: alliedUnlocksFromLargeInfantry,
-			alliedHeroCount: alliedHeroCount,
-			alliedWarEngineCount: alliedWarEngineCount,
-			alliedMonsterCount: alliedMonsterCount,
-			alliedTitanCount: alliedTitanCount,
-			alliedHordeCount: alliedHordeCount,
-			alliedLargeInfantryCount: alliedLargeInfantryCount,
+			alliedPointTotal: this.calculatePointTotal('Ally', alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal('Ally', alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitTypeCountObject: this.calculateUnitTypeCounts(alliedListedUnits),
+			alliedUnlockObject: this.subtractUnlocks(alliedListedUnits),
 			alliesVisible: alliesVisible,
-			alliedGreyedOutUnits: alliedGreyedOutUnits,
 			indexCount: indexCount,
-			maximumCount: this.calculateMaximumCount(pointTotal + alliedPointTotal)
+			maximumCount: this.calculateMaximumCount(pointTotal + alliedPointTotal),
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', alliedListedUnits, this.state.alliedArmy)
 		})
 	}
 
-	removeAlliedUnitFromList(unitObject) {
+	removeAlliedUnitFromList(unitObject, alliedArmy) {
 		let alliedListedUnits = this.state.alliedListedUnits
 		let alliedSelectedUnitOptions = this.state.alliedSelectedUnitOptions
 		let alliedRemovedUnitOptionObjects = []
-		let alliedPointTotal = 0
-		let unitStrengthTotal = 0
-		let alliedTroopUnlocks = 0
-		let alliedHeroUnlocks = 0
-		let alliedWarEngineUnlocks = 0
-		let alliedMonsterUnlocks = 0
-		let alliedUnlocksFromLargeInfantry = 0
-		let alliedUnlocksFromRegiments = 0
-		let alliedHeroCount = 0
-		let alliedWarEngineCount = 0
-		let alliedMonsterCount = 0
-		let alliedTitanCount = 0
-		let alliedHordeCount = 0
-		let alliedLargeInfantryCount = 0
+		let alliedPointTotal
+		let alliedUnitStrengthTotal
+		let alliedUnitTypeCountObject
+		let alliedUnlockObject
 		let i
 		let i2
 		let i3
-
-		let doesUnitUnlock = unit => {
-			let result
-			if (
-				unit.is_irregular === false && (
-					(
-						unit.unit_size === 'Regiment'  && (
-							unit.unit_type === 'Infantry' ||
-							unit.unit_type === 'Heavy Infantry' ||
-							unit.unit_type === 'Cavalry' ||
-							unit.unit_type === 'Chariot'
-						)
-					) || (
-						(unit.unit_size === 'Horde' || unit.unit_size === 'Legion') && (
-							unit.unit_type === 'Infantry' ||
-							unit.unit_type === 'Heavy Infantry' ||
-							unit.unit_type === 'Cavalry' ||
-							unit.unit_type === 'Chariot' ||
-							unit.unit_type === 'Large Infantry' ||
-							unit.unit_type === 'Monstrous Infantry' ||
-							unit.unit_type === 'Large Cavalry'		
-						)
-					)
-				)			
-			) {
-				result = true
-			} else {
-				result = false
-			}
-			return result
-		}
-
-		let addTroopUnlocks = array => {
-			alliedTroopUnlocks = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (array[i4].unit.is_irregular === false) {
-					if (
-						(
-							array[i4].unit.unit_size === 'Regiment'  && (
-								array[i4].unit.unit_type === 'Infantry' ||
-								array[i4].unit.unit_type === 'Heavy Infantry' ||
-								array[i4].unit.unit_type === 'Cavalry' ||
-								array[i4].unit.unit_type === 'Chariot'
-							)
-						) || (
-							array[i4].unit.unit_size === 'Horde' && (
-								array[i4].unit.unit_type === 'Large Infantry' ||
-								array[i4].unit.unit_type === 'Monstrous Infantry' ||
-								array[i4].unit.unit_type === 'Large Cavalry'
-							)
-						)
-					) {
-						alliedTroopUnlocks += 2
-					}
-					if (
-						(
-							(
-								array[i4].unit.unit_size === 'Horde' ||
-								array[i4].unit.unit_size === 'Legion'
-							) && (
-								array[i4].unit.unit_type === 'Infantry' ||
-								array[i4].unit.unit_type === 'Heavy Infantry' ||
-								array[i4].unit.unit_type === 'Cavalry' ||
-								array[i4].unit.unit_type === 'Chariot'
-							)
-						) || (
-							array[i4].unit.unit_size === 'Legion' && (
-								array[i4].unit.unit_type === 'Large Infantry' ||
-								array[i4].unit.unit_type === 'Monstrous Infantry' ||
-								array[i4].unit.unit_type === 'Large Cavalry'
-							)						
-						)
-
-					) {
-						alliedTroopUnlocks += 4
-					}	
-				}
-			}
-		}
-
-		let addHeroWarEngineMonsterUnlocks = array => {
-			alliedHeroUnlocks = 0
-			alliedWarEngineUnlocks = 0
-			alliedMonsterUnlocks = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (
-					array[i4].unit.is_irregular === false &&
-					(
-						(
-							array[i4].unit.unit_size === 'Horde' ||
-							array[i4].unit.unit_size === 'Legion'
-						) && (
-							array[i4].unit.unit_type === 'Infantry' ||
-							array[i4].unit.unit_type === 'Heavy Infantry' ||
-							array[i4].unit.unit_type === 'Cavalry' ||
-							array[i4].unit.unit_type === 'Chariot'
-						)
-					)
-				) {
-					alliedHeroUnlocks += 1
-					alliedWarEngineUnlocks += 1
-					alliedMonsterUnlocks += 1
-				}
-			}
-		}
-
-		let addUnlocksFromLargeInfantry = array => {
-			alliedUnlocksFromLargeInfantry = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (
-					array[i4].unit.is_irregular === false &&
-					(
-						(
-							array[i4].unit.unit_size === 'Horde' ||
-							array[i4].unit.unit_size === 'Legion'
-						) && (
-							array[i4].unit.unit_type === 'Large Infantry' ||
-							array[i4].unit.unit_type === 'Monstrous Infantry' ||
-							array[i4].unit.unit_type === 'Large Cavalry'		
-						)
-					)
-				) {
-					alliedUnlocksFromLargeInfantry += 2
-				}				
-			}	
-		}
-
-		let addUnlocksFromRegiments = array => {
-			alliedUnlocksFromRegiments = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (
-					array[i4].unit.is_irregular === false &&
-					(
-						array[i4].unit.unit_size === 'Regiment'  && (
-							array[i4].unit.unit_type === 'Infantry' ||
-							array[i4].unit.unit_type === 'Heavy Infantry' ||
-							array[i4].unit.unit_type === 'Cavalry' ||
-							array[i4].unit.unit_type === 'Chariot'
-						)
-					)
-				) {
-					alliedUnlocksFromRegiments += 1
-				}
-			}
-		}
-
-		let subtractUnlocks = array => {
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (
-					array[i4].unit.unit_size === 'Troop' ||
-					array[i4].unit.is_irregular === true
-				) {
-					alliedTroopUnlocks -= 1
-				}
-				if (array[i4].unit.unit_type.includes('Hero')) {
-					if (alliedHeroUnlocks > 0) {
-						alliedHeroUnlocks -= 1
-					} else {
-						if (alliedUnlocksFromLargeInfantry > 0) {
-							alliedUnlocksFromLargeInfantry -= 1
-						} else {
-							if (alliedUnlocksFromRegiments > 0) {
-								alliedUnlocksFromRegiments -= 1
-							}
-						}
-					}
-				}
-				if (array[i4].unit.unit_type === 'War Engine') {
-					if (alliedWarEngineUnlocks > 0) {
-						alliedWarEngineUnlocks  -= 1
-					} else {
-						if (alliedUnlocksFromLargeInfantry > 0) {
-							alliedUnlocksFromLargeInfantry -= 1
-						} else {
-							if (alliedUnlocksFromRegiments > 0) {
-								alliedUnlocksFromRegiments -= 1
-							}
-						}
-					}
-				}
-				if (
-					array[i4].unit.unit_type === 'Monster' ||
-					array[i4].unit.unit_type === 'Titan'
-				) {
-					if (alliedMonsterUnlocks > 0) {
-						alliedMonsterUnlocks  -= 1
-					} else {
-						if (alliedUnlocksFromLargeInfantry > 0) {
-							alliedUnlocksFromLargeInfantry -= 1
-						} else {
-							if (alliedUnlocksFromRegiments > 0) {
-								alliedUnlocksFromRegiments -= 1
-							}
-						}
-					}
-				}
-			}
-		}
 
 		let actuallyDeleteStuff = (unitArray, unitOptionArray) => {
 			let i4
 			for (i4 = unitArray.length - 1; i4 >= 0; i4--) {
 				if (unitArray[i4].index === unitObject.index) {
-					unitStrengthTotal -= unitArray[i4].unit.unit_strength
 					unitArray.splice(unitArray.indexOf(unitArray[i4]), 1)
 				}
 			}
@@ -1819,263 +1017,6 @@ class UnitEntriesFormContainer extends Component {
 			}		
 		}
 
-		let getUnitTypeCounts = array => {
-			alliedHeroCount = 0
-			alliedWarEngineCount = 0
-			alliedMonsterCount = 0
-			alliedTitanCount = 0
-			alliedHordeCount = 0
-			alliedLargeInfantryCount = 0
-			let i4
-			for (i4 = 0; i4 < array.length; i4++) {
-				if (array[i4].unit.unit_type.includes('Hero')) {
-					alliedHeroCount += 1
-				}
-				if (array[i4].unit.unit_type === 'War Engine') {
-					alliedWarEngineCount += 1
-				}	
-				if (array[i4].unit.unit_type === 'Monster') {
-					alliedMonsterCount += 1
-				}
-				if (array[i4].unit.unit_type === 'Titan') {
-					alliedTitanCount += 1
-				}
-				if (array[i4].unit.is_irregular === false) {
-					if (
-						(
-							array[i4].unit.unit_type === 'Infantry' ||
-							array[i4].unit.unit_type === 'Heavy Infantry' ||
-							array[i4].unit.unit_type === 'Cavalry' ||
-							array[i4].unit.unit_type === 'Chariot'
-						) && (
-							array[i4].unit.unit_size === 'Horde' || 
-							array[i4].unit.unit_size === 'Legion'					
-						)
-					) {
-						alliedHordeCount += 1
-					}
-					if (
-						(
-							array[i4].unit.unit_type === 'Large Infantry' ||
-							array[i4].unit.unit_type === 'Monstrous Infantry' ||
-							array[i4].unit.unit_type === 'Large Cavalry'
-						) && (
-							array[i4].unit.unit_size === 'Horde' || 
-							array[i4].unit.unit_size === 'Legion'
-						)
-					) {
-						alliedLargeInfantryCount += 1
-					}
-				}
-			}
-		}
-
-		let determineIfGreyedOut = array => {
-			let units = this.props.units
-			let alliedGreyedOutUnits = []
-			let alliedHeroesOnList = []
-			let alliedWarEnginesOnList = []
-			let alliedMonstersOnList = []
-			let alliedLocked
-			let i
-			let i2
-			alliedPointTotal = 0
-
-			getUnitTypeCounts(array)
-			alliedPointTotal += this.calculatePointTotal(array, alliedSelectedUnitOptions)
-
-			for (i = 0; i < units.length; i++) {
-				let limitedUnits = []
-				let maybeMaxedOut = []
-				alliedLocked = false
-				for (i2 = 0; i2 < array.length; i2++) {
-					if (units[i].limited_n > 0) {
-						limitedUnits.push(array[i2])
-					}
-					if (
-						(units[i].unit_type.includes('Hero') && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'War Engine' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
-					) {
-						maybeMaxedOut.push(array[i2])
-					}
-				}
-				if (
-					(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
-					units[i].unit_type.includes('Hero') ||
-					units[i].unit_type === 'War Engine' ||
-					units[i].unit_type === 'Monster' ||
-					units[i].unit_type === 'Titan'
-				) {
-					alliedLocked = true
-					if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && alliedTroopUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type.includes('Hero') && alliedHeroUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type.includes('Hero') && alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										alliedHeroCount +
-										alliedWarEngineCount +
-										alliedMonsterCount +
-										alliedTitanCount <
-										alliedHeroUnlocks +
-										alliedWarEngineUnlocks +
-										alliedMonsterUnlocks +
-										alliedUnlocksFromLargeInfantry && (
-											(
-												alliedHeroCount <= alliedWarEngineCount ||
-												alliedHeroCount <= alliedMonsterCount ||
-												alliedHeroCount <= alliedTitanCount
-											) && (
-												alliedLargeInfantryCount >
-												alliedHeroCount +
-												alliedWarEngineCount +
-												alliedMonsterCount +
-												alliedTitanCount
-											) 
-										) || (
-											alliedHeroCount < alliedHordeCount + alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type.includes('Hero') && alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'War Engine' && alliedWarEngineUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'War Engine' && alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										alliedHeroCount +
-										alliedWarEngineCount +
-										alliedMonsterCount +
-										alliedTitanCount <
-										alliedHeroUnlocks +
-										alliedWarEngineUnlocks +
-										alliedMonsterUnlocks +
-										alliedUnlocksFromLargeInfantry && (										
-											(
-												alliedWarEngineCount <= alliedHeroCount ||
-												alliedWarEngineCount <= alliedMonsterCount ||
-												alliedWarEngineCount <= alliedTitanCount
-											) && (
-												alliedLargeInfantryCount >
-												alliedHeroCount +
-												alliedWarEngineCount +
-												alliedMonsterCount +
-												alliedTitanCount
-											)
-										) || (
-											alliedWarEngineCount < alliedHordeCount + alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type === 'War Engine' && alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Monster' && alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Monster' && alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										alliedHeroCount +
-										alliedWarEngineCount +
-										alliedMonsterCount +
-										alliedTitanCount <
-										alliedHeroUnlocks +
-										alliedWarEngineUnlocks +
-										alliedMonsterUnlocks +
-										alliedUnlocksFromLargeInfantry && (
-											(
-												alliedMonsterCount <= alliedHeroCount ||
-												alliedMonsterCount <= alliedWarEngineCount ||
-												alliedMonsterCount <= alliedTitanCount
-											) && (
-												alliedLargeInfantryCount >
-												alliedHeroCount + alliedWarEngineCount + alliedMonsterCount + alliedTitanCount
-											)
-										) || (
-											alliedMonsterCount < alliedHordeCount + alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Monster' && alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Titan' && alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Titan' && alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										alliedHeroCount +
-										alliedWarEngineCount +
-										alliedMonsterCount +
-										alliedTitanCount <
-										alliedHeroUnlocks +
-										alliedWarEngineUnlocks +
-										alliedMonsterUnlocks +
-										alliedUnlocksFromLargeInfantry && (
-											(
-												alliedTitanCount <= alliedHeroCount ||
-												alliedTitanCount <= alliedWarEngineCount ||
-												alliedTitanCount <= alliedMonsterCount
-											) && (
-												alliedLargeInfantryCount >
-												alliedHeroCount + alliedWarEngineCount + alliedMonsterCount + alliedTitanCount
-											)
-										) || (
-											alliedTitanCount < alliedHordeCount + alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Titan' && alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}						
-					}
-				}			
-				if (
-					alliedLocked === true ||
-					(this.state.pointTotal + alliedPointTotal + units[i].points) / 4 < alliedPointTotal + units[i].points ||
-					limitedUnits.length >= 1 ||
-					maybeMaxedOut.length >= 1 || (
-						this.state.alliedArmy !== '' &&
-						units[i].army_id !== this.state.alliedArmy.id &&
-						alliedListedUnits.length > 0					
-					)
-				) {
-					alliedGreyedOutUnits.push(units[i])
-				}
-			}
-			return alliedGreyedOutUnits
-		}
-
-
-
 		let fakeListedUnits = []
 		for (i = 0; i < alliedListedUnits.length; i++) {
 			fakeListedUnits.push(alliedListedUnits[i])
@@ -2086,75 +1027,43 @@ class UnitEntriesFormContainer extends Component {
 		}
 
 		actuallyDeleteStuff(fakeListedUnits, fakeSelectedUnitOptions)
-		addTroopUnlocks(fakeListedUnits)
-		addHeroWarEngineMonsterUnlocks(fakeListedUnits)
-		addUnlocksFromLargeInfantry(fakeListedUnits)
-		addUnlocksFromRegiments(fakeListedUnits)
-		subtractUnlocks(fakeListedUnits)
-		getUnitTypeCounts(fakeListedUnits)
-		alliedPointTotal = this.calculatePointTotal(fakeListedUnits, fakeSelectedUnitOptions)
+		alliedPointTotal = this.calculatePointTotal('Ally', fakeListedUnits, fakeSelectedUnitOptions)
+		alliedUnitStrengthTotal = this.calculateUnitStrengthTotal('Ally', fakeListedUnits, fakeSelectedUnitOptions)
+		alliedUnitTypeCountObject = this.calculateUnitTypeCounts(fakeListedUnits)
+		alliedUnlockObject = this.subtractUnlocks(fakeListedUnits)
 
-		if (doesUnitUnlock(unitObject.unit) === true) {
+		if (unitObject.unit.unlocking_class > 0) {
 			alliedListedUnits = fakeListedUnits
 			alliedSelectedUnitOptions = fakeSelectedUnitOptions
-
-			if (alliedTroopUnlocks < 0) {
+			if (alliedUnlockObject.troopUnlocks < 0) {
 				alliedListedUnits = this.state.alliedListedUnits
 				alliedSelectedUnitOptions = this.state.alliedSelectedUnitOptions
 			}
-			if (this.state.alliedHeroUnlocks <= 0) {
-				if (
-					this.state.alliedUnlocksFromLargeInfantry <= 0 || (
-						this.state.alliedHeroCount > this.state.alliedWarEngineCount &&
-						this.state.alliedHeroCount > this.state.alliedMonsterCount &&
-						this.state.alliedHeroCount > this.state.alliedTitanCount &&
-						this.state.alliedHeroCount >= this.state.alliedLargeInfantryCount
-					)
-				) {
-					if (this.state.alliedUnlocksFromRegiments <= 0) {
+			if (this.state.alliedUnlockObject.alliedHeroUnlocks <= 0) {
+				if (this.state.alliedUnlockObject.unlocksFromLargeInfantry <= 0) {
+					if (this.state.alliedUnlockObject.unlocksFromRegiments <= 0) {
 						alliedListedUnits = this.state.alliedListedUnits
 						alliedSelectedUnitOptions = this.state.alliedSelectedUnitOptions					
 					}
 				}
 			}
-			if (this.state.alliedWarEngineUnlocks <= 0) {
-				if (
-					this.state.alliedUnlocksFromLargeInfantry <= 0 || (
-						this.state.alliedWarEngineCount > this.state.alliedHeroCount &&
-						this.state.alliedWarEngineCount > this.state.alliedMonsterCount &&
-						this.state.alliedWarEngineCount > this.state.alliedTitanCount &&
-						this.state.alliedWarEngineCount >= this.state.alliedLargeInfantryCount
-					)
-				) {
-					if (this.state.alliedUnlocksFromRegiments <= 0) {
+			if (this.state.alliedUnlockObject.warEngineUnlocks <= 0) {
+				if (this.state.alliedUnlockObject.unlocksFromLargeInfantry <= 0) {
+					if (this.state.alliedUnlockObject.unlocksFromRegiments <= 0) {
 						alliedListedUnits = this.state.alliedListedUnits
 						alliedSelectedUnitOptions = this.state.alliedSelectedUnitOptions						
 					}
 				}
 			}
-			if (this.state.alliedMonsterUnlocks <= 0) {
-				if (
-					this.state.alliedUnlocksFromLargeInfantry <= 0 || (
-						this.state.alliedMonsterCount > this.state.alliedHeroCount &&
-						this.state.alliedMonsterCount > this.state.alliedWarEngineCount &&
-						this.state.alliedMonsterCount > this.state.alliedTitanCount &&
-						this.state.alliedMonsterCount >= this.state.alliedLargeInfantryCount
-					)
-				) {
-					if (this.state.alliedUnlocksFromRegiments <= 0) {
+			if (this.state.alliedUnlockObject.monsterUnlocks <= 0) {
+				if (this.state.alliedUnlockObject.unlocksFromLargeInfantry <= 0) {
+					if (this.state.alliedUnlockObject.unlocksFromRegiments <= 0) {
 						alliedListedUnits = this.state.alliedListedUnits
 						alliedSelectedUnitOptions = this.state.alliedSelectedUnitOptions					
 					}
 				}
-				if (
-					this.state.alliedUnlocksFromLargeInfantry <= 0 || (
-						this.state.alliedTitanCount > this.state.alliedHeroCount &&
-						this.state.alliedTitanCount > this.state.alliedWarEngineCount &&
-						this.state.alliedTitanCount > this.state.alliedMonsterCount &&
-						this.state.alliedTitanCount >= this.state.alliedLargeInfantryCount
-					)
-				) {
-					if (this.state.alliedUnlocksFromRegiments <= 0) {
+				if (this.state.alliedUnlockObject.unlocksFromLargeInfantry <= 0) {
+					if (this.state.alliedUnlockObject.unlocksFromRegiments <= 0) {
 						alliedListedUnits = this.state.alliedListedUnits
 						alliedSelectedUnitOptions = this.state.alliedSelectedUnitOptions						
 					}
@@ -2166,51 +1075,286 @@ class UnitEntriesFormContainer extends Component {
 		}
 
 		if (
-			(this.state.pointTotal + alliedPointTotal + unitObject.unit.points) / 4 <
-			alliedPointTotal + unitObject.unit.points
+			(this.state.pointTotal + alliedPointTotal) / 4 < alliedPointTotal
 		) {
+
 			alliedListedUnits = this.state.alliedListedUnits
 			alliedSelectedUnitOptions = this.state.alliedSelectedUnitOptions				
 		}
+		alliedUnitTypeCountObject = this.calculateUnitTypeCounts(alliedListedUnits)
+		alliedUnlockObject = this.subtractUnlocks(alliedListedUnits)
 
-		let alliedArmy
-		let alliedArmySingularName
-		if (alliedListedUnits.length > 0) {
-			alliedArmy = this.state.alliedArmy
-			alliedArmySingularName = this.state.alliedArmySingularName
-		} else {
+		let alliedArmySingularName = this.state.alliedArmySingularName
+		if (alliedArmy != undefined && alliedArmy != '') {
+			alliedArmySingularName = alliedArmy.adjective
+		}
+		if (alliedArmy == undefined || alliedListedUnits.length === 0) {
 			alliedArmy = ''
 			alliedArmySingularName = ''
 		}
-
-		addTroopUnlocks(alliedListedUnits)
-		addHeroWarEngineMonsterUnlocks(alliedListedUnits)
-		addUnlocksFromLargeInfantry(alliedListedUnits)
-		addUnlocksFromRegiments(alliedListedUnits)
-		subtractUnlocks(alliedListedUnits)
-
-		getUnitTypeCounts(alliedListedUnits)
-
 		this.setState({
 			alliedArmy: alliedArmy,
 			alliedArmySingularName: alliedArmySingularName,
 			alliedListedUnits: alliedListedUnits,
 			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
-			alliedPointTotal: this.calculatePointTotal(alliedListedUnits, alliedSelectedUnitOptions),
-			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(alliedListedUnits, alliedSelectedUnitOptions),
-			alliedTroopUnlocks: alliedTroopUnlocks,
-			alliedHeroUnlocks: alliedHeroUnlocks,
-			alliedWarEngineUnlocks: alliedWarEngineUnlocks,
-			alliedMonsterUnlocks: alliedMonsterUnlocks,
-			alliedUnlocksFromLargeInfantry: alliedUnlocksFromLargeInfantry,
-			alliedUnlocksFromRegiments: alliedUnlocksFromRegiments,
-			alliedHeroCount: alliedHeroCount,
-			alliedWarEngineCount: alliedWarEngineCount,
-			alliedMonsterCount: alliedMonsterCount,
-			alliedTitanCount: alliedTitanCount,
-			alliedHordeCount: alliedHordeCount,
-			alliedLargeInfantryCount: alliedLargeInfantryCount,
-			alliedGreyedOutUnits: determineIfGreyedOut(alliedListedUnits)
+			alliedPointTotal: this.calculatePointTotal('Ally', alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal('Ally', alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitTypeCountObject: alliedUnitTypeCountObject,
+			alliedUnlockObject: alliedUnlockObject,	
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', alliedListedUnits, alliedArmy)
+		})
+	}
+
+	selectUnitOptions(unitObject, highlightedUnitOptions) {
+		let selectedUnitOptions = []
+		let selectedArtefacts = this.state.selectedArtefacts
+		let i
+		for (i = 0; i < highlightedUnitOptions.length; i++) {
+			highlightedUnitOptions[i] = {
+				index: unitObject.index,
+				unitOption: highlightedUnitOptions[i]
+			}
+		}
+		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
+			if (this.state.selectedUnitOptions[i].index !== unitObject.index) {
+				selectedUnitOptions.push(this.state.selectedUnitOptions[i])
+			}
+		}		
+		for (i = 0; i < highlightedUnitOptions.length; i++) {
+			let i2
+			if (
+				highlightedUnitOptions[i].unitOption.display_name === 'Horn of Heroes' ||
+				highlightedUnitOptions[i].unitOption.display_name === 'Guiding Flame' ||
+				highlightedUnitOptions[i].unitOption.display_name === 'Horn of Ocean\'s Fury' ||
+				highlightedUnitOptions[i].unitOption.display_name === 'Infernal Advance' ||
+				highlightedUnitOptions[i].unitOption.display_name === 'Eternal Guard' ||
+				highlightedUnitOptions[i].unitOption.display_name === 'Raid Leader' ||
+				highlightedUnitOptions[i].unitOption.display_name === 'Path of Fire'
+			) {
+				for (i2 = 0; i2 < selectedArtefacts.length; i2++) {
+					if (selectedArtefacts[i].index === unitObject.index) {
+						selectedArtefacts.splice(selectedArtefacts.indexOf(selectedArtefacts[i]), 1)
+					}
+				}
+			}
+		}
+		for (i = 0; i < selectedUnitOptions.length; i++) {
+			let i3
+			for (i3 = 0; i3 < highlightedUnitOptions.length; i3++) {
+				if (
+					highlightedUnitOptions[i3].unitOption.is_unique === true &&
+					highlightedUnitOptions[i3].unitOption.display_name === selectedUnitOptions[i].unitOption.display_name
+				) {
+					selectedUnitOptions.splice(selectedUnitOptions.indexOf(selectedUnitOptions[i]), 1)
+				}
+			}
+		}
+		selectedUnitOptions = selectedUnitOptions.concat(highlightedUnitOptions)
+
+		this.setState({
+			selectedUnitOptions: selectedUnitOptions,
+			selectedArtefacts: selectedArtefacts,
+			pointTotal: this.calculatePointTotal('Main army', this.state.listedUnits, selectedUnitOptions, selectedArtefacts),
+			unitStrengthTotal: this.calculateUnitStrengthTotal('Main army', this.state.listedUnits, selectedUnitOptions),
+			unitBeingGivenOption: '',
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
+		})
+		this.toggleUnitOptions()
+	}
+
+	selectAlliedUnitOptions(unitObject, highlightedUnitOptions) {
+		let alliedSelectedUnitOptions = []
+		let i
+		for (i = 0; i < highlightedUnitOptions.length; i++) {
+			highlightedUnitOptions[i] = {
+				index: unitObject.index,
+				unitOption: highlightedUnitOptions[i]
+			}
+		}
+		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
+			if (this.state.alliedSelectedUnitOptions[i].index !== unitObject.index) {
+				alliedSelectedUnitOptions.push(this.state.alliedSelectedUnitOptions[i])
+			}
+		}		
+		for (i = 0; i < alliedSelectedUnitOptions.length; i++) {
+			let i3
+			for (i3 = 0; i3 < highlightedUnitOptions.length; i3++) {
+				if (
+					highlightedUnitOptions[i3].unitOption.is_unique === true &&
+					highlightedUnitOptions[i3].unitOption.display_name === alliedSelectedUnitOptions[i].unitOption.display_name
+				) {
+					alliedSelectedUnitOptions.splice(alliedSelectedUnitOptions.indexOf(alliedSelectedUnitOptions[i]), 1)
+				}
+			}
+		}
+		alliedSelectedUnitOptions = alliedSelectedUnitOptions.concat(highlightedUnitOptions)
+
+		this.setState({
+			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
+			alliedPointTotal: this.calculatePointTotal('Ally', this.state.alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal('Ally', this.state.alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitBeingGivenOption: '',
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
+		})
+		this.toggleUnitOptions()
+	}
+
+	selectArtefact(unitObject, artefact) {
+		let selectedArtefacts = this.state.selectedArtefacts
+		let selectedUnitOptions = this.state.selectedUnitOptions
+		let newArtefactSelection = { index: unitObject.index, artefact: artefact }
+		let artefactToRemoveIfSame
+		let artefactToRemoveIfDifferent
+		let artefactsToKeep = []
+		let i
+		for (i = 0; i < selectedArtefacts.length; i++) {
+			if (
+				selectedArtefacts[i].artefact.id === newArtefactSelection.artefact.id ||
+				selectedArtefacts[i].artefact.display_name === newArtefactSelection.artefact.display_name
+			) {
+				artefactToRemoveIfSame = selectedArtefacts[i]
+			}
+			if (selectedArtefacts[i].index === newArtefactSelection.index) {
+				artefactToRemoveIfDifferent = selectedArtefacts[i]
+			}			
+		}
+		if (
+			artefactToRemoveIfSame !== undefined &&
+			artefactToRemoveIfDifferent !== undefined &&
+			artefactToRemoveIfSame.artefact.id === artefactToRemoveIfDifferent.artefact.id
+		) {
+			selectedArtefacts = selectedArtefacts
+		} else {
+			if (artefactToRemoveIfSame === undefined &&	artefactToRemoveIfDifferent === undefined				
+			) {
+				selectedArtefacts = selectedArtefacts
+			}
+			if (artefactToRemoveIfSame !== undefined && artefactToRemoveIfDifferent === undefined) {
+				for (i = 0; i < selectedArtefacts.length; i++) {
+					if (
+						selectedArtefacts[i].artefact.id !== newArtefactSelection.artefact.id &&
+						selectedArtefacts[i].artefact.display_name !== newArtefactSelection.artefact.display_name
+					) {
+						artefactsToKeep.push(selectedArtefacts[i])
+					}
+				}
+				selectedArtefacts = artefactsToKeep
+			}
+			if (artefactToRemoveIfSame === undefined &&	artefactToRemoveIfDifferent !== undefined			
+			) {
+				for (i = 0; i < selectedArtefacts.length; i++) {
+					if (selectedArtefacts[i].index !== newArtefactSelection.index) {
+						artefactsToKeep.push(selectedArtefacts[i])
+					}
+				}
+				selectedArtefacts = artefactsToKeep
+			}
+			if (artefactToRemoveIfSame !== undefined &&	artefactToRemoveIfDifferent !== undefined	
+			) {
+				for (i = 0; i < selectedArtefacts.length; i++) {
+					if (
+						selectedArtefacts[i].index !== newArtefactSelection.index &&
+						selectedArtefacts[i].artefact.id !== newArtefactSelection.artefact.id
+					) {
+						artefactsToKeep.push(selectedArtefacts[i])
+					}
+				}				
+				selectedArtefacts = artefactsToKeep
+			}
+			selectedArtefacts.push(newArtefactSelection)
+		}
+		for (i = 0; i < selectedUnitOptions.length; i++) {
+			if (
+				selectedUnitOptions[i].index === newArtefactSelection.index && (
+					selectedUnitOptions[i].unitOption.display_name === 'Horn of Heroes' ||
+					selectedUnitOptions[i].unitOption.display_name === 'Guiding Flame' ||
+					selectedUnitOptions[i].unitOption.display_name === 'Horn of Ocean\'s Fury' ||
+					selectedUnitOptions[i].unitOption.display_name === 'Infernal Advance' ||
+					selectedUnitOptions[i].unitOption.display_name === 'Eternal Guard' ||
+					selectedUnitOptions[i].unitOption.display_name === 'Raid Leader' ||
+					selectedUnitOptions[i].unitOption.display_name === 'Path of Fire'
+				)
+			) {
+				selectedUnitOptions.splice(selectedUnitOptions.indexOf(selectedUnitOptions[i]), 1)
+			}
+		}
+
+		this.setState({
+			selectedUnitOptions: selectedUnitOptions,
+			selectedArtefacts: selectedArtefacts,
+			pointTotal: this.calculatePointTotal('Main army', this.state.listedUnits, selectedUnitOptions, selectedArtefacts),
+			unitStrengthTotal: this.calculateUnitStrengthTotal('Main army', this.state.listedUnits, selectedUnitOptions),
+			unitBeingGivenArtefact: '',
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
+		})
+		this.toggleArtefacts()
+	}
+
+	removeUnitOption(unitOptionObject) {
+		let selectedUnitOptions = []
+		let pointTotal
+		let i
+		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
+			if (
+				this.state.selectedUnitOptions[i].index !== unitOptionObject.index ||
+				this.state.selectedUnitOptions[i].unitOption.id !== unitOptionObject.unitOption.id
+			) {
+				selectedUnitOptions.push(this.state.selectedUnitOptions[i])
+			}
+		}
+
+		pointTotal = this.calculatePointTotal('Main army', this.state.listedUnits, selectedUnitOptions)
+		if ((pointTotal + this.state.alliedPointTotal) / 4 < this.state.alliedPointTotal) {
+			selectedUnitOptions = this.state.selectedUnitOptions
+		}
+
+		this.setState({
+			selectedUnitOptions: selectedUnitOptions,
+			pointTotal: this.calculatePointTotal('Main army', this.state.listedUnits, selectedUnitOptions),
+			unitStrengthTotal: this.calculateUnitStrengthTotal('Main army', this.state.listedUnits, selectedUnitOptions),
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
+		})
+	}
+
+	removeAlliedUnitOption(unitOptionObject) {
+		let alliedSelectedUnitOptions = []
+		let i
+		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
+			if (
+				this.state.alliedSelectedUnitOptions[i].index !== unitOptionObject.index ||
+				this.state.alliedSelectedUnitOptions[i].unitOption.id !== unitOptionObject.unitOption.id
+			) {
+				alliedSelectedUnitOptions.push(this.state.alliedSelectedUnitOptions[i])
+			}
+		}
+		
+		this.setState({
+			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
+			alliedPointTotal: this.calculatePointTotal('Ally', this.state.alliedListedUnits, alliedSelectedUnitOptions),
+			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal('Ally', this.state.alliedListedUnits, alliedSelectedUnitOptions),
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
+		})
+	}
+
+	removeArtefact(artefactObject) {
+		let selectedArtefacts = []
+		let pointTotal
+		let i
+		for (i = 0; i < this.state.selectedArtefacts.length; i++) {
+			if (this.state.selectedArtefacts[i].index !== artefactObject.index) {
+				selectedArtefacts.push(this.state.selectedArtefacts[i])
+			}
+		}
+
+		pointTotal = this.calculatePointTotal('Main army', this.state.listedUnits, this.state.selectedUnitOptions, selectedArtefacts)
+		if ((pointTotal + this.state.alliedPointTotal) / 4 < this.state.alliedPointTotal) {
+			selectedArtefacts = this.state.selectedArtefacts
+		}
+
+		this.setState({
+			selectedArtefacts: selectedArtefacts,
+			pointTotal: this.calculatePointTotal('Main army', this.state.listedUnits, this.state.selectedUnitOptions, selectedArtefacts),
+			alliedGreyedOutUnits: this.determineIfGreyedOut('Ally', this.state.alliedListedUnits, this.state.alliedArmy)
 		})
 	}
 
@@ -2265,1652 +1409,6 @@ class UnitEntriesFormContainer extends Component {
 		this.toggleArtefacts()
 	}
 
-	selectUnitOptions(unitObject, highlightedUnitOptions) {
-		let selectedUnitOptions = []
-		let selectedArtefacts = this.state.selectedArtefacts
-		let pointTotal = this.state.pointTotal
-		let i
-		for (i = 0; i < highlightedUnitOptions.length; i++) {
-			highlightedUnitOptions[i] = {
-				index: unitObject.index,
-				unitOption: highlightedUnitOptions[i]
-			}
-		}
-		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
-			if (this.state.selectedUnitOptions[i].index !== unitObject.index) {
-				selectedUnitOptions.push(this.state.selectedUnitOptions[i])
-			} else {
-				pointTotal -= this.state.selectedUnitOptions[i].unitOption.points
-			}
-		}		
-		for (i = 0; i < highlightedUnitOptions.length; i++) {
-			pointTotal += highlightedUnitOptions[i].unitOption.points
-			let i2
-			if (
-				highlightedUnitOptions[i].unitOption.display_name === 'Horn of Heroes' ||
-				highlightedUnitOptions[i].unitOption.display_name === 'Guiding Flame' ||
-				highlightedUnitOptions[i].unitOption.display_name === 'Horn of Ocean\'s Fury' ||
-				highlightedUnitOptions[i].unitOption.display_name === 'Infernal Advance' ||
-				highlightedUnitOptions[i].unitOption.display_name === 'Eternal Guard' ||
-				highlightedUnitOptions[i].unitOption.display_name === 'Raid Leader' ||
-				highlightedUnitOptions[i].unitOption.display_name === 'Path of Fire'
-			) {
-				for (i2 = 0; i2 < selectedArtefacts.length; i2++) {
-					if (selectedArtefacts[i].index === unitObject.index) {
-						pointTotal -= selectedArtefacts[i].artefact.points
-						selectedArtefacts.splice(selectedArtefacts.indexOf(selectedArtefacts[i]), 1)
-					}
-				}
-			}
-		}
-		for (i = 0; i < selectedUnitOptions.length; i++) {
-			let i3
-			for (i3 = 0; i3 < highlightedUnitOptions.length; i3++) {
-				if (
-					highlightedUnitOptions[i3].unitOption.is_unique === true &&
-					highlightedUnitOptions[i3].unitOption.display_name === selectedUnitOptions[i].unitOption.display_name
-				) {
-					pointTotal -= selectedUnitOptions[i].unitOption.points
-					selectedUnitOptions.splice(selectedUnitOptions.indexOf(selectedUnitOptions[i]), 1)
-				}
-			}
-		}
-		selectedUnitOptions = selectedUnitOptions.concat(highlightedUnitOptions)
-
-		let determineIfGreyedOut = array => {
-			let units = this.props.units
-			let alliedGreyedOutUnits = []
-			let alliedHeroesOnList = []
-			let alliedWarEnginesOnList = []
-			let alliedMonstersOnList = []
-			let alliedLocked
-			let i
-			let i2
-
-			for (i = 0; i < units.length; i++) {
-				let limitedUnits = []
-				let maybeMaxedOut = []
-				alliedLocked = false
-				for (i2 = 0; i2 < array.length; i2++) {
-					if (units[i].limited_n > 0) {
-						limitedUnits.push(array[i2])
-					}
-					if (
-						(units[i].unit_type.includes('Hero') && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'War Engine' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
-					) {
-						maybeMaxedOut.push(array[i2])
-					}
-				}
-				if (
-					(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
-					units[i].unit_type.includes('Hero') ||
-					units[i].unit_type === 'War Engine' ||
-					units[i].unit_type === 'Monster' ||
-					units[i].unit_type === 'Titan'
-				) {
-					alliedLocked = true
-					if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && this.state.alliedTroopUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type.includes('Hero') && this.state.alliedHeroUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedHeroCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
-												this.state.alliedHeroCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											) 
-										) || (
-											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'War Engine' && this.state.alliedWarEngineUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (										
-											(
-												this.state.alliedWarEngineCount <= this.state.alliedHeroCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Monster' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedMonsterCount <= this.state.alliedHeroCount ||
-												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedMonsterCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Titan' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedTitanCount <= this.state.alliedHeroCount ||
-												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedTitanCount <= this.state.alliedMonsterCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}						
-					}
-				}			
-				if (
-					alliedLocked === true ||
-					(pointTotal + this.state.alliedPointTotal + units[i].points) / 4 < this.state.alliedPointTotal + units[i].points ||
-					limitedUnits.length >= 1 ||
-					maybeMaxedOut.length >= 1 || (
-						this.state.alliedArmy !== '' &&
-						units[i].army_id !== this.state.alliedArmy.id &&
-						this.state.alliedListedUnits.length > 0					
-					)
-				) {
-					alliedGreyedOutUnits.push(units[i])
-				}
-			}
-			return alliedGreyedOutUnits
-		}
-
-		let unitStrengthTotal = 0
-		for (i = 0; i < this.state.listedUnits.length; i++) {
-			unitStrengthTotal += this.state.listedUnits[i].unit.unit_strength
-		}
-		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
-			unitStrengthTotal += this.state.alliedListedUnits[i].unit.unit_strength
-		}
-		for (i = 0; i < selectedUnitOptions.length; i++) {
-			if (
-				selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				selectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
-			) {
-				unitStrengthTotal += 1
-			}
-		}
-		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
-			if (
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
-			) {
-				unitStrengthTotal += 1
-			}
-		}
-
-		this.setState({
-			selectedUnitOptions: selectedUnitOptions,
-			selectedArtefacts: selectedArtefacts,
-			pointTotal: this.calculatePointTotal(this.state.listedUnits, selectedUnitOptions, selectedArtefacts),
-			unitStrengthTotal: this.calculateUnitStrengthTotal(this.state.listedUnits, selectedUnitOptions),
-			unitBeingGivenOption: '',
-			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
-		})
-		this.toggleUnitOptions()
-	}
-
-	selectAlliedUnitOptions(unitObject, highlightedUnitOptions) {
-		let alliedSelectedUnitOptions = []
-		let alliedPointTotal = this.state.alliedPointTotal
-		let i
-		for (i = 0; i < highlightedUnitOptions.length; i++) {
-			highlightedUnitOptions[i] = {
-				index: unitObject.index,
-				unitOption: highlightedUnitOptions[i]
-			}
-		}
-		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
-			if (this.state.alliedSelectedUnitOptions[i].index !== unitObject.index) {
-				alliedSelectedUnitOptions.push(this.state.alliedSelectedUnitOptions[i])
-			} else {
-				alliedPointTotal -= this.state.alliedSelectedUnitOptions[i].unitOption.points
-			}
-		}		
-		for (i = 0; i < highlightedUnitOptions.length; i++) {
-			alliedPointTotal += highlightedUnitOptions[i].unitOption.points
-		}
-		for (i = 0; i < alliedSelectedUnitOptions.length; i++) {
-			let i3
-			for (i3 = 0; i3 < highlightedUnitOptions.length; i3++) {
-				if (
-					highlightedUnitOptions[i3].unitOption.is_unique === true &&
-					highlightedUnitOptions[i3].unitOption.display_name === alliedSelectedUnitOptions[i].unitOption.display_name
-				) {
-					alliedPointTotal -= alliedSelectedUnitOptions[i].unitOption.points
-					alliedSelectedUnitOptions.splice(alliedSelectedUnitOptions.indexOf(alliedSelectedUnitOptions[i]), 1)
-				}
-			}
-		}
-		alliedSelectedUnitOptions = alliedSelectedUnitOptions.concat(highlightedUnitOptions)
-
-		let determineIfGreyedOut = array => {
-			let units = this.props.units
-			let alliedGreyedOutUnits = []
-			let alliedHeroesOnList = []
-			let alliedWarEnginesOnList = []
-			let alliedMonstersOnList = []
-			let alliedLocked
-			let i
-			let i2
-
-			for (i = 0; i < units.length; i++) {
-				let limitedUnits = []
-				let maybeMaxedOut = []
-				alliedLocked = false
-				for (i2 = 0; i2 < array.length; i2++) {
-					if (units[i].limited_n > 0) {
-						limitedUnits.push(array[i2])
-					}
-					if (
-						(units[i].unit_type.includes('Hero') && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'War Engine' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
-					) {
-						maybeMaxedOut.push(array[i2])
-					}
-				}
-				if (
-					(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
-					units[i].unit_type.includes('Hero') ||
-					units[i].unit_type === 'War Engine' ||
-					units[i].unit_type === 'Monster' ||
-					units[i].unit_type === 'Titan'
-				) {
-					alliedLocked = true
-					if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && this.state.alliedTroopUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type.includes('Hero') && this.state.alliedHeroUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedHeroCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
-												this.state.alliedHeroCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											) 
-										) || (
-											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'War Engine' && this.state.alliedWarEngineUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (										
-											(
-												this.state.alliedWarEngineCount <= this.state.alliedHeroCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Monster' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedMonsterCount <= this.state.alliedHeroCount ||
-												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedMonsterCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Titan' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedTitanCount <= this.state.alliedHeroCount ||
-												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedTitanCount <= this.state.alliedMonsterCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}						
-					}
-				}			
-				if (
-					alliedLocked === true ||
-					(this.state.pointTotal + alliedPointTotal + units[i].points) / 4 < alliedPointTotal + units[i].points ||
-					limitedUnits.length >= 1 ||
-					maybeMaxedOut.length >= 1 || (
-						this.state.alliedArmy !== '' &&
-						units[i].army_id !== this.state.alliedArmy.id &&
-						this.state.alliedListedUnits.length > 0					
-					)
-				) {
-					alliedGreyedOutUnits.push(units[i])
-				}
-			}
-			return alliedGreyedOutUnits
-		}
-
-		let unitStrengthTotal = 0
-		for (i = 0; i < this.state.listedUnits.length; i++) {
-			unitStrengthTotal += this.state.listedUnits[i].unit.unit_strength
-		}
-		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
-			unitStrengthTotal += this.state.alliedListedUnits[i].unit.unit_strength
-		}
-		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
-			if (
-				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
-			) {
-				unitStrengthTotal += 1
-			}
-		}
-		for (i = 0; i < alliedSelectedUnitOptions.length; i++) {
-			if (
-				alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				alliedSelectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
-			) {
-				unitStrengthTotal += 1
-			}
-		}
-
-		this.setState({
-			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
-			alliedPointTotal: this.calculatePointTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
-			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
-			alliedUnitBeingGivenOption: '',
-			alliedGreyedOutUnits: (determineIfGreyedOut(this.state.alliedListedUnits))
-		})
-		this.toggleUnitOptions()
-	}
-
-	selectArtefact(unitObject, artefact) {
-		let selectedArtefacts = this.state.selectedArtefacts
-		let selectedUnitOptions = this.state.selectedUnitOptions
-		let newArtefactSelection = { index: unitObject.index, artefact: artefact }
-		let artefactToRemoveIfSame
-		let artefactToRemoveIfDifferent
-		let artefactsToKeep = []
-		let pointTotal = this.state.pointTotal
-		let i
-		for (i = 0; i < selectedArtefacts.length; i++) {
-			if (
-				selectedArtefacts[i].artefact.id === newArtefactSelection.artefact.id ||
-				selectedArtefacts[i].artefact.display_name === newArtefactSelection.artefact.display_name
-			) {
-				artefactToRemoveIfSame = selectedArtefacts[i]
-			}
-			if (selectedArtefacts[i].index === newArtefactSelection.index) {
-				artefactToRemoveIfDifferent = selectedArtefacts[i]
-			}			
-		}
-		if (
-			artefactToRemoveIfSame !== undefined &&
-			artefactToRemoveIfDifferent !== undefined &&
-			artefactToRemoveIfSame.artefact.id === artefactToRemoveIfDifferent.artefact.id
-		) {
-			selectedArtefacts = selectedArtefacts
-		} else {
-			if (artefactToRemoveIfSame === undefined &&	artefactToRemoveIfDifferent === undefined				
-			) {
-				selectedArtefacts = selectedArtefacts
-			}
-			if (artefactToRemoveIfSame !== undefined && artefactToRemoveIfDifferent === undefined) {
-				for (i = 0; i < selectedArtefacts.length; i++) {
-					if (
-						selectedArtefacts[i].artefact.id !== newArtefactSelection.artefact.id &&
-						selectedArtefacts[i].artefact.display_name !== newArtefactSelection.artefact.display_name
-					) {
-						artefactsToKeep.push(selectedArtefacts[i])
-					} else {
-						pointTotal -= selectedArtefacts[i].artefact.points
-					}
-				}
-				selectedArtefacts = artefactsToKeep
-			}
-			if (artefactToRemoveIfSame === undefined &&	artefactToRemoveIfDifferent !== undefined			
-			) {
-				for (i = 0; i < selectedArtefacts.length; i++) {
-					if (selectedArtefacts[i].index !== newArtefactSelection.index) {
-						artefactsToKeep.push(selectedArtefacts[i])
-					} else {
-						pointTotal -= selectedArtefacts[i].artefact.points
-					}
-				}
-				selectedArtefacts = artefactsToKeep
-			}
-			if (artefactToRemoveIfSame !== undefined &&	artefactToRemoveIfDifferent !== undefined	
-			) {
-				for (i = 0; i < selectedArtefacts.length; i++) {
-					if (
-						selectedArtefacts[i].index !== newArtefactSelection.index &&
-						selectedArtefacts[i].artefact.id !== newArtefactSelection.artefact.id
-					) {
-						artefactsToKeep.push(selectedArtefacts[i])
-					} else {
-						pointTotal -= selectedArtefacts[i].artefact.points
-					}
-				}				
-				selectedArtefacts = artefactsToKeep
-			}
-			selectedArtefacts.push(newArtefactSelection)
-			pointTotal += newArtefactSelection.artefact.points
-		}
-		for (i = 0; i < selectedUnitOptions.length; i++) {
-			if (
-				selectedUnitOptions[i].index === newArtefactSelection.index && (
-					selectedUnitOptions[i].unitOption.display_name === 'Horn of Heroes' ||
-					selectedUnitOptions[i].unitOption.display_name === 'Guiding Flame' ||
-					selectedUnitOptions[i].unitOption.display_name === 'Horn of Ocean\'s Fury' ||
-					selectedUnitOptions[i].unitOption.display_name === 'Infernal Advance' ||
-					selectedUnitOptions[i].unitOption.display_name === 'Eternal Guard' ||
-					selectedUnitOptions[i].unitOption.display_name === 'Raid Leader' ||
-					selectedUnitOptions[i].unitOption.display_name === 'Path of Fire'
-				)
-			) {
-				pointTotal -= selectedUnitOptions[i].unitOption.points
-				selectedUnitOptions.splice(selectedUnitOptions.indexOf(selectedUnitOptions[i]), 1)
-			}
-		}
-
-		let determineIfGreyedOut = array => {
-			let units = this.props.units
-			let alliedGreyedOutUnits = []
-			let alliedHeroesOnList = []
-			let alliedWarEnginesOnList = []
-			let alliedMonstersOnList = []
-			let alliedLocked
-			let i
-			let i2
-
-			for (i = 0; i < units.length; i++) {
-				let limitedUnits = []
-				let maybeMaxedOut = []
-				alliedLocked = false
-				for (i2 = 0; i2 < array.length; i2++) {
-					if (units[i].limited_n > 0) {
-						limitedUnits.push(array[i2])
-					}
-					if (
-						(units[i].unit_type.includes('Hero') && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'War Engine' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
-					) {
-						maybeMaxedOut.push(array[i2])
-					}
-				}
-				if (
-					(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
-					units[i].unit_type.includes('Hero') ||
-					units[i].unit_type === 'War Engine' ||
-					units[i].unit_type === 'Monster' ||
-					units[i].unit_type === 'Titan'
-				) {
-					alliedLocked = true
-					if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && this.state.alliedTroopUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type.includes('Hero') && this.state.alliedHeroUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedHeroCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
-												this.state.alliedHeroCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											) 
-										) || (
-											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'War Engine' && this.state.alliedWarEngineUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (										
-											(
-												this.state.alliedWarEngineCount <= this.state.alliedHeroCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Monster' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedMonsterCount <= this.state.alliedHeroCount ||
-												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedMonsterCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Titan' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedTitanCount <= this.state.alliedHeroCount ||
-												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedTitanCount <= this.state.alliedMonsterCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}						
-					}
-				}			
-				if (
-					alliedLocked === true ||
-					(pointTotal + this.state.alliedPointTotal + units[i].points) / 4 < this.state.alliedPointTotal + units[i].points ||
-					limitedUnits.length >= 1 ||
-					maybeMaxedOut.length >= 1 || (
-						this.state.alliedArmy !== '' &&
-						units[i].army_id !== this.state.alliedArmy.id &&
-						this.state.alliedListedUnits.length > 0					
-					)
-				) {
-					alliedGreyedOutUnits.push(units[i])
-				}
-			}
-			return alliedGreyedOutUnits
-		}
-
-		this.setState({
-			selectedUnitOptions: selectedUnitOptions,
-			selectedArtefacts: selectedArtefacts,
-			pointTotal: this.calculatePointTotal(this.state.listedUnits, selectedUnitOptions, selectedArtefacts),
-			unitStrengthTotal: this.calculateUnitStrengthTotal(this.state.listedUnits, selectedUnitOptions),
-			unitBeingGivenArtefact: '',
-			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
-		})
-		this.toggleArtefacts()
-	}
-
-	removeUnitOption(unitOptionObject) {
-		let selectedUnitOptions = []
-		let pointTotal = this.state.pointTotal
-		let i
-		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
-			if (
-				this.state.selectedUnitOptions[i].index !== unitOptionObject.index ||
-				this.state.selectedUnitOptions[i].unitOption.id !== unitOptionObject.unitOption.id
-			) {
-				selectedUnitOptions.push(this.state.selectedUnitOptions[i])
-			}
-		}
-		pointTotal -= unitOptionObject.unitOption.points
-
-		let determineIfGreyedOut = array => {
-			let units = this.props.units
-			let alliedGreyedOutUnits = []
-			let alliedHeroesOnList = []
-			let alliedWarEnginesOnList = []
-			let alliedMonstersOnList = []
-			let alliedLocked
-			let i
-			let i2
-
-			for (i = 0; i < units.length; i++) {
-				let limitedUnits = []
-				let maybeMaxedOut = []
-				alliedLocked = false
-				for (i2 = 0; i2 < array.length; i2++) {
-					if (units[i].limited_n > 0) {
-						limitedUnits.push(array[i2])
-					}
-					if (
-						(units[i].unit_type.includes('Hero') && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'War Engine' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
-					) {
-						maybeMaxedOut.push(array[i2])
-					}
-				}
-				if (
-					(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
-					units[i].unit_type.includes('Hero') ||
-					units[i].unit_type === 'War Engine' ||
-					units[i].unit_type === 'Monster' ||
-					units[i].unit_type === 'Titan'
-				) {
-					alliedLocked = true
-					if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && this.state.alliedTroopUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type.includes('Hero') && this.state.alliedHeroUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedHeroCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
-												this.state.alliedHeroCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											) 
-										) || (
-											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'War Engine' && this.state.alliedWarEngineUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (										
-											(
-												this.state.alliedWarEngineCount <= this.state.alliedHeroCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Monster' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedMonsterCount <= this.state.alliedHeroCount ||
-												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedMonsterCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Titan' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedTitanCount <= this.state.alliedHeroCount ||
-												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedTitanCount <= this.state.alliedMonsterCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}						
-					}
-				}			
-				if (
-					alliedLocked === true ||
-					(pointTotal + this.state.alliedPointTotal + units[i].points) / 4 < this.state.alliedPointTotal + units[i].points ||
-					limitedUnits.length >= 1 ||
-					maybeMaxedOut.length >= 1 || (
-						this.state.alliedArmy !== '' &&
-						units[i].army_id !== this.state.alliedArmy.id &&
-						this.state.alliedListedUnits.length > 0					
-					)
-				) {
-					alliedGreyedOutUnits.push(units[i])
-				}
-			}
-			return alliedGreyedOutUnits
-		}
-
-		if ((pointTotal + this.state.alliedPointTotal) / 4 < this.state.alliedPointTotal) {
-			selectedUnitOptions = this.state.selectedUnitOptions
-			pointTotal += unitOptionObject.unitOption.points
-		}
-
-		let unitStrengthTotal = 0
-		for (i = 0; i < this.state.listedUnits.length; i++) {
-			unitStrengthTotal += this.state.listedUnits[i].unit.unit_strength
-		}
-		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
-			unitStrengthTotal += this.state.alliedListedUnits[i].unit.unit_strength
-		}
-		for (i = 0; i < selectedUnitOptions.length; i++) {
-			if (
-				selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				selectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
-			) {
-				unitStrengthTotal += 1
-			}
-		}
-		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
-			if (
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
-			) {
-				unitStrengthTotal += 1
-			}
-		}
-
-		this.setState({
-			selectedUnitOptions: selectedUnitOptions,
-			pointTotal: this.calculatePointTotal(this.state.listedUnits, selectedUnitOptions),
-			unitStrengthTotal: this.calculateUnitStrengthTotal(this.state.listedUnits, selectedUnitOptions),
-			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
-		})
-	}
-
-	removeAlliedUnitOption(unitOptionObject) {
-		let alliedSelectedUnitOptions = []
-		let alliedPointTotal = this.state.alliedPointTotal
-		let i
-		for (i = 0; i < this.state.alliedSelectedUnitOptions.length; i++) {
-			if (
-				this.state.alliedSelectedUnitOptions[i].index !== unitOptionObject.index ||
-				this.state.alliedSelectedUnitOptions[i].unitOption.id !== unitOptionObject.unitOption.id
-			) {
-				alliedSelectedUnitOptions.push(this.state.alliedSelectedUnitOptions[i])
-			}
-		}
-		alliedPointTotal -= unitOptionObject.unitOption.points
-
-		let determineIfGreyedOut = array => {
-			let units = this.props.units
-			let alliedGreyedOutUnits = []
-			let alliedHeroesOnList = []
-			let alliedWarEnginesOnList = []
-			let alliedMonstersOnList = []
-			let alliedLocked
-			let i
-			let i2
-
-			for (i = 0; i < units.length; i++) {
-				let limitedUnits = []
-				let maybeMaxedOut = []
-				alliedLocked = false
-				for (i2 = 0; i2 < array.length; i2++) {
-					if (units[i].limited_n > 0) {
-						limitedUnits.push(array[i2])
-					}
-					if (
-						(units[i].unit_type.includes('Hero') && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'War Engine' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
-					) {
-						maybeMaxedOut.push(array[i2])
-					}
-				}
-				if (
-					(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
-					units[i].unit_type.includes('Hero') ||
-					units[i].unit_type === 'War Engine' ||
-					units[i].unit_type === 'Monster' ||
-					units[i].unit_type === 'Titan'
-				) {
-					alliedLocked = true
-					if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && this.state.alliedTroopUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type.includes('Hero') && this.state.alliedHeroUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedHeroCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
-												this.state.alliedHeroCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											) 
-										) || (
-											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'War Engine' && this.state.alliedWarEngineUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (										
-											(
-												this.state.alliedWarEngineCount <= this.state.alliedHeroCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Monster' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedMonsterCount <= this.state.alliedHeroCount ||
-												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedMonsterCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Titan' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedTitanCount <= this.state.alliedHeroCount ||
-												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedTitanCount <= this.state.alliedMonsterCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}						
-					}
-				}			
-				if (
-					alliedLocked === true ||
-					(this.state.pointTotal + alliedPointTotal + units[i].points) / 4 < alliedPointTotal + units[i].points ||
-					limitedUnits.length >= 1 ||
-					maybeMaxedOut.length >= 1 || (
-						this.state.alliedArmy !== '' &&
-						units[i].army_id !== this.state.alliedArmy.id &&
-						this.state.alliedListedUnits.length > 0					
-					)
-				) {
-					alliedGreyedOutUnits.push(units[i])
-				}
-			}
-			return alliedGreyedOutUnits
-		}
-
-		let unitStrengthTotal = 0
-		for (i = 0; i < this.state.listedUnits.length; i++) {
-			unitStrengthTotal += this.state.listedUnits[i].unit.unit_strength
-		}
-		for (i = 0; i < this.state.alliedListedUnits.length; i++) {
-			unitStrengthTotal += this.state.alliedListedUnits[i].unit.unit_strength
-		}
-		for (i = 0; i < this.state.selectedUnitOptions.length; i++) {
-			if (
-				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				this.state.selectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
-			) {
-				unitStrengthTotal += 1
-			}
-		}
-		for (i = 0; i < alliedSelectedUnitOptions.length; i++) {
-			if (
-				alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (Kingdoms of Men))' ||
-				alliedSelectedUnitOptions[i].unitOption.name === 'Pegasus (Wizard (League of Rhordia))' ||
-				alliedSelectedUnitOptions[i].unitOption.name === 'Winged Unicorn (Exemplar Redeemer)' ||
-				alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Forces of Nature))' ||
-				alliedSelectedUnitOptions[i].unitOption.name === 'Wings (Unicorn (Order of the Green Lady))'
-			) {
-				unitStrengthTotal += 1
-			}
-		}
-
-		this.setState({
-			alliedSelectedUnitOptions: alliedSelectedUnitOptions,
-			alliedPointTotal: this.calculatePointTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
-			alliedUnitStrengthTotal: this.calculateUnitStrengthTotal(this.state.alliedListedUnits, alliedSelectedUnitOptions),
-			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
-		})
-	}
-
-	removeArtefact(artefactObject) {
-		let selectedArtefacts = []
-		let pointTotal = this.state.pointTotal
-		let i
-		for (i = 0; i < this.state.selectedArtefacts.length; i++) {
-			if (this.state.selectedArtefacts[i].index !== artefactObject.index) {
-				selectedArtefacts.push(this.state.selectedArtefacts[i])
-			}
-		}
-		pointTotal -= artefactObject.artefact.points
-
-		let determineIfGreyedOut = array => {
-			let units = this.props.units
-			let alliedGreyedOutUnits = []
-			let alliedHeroesOnList = []
-			let alliedWarEnginesOnList = []
-			let alliedMonstersOnList = []
-			let alliedLocked
-			let i
-			let i2
-
-			for (i = 0; i < units.length; i++) {
-				let limitedUnits = []
-				let maybeMaxedOut = []
-				alliedLocked = false
-				for (i2 = 0; i2 < array.length; i2++) {
-					if (units[i].limited_n > 0) {
-						limitedUnits.push(array[i2])
-					}
-					if (
-						(units[i].unit_type.includes('Hero') && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'War Engine' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Monster' && array[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Titan' && array[i2].unit.id === units[i].id)
-					) {
-						maybeMaxedOut.push(array[i2])
-					}
-				}
-				if (
-					(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
-					units[i].unit_type.includes('Hero') ||
-					units[i].unit_type === 'War Engine' ||
-					units[i].unit_type === 'Monster' ||
-					units[i].unit_type === 'Titan'
-				) {
-					alliedLocked = true
-					if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && this.state.alliedTroopUnlocks > 0) {
-						alliedLocked = false
-					} else {
-						if (units[i].unit_type.includes('Hero') && this.state.alliedHeroUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedHeroCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedHeroCount <= this.state.alliedMonsterCount ||
-												this.state.alliedHeroCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											) 
-										) || (
-											this.state.alliedHeroCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type.includes('Hero') && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'War Engine' && this.state.alliedWarEngineUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (										
-											(
-												this.state.alliedWarEngineCount <= this.state.alliedHeroCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedMonsterCount ||
-												this.state.alliedWarEngineCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount +
-												this.state.alliedWarEngineCount +
-												this.state.alliedMonsterCount +
-												this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedWarEngineCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-							}
-							if (units[i].unit_type === 'War Engine' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Monster' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedMonsterCount <= this.state.alliedHeroCount ||
-												this.state.alliedMonsterCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedMonsterCount <= this.state.alliedTitanCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedMonsterCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Monster' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}
-						if (units[i].unit_type === 'Titan' && this.state.alliedMonsterUnlocks > 0) {
-							alliedLocked = false
-						} else {
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.alliedHeroCount +
-										this.state.alliedWarEngineCount +
-										this.state.alliedMonsterCount +
-										this.state.alliedTitanCount <
-										this.state.alliedHeroUnlocks +
-										this.state.alliedWarEngineUnlocks +
-										this.state.alliedMonsterUnlocks +
-										this.state.alliedUnlocksFromLargeInfantry && (
-											(
-												this.state.alliedTitanCount <= this.state.alliedHeroCount ||
-												this.state.alliedTitanCount <= this.state.alliedWarEngineCount ||
-												this.state.alliedTitanCount <= this.state.alliedMonsterCount
-											) && (
-												this.state.alliedLargeInfantryCount >
-												this.state.alliedHeroCount + this.state.alliedWarEngineCount + this.state.alliedMonsterCount + this.state.alliedTitanCount
-											)
-										) || (
-											this.state.alliedTitanCount < this.state.alliedHordeCount + this.state.alliedLargeInfantryCount
-										)
-									)
-								) {
-									alliedLocked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Titan' && this.state.alliedUnlocksFromRegiments > 0) {
-								alliedLocked = false
-							}
-						}						
-					}
-				}			
-				if (
-					alliedLocked === true ||
-					(pointTotal + this.state.alliedPointTotal + units[i].points) / 4 < this.state.alliedPointTotal + units[i].points ||
-					limitedUnits.length >= 1 ||
-					maybeMaxedOut.length >= 1 || (
-						this.state.alliedArmy !== '' &&
-						units[i].army_id !== this.state.alliedArmy.id &&
-						this.state.alliedListedUnits.length > 0					
-					)
-				) {
-					alliedGreyedOutUnits.push(units[i])
-				}
-			}
-			return alliedGreyedOutUnits
-		}
-
-		if ((pointTotal + this.state.alliedPointTotal) / 4 < this.state.alliedPointTotal) {
-			selectedArtefacts = this.state.selectedArtefacts
-			pointTotal += artefactObject.artefact.points
-		}
-
-		this.setState({
-			selectedArtefacts: selectedArtefacts,
-			pointTotal: this.calculatePointTotal(this.state.listedUnits, this.state.selectedUnitOptions, selectedArtefacts),
-			alliedGreyedOutUnits: determineIfGreyedOut(this.state.alliedListedUnits)
-		})
-	}
-
-	clearList() {
-		this.setState({
-			listedUnits: [],
-			selectedUnitOptions: [],
-			selectedArtefacts: [],
-			pointTotal: 0,
-			unitStrengthTotal: 0,
-			indexCount: 0,
-			troopUnlocks: 0,
-			heroUnlocks: 0,
-			warEngineUnlocks: 0,
-			monsterUnlocks: 0,
-			unlocksFromRegiments: 0,
-			unlocksFromLargeInfantry: 0,
-			heroCount: 0,
-			warEngineCount: 0,
-			monsterCount: 0,
-			titanCount: 0,
-			hordeCount: 0,
-			largeInfantryCount: 0,
-			maximumCount: 3,
-			formattedListVisible: false,
-			unitOptionsVisible: false,
-			artefactsVisible: false,
-			alliesVisible: false,
-			alliedArmy: '',
-			alliedArmySingularName: '',
-			alliedListedUnits: [],
-			alliedSelectedUnitOptions: [],
-			alliedPointTotal: 0,
-			alliedUnitStrengthTotal: 0,
-			alliedTroopUnlocks: 0,
-			alliedHeroUnlocks: 0,
-			alliedWarEngineUnlocks: 0,
-			alliedMonsterUnlocks: 0,
-			alliedUnlocksFromRegiments: 0,
-			alliedUnlocksFromLargeInfantry: 0,
-			alliedHeroCount: 0,
-			alliedWarEngineCount: 0,
-			alliedMonsterCount: 0,
-			alliedTitanCount: 0,
-			alliedHordeCount: 0,
-			alliedLargeInfantryCount: 0,
-			alliedGreyedOutUnits: []
-		})
-	}
-
 	showFormattedList() {
 		let emailDiv = document.getElementsByClassName('email-div')[0]
 		emailDiv.classList.add('user-select-none')
@@ -3921,6 +1419,36 @@ class UnitEntriesFormContainer extends Component {
 		let emailDiv = document.getElementsByClassName('email-div')[0]
 		emailDiv.classList.remove('user-select-none')		
 		this.setState({ formattedListVisible: false })
+	}
+
+	clearList() {
+		this.setState({
+			listedUnits: [],
+			selectedUnitOptions: [],
+			selectedArtefacts: [],
+			pointTotal: 0,
+			unitStrengthTotal: 0,
+			indexCount: 0,
+			unitOptionsVisible: false,
+			artefactsVisible: false,
+			formattedListVisible: false,
+			alliesVisible: false,
+			unitBeingGivenOption: '',
+			unitBeingGivenArtefact: '',
+			unitTypeCountObject: '',
+			unlockObject: '',
+			maximumCount: 3,
+			alliedArmy: '',
+			alliedArmySingularName: '',
+			alliedListedUnits: [],
+			alliedSelectedUnitOptions: [],
+			alliedUnitBeingGivenOption: '',
+			alliedPointTotal: 0,
+			alliedUnitStrengthTotal: 0,
+			alliedUnitTypeCountObject: '',
+			alliedUnlockObject: '',
+			alliedGreyedOutUnits: []
+		})
 	}
 
 	render() {
@@ -3938,12 +1466,6 @@ class UnitEntriesFormContainer extends Component {
 		} else {
 			hidden = ''
 		}
-		let allUnits = this.props.units.sort((a, b) => {
-			return (b.points - a.points)
-		})
-		let filteredUnits = []
-		let filteredUnitsUnlocked = []
-		let greyedOutUnits = []
 		let unitOptionSelectionTile
 		let artefactSelectionTile
 		let clearListDiv
@@ -4127,236 +1649,26 @@ class UnitEntriesFormContainer extends Component {
 				<div className="unit-entry-button-title-bar">
 					<h3 className="unit-entry-button-title">Available Units</h3>
 				</div>
-			let units = []
-			for (i = 0; i < allUnits.length; i++) {
-				if (allUnits[i].army_id === selectedArmy.value) {
-					units.push(allUnits[i])
-				}
-			}
-			let i2
-			for (i = 0; i < units.length; i++) {
-				let listedUnits = this.state.listedUnits
-				let limitedHeroCount = 0
-				let limitedAndLockedFromJarvisCount = 0
-				let limitedDuplicateCount = 0
-				let maybeMaxedOut = []
-				let heroesOnList = []
-				let warEnginesOnList = []
-				let monstersOnList = []
-				let locked = false
-				for (i2 = 0; i2 < listedUnits.length; i2++) {
-					if (listedUnits[i2].unit.limited_n > 0 && listedUnits[i2].unit.unit_type.includes('Hero')) {
-						limitedHeroCount += 1
-					}
-					if (units[i].limited_n > 0 && units[i].unit_type.includes('Hero') && listedUnits[i2].unit.name === 'Jarvis [1]') {
-						limitedAndLockedFromJarvisCount += 1
-					}
-					if (units[i].limited_n > 0 && listedUnits[i2].unit.id === units[i].id) {
-						limitedDuplicateCount += 1
-					}
-					if (
-						(units[i].unit_type.includes('Hero') && listedUnits[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'War Engine' && listedUnits[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Monster' && listedUnits[i2].unit.id === units[i].id) ||
-						(units[i].unit_type === 'Titan' && listedUnits[i2].unit.id === units[i].id)
-					) {
-						maybeMaxedOut.push(listedUnits[i2])
-					}
-				}
-				if (
-					(units[i].unit_size === 'Troop' || units[i].is_irregular === true) ||
-					units[i].unit_type.includes('Hero') ||
-					units[i].unit_type === 'War Engine' ||
-					units[i].unit_type === 'Monster' ||
-					units[i].unit_type === 'Titan'
-				) {
-					locked = true
-					if ((units[i].unit_size === 'Troop' || units[i].is_irregular === true) && this.state.troopUnlocks > 0) {
-						locked = false
-					} else {
-						if (units[i].unit_type.includes('Hero') && this.state.heroUnlocks > 0) {
-							locked = false
-						} else {
-							if (units[i].unit_type.includes('Hero') && this.state.unlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.heroCount +
-										this.state.warEngineCount +
-										this.state.monsterCount +
-										this.state.titanCount <
-										this.state.heroUnlocks +
-										this.state.warEngineUnlocks +
-										this.state.monsterUnlocks +
-										this.state.unlocksFromLargeInfantry && (
-											(
-												this.state.heroCount <= this.state.warEngineCount ||
-												this.state.heroCount <= this.state.monsterCount ||
-												this.state.heroCount <= this.state.titanCount
-											) && (
-												this.state.largeInfantryCount >
-												this.state.heroCount + this.state.warEngineCount + this.state.monsterCount + this.state.titanCount
-											) 
-										) || (
-											this.state.heroCount < this.state.hordeCount + this.state.largeInfantryCount
-										)
-									)
-								) {
-									locked = false
-								}
-							}
-							if (units[i].unit_type.includes('Hero') && this.state.unlocksFromRegiments > 0) {
-								locked = false
-							}
-						}
-						if (units[i].unit_type === 'War Engine' && this.state.warEngineUnlocks > 0) {
-							locked = false
-						} else {
-							if (units[i].unit_type === 'War Engine' && this.state.unlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.heroCount +
-										this.state.warEngineCount +
-										this.state.monsterCount +
-										this.state.titanCount <
-										this.state.heroUnlocks +
-										this.state.warEngineUnlocks +
-										this.state.monsterUnlocks +
-										this.state.unlocksFromLargeInfantry && (										
-											(
-												this.state.warEngineCount <= this.state.heroCount ||
-												this.state.warEngineCount <= this.state.monsterCount ||
-												this.state.warEngineCount <= this.state.titanCount
-											) && (
-												this.state.largeInfantryCount >
-												this.state.heroCount + this.state.warEngineCount + this.state.monsterCount + this.state.titanCount
-											)
-										) || (
-											this.state.warEngineCount < this.state.hordeCount + this.state.largeInfantryCount
-										)
-									)
-								) {
-									locked = false
-								}
-							}
-							if (units[i].unit_type === 'War Engine' && this.state.unlocksFromRegiments > 0) {
-								locked = false
-							}
-						}
-						if (units[i].unit_type === 'Monster' && this.state.monsterUnlocks > 0) {
-							locked = false
-						} else {
-							if (units[i].unit_type === 'Monster' && this.state.unlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.heroCount +
-										this.state.warEngineCount +
-										this.state.monsterCount +
-										this.state.titanCount <
-										this.state.heroUnlocks +
-										this.state.warEngineUnlocks +
-										this.state.monsterUnlocks +
-										this.state.unlocksFromLargeInfantry && (
-											(
-												this.state.monsterCount <= this.state.heroCount ||
-												this.state.monsterCount <= this.state.warEngineCount ||
-												this.state.monsterCount <= this.state.titanCount
-											) && (
-												this.state.largeInfantryCount >
-												this.state.heroCount + this.state.warEngineCount + this.state.monsterCount + this.state.titanCount
-											)
-										) || (
-											this.state.monsterCount < this.state.hordeCount + this.state.largeInfantryCount
-										)
-									)
-								) {
-									locked = false
-								}
 
-							}
-							if (units[i].unit_type === 'Monster' && this.state.unlocksFromRegiments > 0) {
-								locked = false
-							}
-						}
-						if (units[i].unit_type === 'Titan' && this.state.monsterUnlocks > 0) {
-							locked = false
-						} else {
-							if (units[i].unit_type === 'Titan' && this.state.unlocksFromLargeInfantry > 0) {
-								if (
-									(
-										this.state.heroCount +
-										this.state.warEngineCount +
-										this.state.monsterCount +
-										this.state.titanCount <
-										this.state.heroUnlocks +
-										this.state.warEngineUnlocks +
-										this.state.monsterUnlocks +
-										this.state.unlocksFromLargeInfantry && (
-											(
-												this.state.titanCount <= this.state.heroCount ||
-												this.state.titanCount <= this.state.warEngineCount ||
-												this.state.titanCount <= this.state.monsterCount
-											) && (
-												this.state.largeInfantryCount >
-												this.state.heroCount + this.state.warEngineCount + this.state.monsterCount + this.state.titanCount
-											)
-										) || (
-											this.state.titanCount < this.state.hordeCount + this.state.largeInfantryCount
-										)
-									)
-								) {
-									locked = false
-								}
-
-							}
-							if (units[i].unit_type === 'Titan' && this.state.unlocksFromRegiments > 0) {
-								locked = false
-							}
-						}						
-					}
-				}
-				if (
-					units[i].name === 'Jarvis [1]' && (
-						limitedHeroCount > 0 || (
-							this.state.alliedListedUnits.length > 0 &&
-							this.state.alliedArmy.alignment === 'Good'
-						)
-					)
-				) {
-					locked = true
-				}
-				if (units[i].limited_n > 0 && units[i].unit_type.includes('Hero') && limitedAndLockedFromJarvisCount > 0) {
-					locked = true
-				}			
+			let units = this.props.units.sort((a, b) => {
+				return ( b.points - a.points )
+			})
+			let unitsInArmyTop = []
+			let unitsInArmyBottom = []
+			for (i = 0; i < units.length; i++) {	
 				if (units[i].army_id === selectedArmy.value) {
-					if (
-						limitedDuplicateCount > 0 ||
-						maybeMaxedOut.length >= this.state.maximumCount ||
-						locked === true
-					) {
-						greyedOutUnits.push(units[i])
-					}
-					if (
-						(units[i].unit_size === 'Legion' && units[i].is_irregular === false) ||
-						(units[i].unit_size === 'Horde' && units[i].is_irregular === false) ||
-						(units[i].unit_size === 'Regiment' && units[i].is_irregular === false &&
-							(
-								units[i].unit_type === 'Infantry' ||
-								units[i].unit_type === 'Heavy Infantry' ||
-								units[i].unit_type === 'Cavalry' ||
-								units[i].unit_type === 'Chariot'
-							)
-						)
-					) {
-						filteredUnits.push(units[i])
+					if (units[i].unlocking_class > 0) {
+						unitsInArmyTop.push(units[i])
 					} else {
-						filteredUnitsUnlocked.push(units[i])
+						unitsInArmyBottom.push(units[i])
 					}
 				}
 			}
+			let greyedOutUnits = this.determineIfGreyedOut('Main army', this.state.listedUnits, '')
 
 			let alliesTitle
 			if (this.state.alliesVisible === false) {
-				unitEntryButtonDisplay = filteredUnits.map(unit => {
+				unitEntryButtonDisplay = unitsInArmyTop.map(unit => {
 					return (
 						<UnitEntryButton
 							key={unit.id}
@@ -4367,7 +1679,7 @@ class UnitEntriesFormContainer extends Component {
 						/>
 					)			
 				})
-				unitEntryButtonDisplayUnlocked = filteredUnitsUnlocked.map(unit => {
+				unitEntryButtonDisplayUnlocked = unitsInArmyBottom.map(unit => {
 					return (
 						<UnitEntryButton
 							key={unit.id}
@@ -4383,7 +1695,7 @@ class UnitEntriesFormContainer extends Component {
 					<AlliesButtons
 						armies={this.props.armies}
 						selectedArmy={this.state.selectedArmy}
-						units={allUnits}
+						units={units}
 						listedUnits={this.state.listedUnits}
 						alliedListedUnits={this.state.alliedListedUnits}
 						addToList={this.addAlliedUnitToList}
@@ -4402,6 +1714,8 @@ class UnitEntriesFormContainer extends Component {
 						alliedTitanCount={this.state.alliedTitanCount}
 						alliedHordeCount={this.state.alliedHordeCount}
 						alliedLargeInfantryCount={this.state.alliedLargeInfantryCount}
+						calculateUnitTypeCounts={this.calculateUnitTypeCounts}
+						determineIfGreyedOut={this.determineIfGreyedOut}
 						greyedOutUnits={this.state.alliedGreyedOutUnits}
 					/>
 			}
@@ -4449,6 +1763,7 @@ class UnitEntriesFormContainer extends Component {
 								key={unitObject.index}
 								id={unitObject.index}
 								unitObject={unitObject}
+								alliedArmy={this.state.alliedArmy}
 								selectedUnitOptions={this.state.selectedUnitOptions}
 								selectedArtefacts={this.state.selectedArtefacts}
 								removeUnitOption={this.removeUnitOption}
@@ -4493,6 +1808,7 @@ class UnitEntriesFormContainer extends Component {
 								key={unitObject.index}
 								id={unitObject.index}
 								unitObject={unitObject}
+								alliedArmy={this.state.alliedArmy}
 								selectedUnitOptions={this.state.selectedUnitOptions}
 								selectedArtefacts={this.state.selectedArtefacts}
 								removeUnitOption={this.removeUnitOption}
@@ -4537,6 +1853,7 @@ class UnitEntriesFormContainer extends Component {
 								key={unitObject.index}
 								id={unitObject.index}
 								unitObject={unitObject}
+								alliedArmy={this.state.alliedArmy}
 								selectedUnitOptions={this.state.selectedUnitOptions}
 								selectedArtefacts={this.state.selectedArtefacts}
 								removeUnitOption={this.removeUnitOption}
@@ -4581,6 +1898,7 @@ class UnitEntriesFormContainer extends Component {
 								key={unitObject.index}
 								id={unitObject.index}
 								unitObject={unitObject}
+								alliedArmy={this.state.alliedArmy}
 								selectedUnitOptions={this.state.selectedUnitOptions}
 								selectedArtefacts={this.state.selectedArtefacts}
 								removeUnitOption={this.removeUnitOption}
@@ -4625,6 +1943,7 @@ class UnitEntriesFormContainer extends Component {
 								key={unitObject.index + 275000}
 								id={unitObject.index}
 								unitObject={unitObject}
+								alliedArmy={this.state.alliedArmy}
 								selectedUnitOptions={this.state.alliedSelectedUnitOptions}
 								removeUnitOption={this.removeAlliedUnitOption}
 								removeFromList={this.removeAlliedUnitFromList}
@@ -4667,6 +1986,7 @@ class UnitEntriesFormContainer extends Component {
 								key={unitObject.index + 275000}
 								id={unitObject.index}
 								unitObject={unitObject}
+								alliedArmy={this.state.alliedArmy}
 								selectedUnitOptions={this.state.alliedSelectedUnitOptions}
 								removeUnitOption={this.removeAlliedUnitOption}
 								removeFromList={this.removeAlliedUnitFromList}
@@ -4709,6 +2029,7 @@ class UnitEntriesFormContainer extends Component {
 								key={unitObject.index + 275000}
 								id={unitObject.index}
 								unitObject={unitObject}
+								alliedArmy={this.state.alliedArmy}
 								selectedUnitOptions={this.state.alliedSelectedUnitOptions}
 								removeUnitOption={this.removeAlliedUnitOption}
 								removeFromList={this.removeAlliedUnitFromList}
@@ -4751,6 +2072,7 @@ class UnitEntriesFormContainer extends Component {
 								key={unitObject.index + 275000}
 								id={unitObject.index}
 								unitObject={unitObject}
+								alliedArmy={this.state.alliedArmy}
 								selectedUnitOptions={this.state.alliedSelectedUnitOptions}
 								removeUnitOption={this.removeAlliedUnitOption}
 								removeFromList={this.removeAlliedUnitFromList}
@@ -4782,6 +2104,10 @@ class UnitEntriesFormContainer extends Component {
 		}
 
 		let listOutputSide
+		let alliedPointPercentage
+		if (this.state.alliedListedUnits.length > 0) {
+			alliedPointPercentage = ((this.state.alliedPointTotal / (this.state.pointTotal + this.state.alliedPointTotal)) * 100).toFixed(1)
+		}
 		if (unitOptionSelectionTile !== undefined && artefactSelectionTile === undefined) {
 			listOutputSide = unitOptionSelectionTile
 		}
@@ -4802,7 +2128,7 @@ class UnitEntriesFormContainer extends Component {
 							</tbody>
 						</table><br />
 						<div className="allies-title-on-list">
-							{this.state.alliedArmySingularName} Allies:
+							{this.state.alliedArmySingularName} Allies ({alliedPointPercentage}%):
 						</div><br />
 						<table>
 							<tbody>
@@ -4855,7 +2181,7 @@ class UnitEntriesFormContainer extends Component {
 				</div>
 				<div className="email-div">
 					<span className="user-select-none">Email:{' '}</span>admin@goodarmylists.com
-					<form className="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+					<form className="paypal-form user-select-none" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 						<input type="hidden" name="cmd" value="_donations" />
 						<input type="hidden" name="business" value="admin@goodarmylists.com" />
 						<input type="hidden" name="currency_code" value="USD" />
@@ -4913,6 +2239,7 @@ class UnitEntriesFormContainer extends Component {
 						alliedListedUnitsBottom={alliedListedUnitsBottom}
 						alliedSelectedUnitOptions={this.state.alliedSelectedUnitOptions}
 						alliedPointTotal={this.state.alliedPointTotal}
+						alliedPointPercentage={alliedPointPercentage}
 						hideFormattedList={this.hideFormattedList}
 					/>
 				</Modal>

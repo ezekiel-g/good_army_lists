@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_085423) do
+ActiveRecord::Schema.define(version: 2020_03_01_182442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,79 @@ ActiveRecord::Schema.define(version: 2019_12_03_085423) do
     t.string "company", null: false
     t.string "game_type"
     t.string "abbreviation"
+  end
+
+  create_table "gg_unit_options", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "display_name", null: false
+    t.integer "points", null: false
+    t.boolean "is_spell", default: false, null: false
+    t.boolean "is_unique", default: false, null: false
+    t.text "description"
+    t.bigint "gg_unit_id"
+    t.index ["gg_unit_id"], name: "index_gg_unit_options_on_gg_unit_id"
+  end
+
+  create_table "gg_units", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "display_name", null: false
+    t.string "unit_type", null: false
+    t.integer "unit_type_index", null: false
+    t.string "unit_size"
+    t.integer "unit_strength", null: false
+    t.integer "points", null: false
+    t.integer "limited_n", null: false
+    t.integer "unlocking_class", null: false
+    t.boolean "is_irregular", default: false, null: false
+    t.boolean "is_army_specific", default: false, null: false
+    t.integer "spellcaster"
+    t.integer "height"
+    t.string "speed"
+    t.string "melee"
+    t.string "ranged"
+    t.string "defense"
+    t.string "attacks"
+    t.string "nerve"
+    t.text "special_rules"
+    t.string "spells"
+    t.string "options"
+    t.boolean "is_ranged"
+  end
+
+  create_table "kowh_unit_options", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "display_name", null: false
+    t.integer "points", null: false
+    t.boolean "is_spell", default: false, null: false
+    t.boolean "is_unique", default: false, null: false
+    t.text "description"
+    t.bigint "kowh_unit_id"
+    t.index ["kowh_unit_id"], name: "index_kowh_unit_options_on_kowh_unit_id"
+  end
+
+  create_table "kowh_units", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "display_name", null: false
+    t.string "unit_type", null: false
+    t.integer "unit_type_index", null: false
+    t.string "unit_size"
+    t.integer "unit_strength", null: false
+    t.integer "points", null: false
+    t.integer "limited_n", null: false
+    t.integer "unlocking_class", null: false
+    t.boolean "is_irregular", default: false, null: false
+    t.boolean "is_army_specific", default: false, null: false
+    t.integer "spellcaster"
+    t.integer "height"
+    t.string "speed"
+    t.string "melee"
+    t.string "ranged"
+    t.string "defense"
+    t.string "attacks"
+    t.string "nerve"
+    t.text "special_rules"
+    t.string "spells"
+    t.string "options"
   end
 
   create_table "unit_options", force: :cascade do |t|
@@ -72,6 +145,14 @@ ActiveRecord::Schema.define(version: 2019_12_03_085423) do
     t.text "special_rules_cont"
     t.text "keywords"
     t.index ["army_id"], name: "index_units_on_army_id"
+  end
+
+  create_table "veteran_abilities", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "display_name", null: false
+    t.integer "points", null: false
+    t.boolean "is_heroic", default: false, null: false
+    t.text "description"
   end
 
 end

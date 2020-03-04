@@ -2,8 +2,6 @@ import React from 'react'
 import UnitEntryNameTileFormatted from './UnitEntryNameTileFormatted'
 
 const FormattedList = props => {
-	let header
-
 	let listTop = props.listedUnitsTop.map(unitObject => {
 		return (
 			<UnitEntryNameTileFormatted
@@ -11,7 +9,6 @@ const FormattedList = props => {
 				id={unitObject.index}
 				unitObject={unitObject}
 				selectedUnitOptions={props.selectedUnitOptions}
-				selectedArtefacts={props.selectedArtefacts}
 			/>
 		)
 	})
@@ -22,7 +19,6 @@ const FormattedList = props => {
 				id={unitObject.index}
 				unitObject={unitObject}
 				selectedUnitOptions={props.selectedUnitOptions}
-				selectedArtefacts={props.selectedArtefacts}
 			/>
 		)
 	})
@@ -33,7 +29,6 @@ const FormattedList = props => {
 				id={unitObject.index}
 				unitObject={unitObject}
 				selectedUnitOptions={props.selectedUnitOptions}
-				selectedArtefacts={props.selectedArtefacts}
 			/>
 		)
 	})
@@ -44,93 +39,23 @@ const FormattedList = props => {
 				id={unitObject.index}
 				unitObject={unitObject}
 				selectedUnitOptions={props.selectedUnitOptions}
-				selectedArtefacts={props.selectedArtefacts}
 			/>
 		)
 	})
-	let alliesListTop
-	let alliesListSecondQuarter
-	let alliesListThirdQuarter
-	let alliesListBottom
-	let listDisplay
-	if (props.alliedListedUnitsTop.length > 0) {
-		header =
-			<div className="formatted-list-header">
-				<div>Army: {props.selectedArmy.label}</div>
-				<div>Ally: {props.alliedArmy.name} ({props.alliedPointPercentage}%)</div>
-				<div>Points: {props.pointTotal + props.alliedPointTotal}</div>
-				<div>Unit Count: {props.unitCount}</div>
-				<div>Unit Strength: {props.unitStrengthTotal}</div>
-			</div>
-
-		alliesListTop = props.alliedListedUnitsTop.map(unitObject => {
-			return (
-				<UnitEntryNameTileFormatted
-					key={unitObject.index + 350000}
-					id={unitObject.index}
-					unitObject={unitObject}
-					selectedUnitOptions={props.alliedSelectedUnitOptions}
-				/>
-			)
-		})
-		alliesListSecondQuarter = props.alliedListedUnitsSecondQuarter.map(unitObject => {
-			return (
-				<UnitEntryNameTileFormatted
-					key={unitObject.index + 350000}
-					id={unitObject.index}
-					unitObject={unitObject}
-					selectedUnitOptions={props.alliedSelectedUnitOptions}
-				/>
-			)
-		})
-		alliesListThirdQuarter = props.alliedListedUnitsThirdQuarter.map(unitObject => {
-			return (
-				<UnitEntryNameTileFormatted
-					key={unitObject.index + 350000}
-					id={unitObject.index}
-					unitObject={unitObject}
-					selectedUnitOptions={props.alliedSelectedUnitOptions}
-				/>
-			)
-		})
-		alliesListBottom = props.alliedListedUnitsBottom.map(unitObject => {
-			return (
-				<UnitEntryNameTileFormatted
-					key={unitObject.index + 350000}
-					id={unitObject.index}
-					unitObject={unitObject}
-					selectedUnitOptions={props.alliedSelectedUnitOptions}
-				/>
-			)
-		})
-
-		listDisplay =
-			<div>
-				{listTop}
-				{listSecondQuarter}
-				{listThirdQuarter}
-				{listBottom}<br />
-				{alliesListTop}
-				{alliesListSecondQuarter}
-				{alliesListThirdQuarter}
-				{alliesListBottom}
-			</div>
-	} else {
-		header =
-			<div className="formatted-list-header">
-				<div>Army: {props.selectedArmy.label}</div>
-				<div>Points: {props.pointTotal + props.alliedPointTotal}</div>
-				<div>Unit Count: {props.unitCount}</div>
-				<div>Unit Strength: {props.unitStrengthTotal}</div>
-			</div>
-		listDisplay =
-			<div>
-				{listTop}
-				{listSecondQuarter}
-				{listThirdQuarter}
-				{listBottom}			
-			</div>
-	}
+	let header =
+		<div className="formatted-list-header">
+			<div>Army: {props.selectedArmy.label}</div>
+			<div>Points: {props.pointTotal + props.alliedPointTotal}</div>
+			<div>Unit Count: {props.unitCount}</div>
+			<div>Unit Strength: {props.unitStrengthTotal}</div>
+		</div>
+	let listDisplay =
+		<div>
+			{listTop}
+			{listSecondQuarter}
+			{listThirdQuarter}
+			{listBottom}			
+		</div>
 
 	const printList = listElement => {
 	    let domClone = listElement.cloneNode(true)

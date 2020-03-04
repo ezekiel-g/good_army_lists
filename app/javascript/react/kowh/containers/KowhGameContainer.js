@@ -2,36 +2,20 @@ import React, { Component } from 'react'
 import { render } from 'react-dom'
 import RedBox from 'redbox-react'
 import Select from 'react-select'
-import UnitEntriesFormContainer from './UnitEntriesFormContainer'
+import ListContainer from './ListContainer'
 
-class NonAdminSectionContainer extends Component {
+class KowhGameContainer extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			armies: [],
 			units: [],
-			unitOptions: []
+			unitOptions: [],
+			veteranAbilities: []
 		}
 	}
 
 	componentDidMount() {
-		fetch('/api/v1/armies')
-		.then(response => {
-			if (response.ok) {
-				return response
-			} else {
-				let errorMessage = `${response.status} (${response.statusText})`,
-				error = new Error(errorMessage)
-				throw(error)
-			}
-		})
-		.then(response => response.json())
-		.then(body => {
-			this.setState({ armies: body })
-		})
-		.catch(error => console.error(`Error in fetch: ${error.message}`))
-
-		fetch('/api/v1/units')
+		fetch('/api/v1/kowh_units')
 		.then(response => {
 			if (response.ok) {
 				return response
@@ -47,7 +31,7 @@ class NonAdminSectionContainer extends Component {
 		})
 		.catch(error => console.error(`Error in fetch: ${error.message}`))
 	
-		fetch('/api/v1/unit_options')
+		fetch('/api/v1/kowh_unit_options')
 		.then(response => {
 			if (response.ok) {
 				return response
@@ -67,8 +51,7 @@ class NonAdminSectionContainer extends Component {
 	render() {
 		return (
 			<div className="sections-container">	
-				<UnitEntriesFormContainer
-					armies={this.state.armies}
+				<ListContainer
 					units={this.state.units}
 					unitOptions={this.state.unitOptions}
 					dropdownStyle={this.props.dropdownStyle}
@@ -78,4 +61,4 @@ class NonAdminSectionContainer extends Component {
 	}
 }
 
-export default NonAdminSectionContainer
+export default KowhGameContainer

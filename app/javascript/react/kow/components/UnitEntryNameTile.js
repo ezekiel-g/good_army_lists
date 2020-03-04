@@ -24,7 +24,7 @@ const UnitEntryNameTile = props => {
 				<span key={index + 15000} >
 					<span						
 						className="unit-option-entry-label"
-						onClick={() => props.removeUnitOption(unitOptionObject)}
+						onClick={() => props.removeUnitOption(unitOptionObject, props.alliedArmy)}
 					>
 						{' -- '}{unitOptionObject.unitOption.display_name}
 					</span><br />
@@ -39,7 +39,7 @@ const UnitEntryNameTile = props => {
 				<span key={index + 30000} >
 					<span						
 						className="unit-option-entry-label"
-						onClick={() => props.removeUnitOption(unitOptionObject)}
+						onClick={() => props.removeUnitOption(unitOptionObject, props.alliedArmy)}
 					>
 						{' -- '}{unitOptionObject.unitOption.display_name}
 					</span><br />
@@ -62,7 +62,7 @@ const UnitEntryNameTile = props => {
 			artefactText =
 				<span>
 					<span
-						onClick={() => props.removeArtefact(selectedArtefactArray[0])}
+						onClick={() => props.removeArtefact(selectedArtefactArray[0], props.alliedArmy)}
 						className="unit-option-entry-label"
 					>
 						{' -- '}{selectedArtefactArray[selectedArtefactArray.length - 1].artefact.display_name}
@@ -75,7 +75,8 @@ const UnitEntryNameTile = props => {
 		<span className="list-entry">
 			<span 
 				onClick={() => props.removeFromList(
-					props.unitObject			
+					props.unitObject,
+					props.alliedArmy			
 				)}
 				className="list-entry-label"
 			>

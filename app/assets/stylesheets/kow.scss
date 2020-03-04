@@ -64,6 +64,21 @@ hr {
 	background-color: #D3D3D3;	
 }
 
+.gal-title-top {
+	text-align: center;
+	font-size: 165%;
+}
+
+.gal-title-top:hover {
+	background-color: #D3D3D3;
+}
+
+.presents {
+	margin: -2px 0px 2px 0px;
+	text-align: center;
+	font-size: 73%;
+}
+
 .army-dropdown-section {
 	user-select: none;
 }
@@ -96,6 +111,35 @@ hr {
 	font-size: 73%;
 	margin: -9px 0px 0.5px 0px;
 	user-select: none;
+}
+
+.copyright-notice-absent {
+	text-align: center;
+	font-size: 73%;
+	margin: -9px 0px -4px 0px;
+	user-select: none;
+}
+
+.rules-container {
+	/*user-select: none;*/
+	line-height: 120%;
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
+	padding: 5px 5px 20px 5px;
+	width: 49.5%;
+	border-radius: 6px;
+	overflow: hidden;
+	height: fit-content;
+	margin: 14px auto 0px auto;
+}
+
+.rules-title-bar {
+	border-radius: 6px;
+	background-color: #204A87;
+	color: #FFFFFF;
+	border: 1px solid #000000;
+	margin-bottom: 7px;
+	text-align: center;
 }
 
 .align-left {

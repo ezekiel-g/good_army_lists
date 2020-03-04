@@ -4,6 +4,7 @@ import RedBox from 'redbox-react'
 import App from '../react/App'
 import NonAdminSectionContainer from '../react/kow/containers/NonAdminSectionContainer'
 import KowhGameContainer from '../react/kowh/containers/KowhGameContainer'
+import GGContainer from '../react/gg/containers/GGContainer'
 
 const dropdownStyle = {
     control: (base, state) => ({
@@ -92,6 +93,23 @@ document.addEventListener('DOMContentLoaded', () => {
 //         }
 //         else {
 //             render(<KowhGameContainer dropdownStyle={dropdownStyle} />, kowh)
+//         }
+//     }
+// })
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     let gg = document.getElementById('gg')
+
+//     if (gg) {
+//         if(window.railsEnv && window.railsEnv === 'development'){
+//             try {
+//                 render(<GGContainer dropdownStyle={dropdownStyle} />, gg)
+//             } catch (error) {
+//                 render(<RedBox error={error} />, gg)
+//             }
+//         }
+//         else {
+//             render(<GGContainer dropdownStyle={dropdownStyle} />, gg)
 //         }
 //     }
 // })

@@ -3,8 +3,8 @@ import { render } from 'react-dom'
 import RedBox from 'redbox-react'
 import App from '../react/App'
 import NonAdminSectionContainer from '../react/kow/containers/NonAdminSectionContainer'
-import KowhGameContainer from '../react/kowh/containers/KowhGameContainer'
 import GGContainer from '../react/gg/containers/GGContainer'
+import WmrContainer from '../react/wmr/containers/WmrContainer'
 
 const dropdownStyle = {
     control: (base, state) => ({
@@ -81,23 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 // document.addEventListener('DOMContentLoaded', () => {
-//     let kowh = document.getElementById('kowh')
-
-//     if (kowh) {
-//         if(window.railsEnv && window.railsEnv === 'development'){
-//             try {
-//                 render(<KowhGameContainer dropdownStyle={dropdownStyle} />, kowh)
-//             } catch (error) {
-//                 render(<RedBox error={error} />, kowh)
-//             }
-//         }
-//         else {
-//             render(<KowhGameContainer dropdownStyle={dropdownStyle} />, kowh)
-//         }
-//     }
-// })
-
-// document.addEventListener('DOMContentLoaded', () => {
 //     let gg = document.getElementById('gg')
 
 //     if (gg) {
@@ -113,3 +96,20 @@ document.addEventListener('DOMContentLoaded', () => {
 //         }
 //     }
 // })
+
+document.addEventListener('DOMContentLoaded', () => {
+    let wmr = document.getElementById('wmr')
+
+    if (wmr) {
+        if(window.railsEnv && window.railsEnv === 'development'){
+            try {
+                render(<WmrContainer dropdownStyle={dropdownStyle} />, wmr)
+            } catch (error) {
+                render(<RedBox error={error} />, wmr)
+            }
+        }
+        else {
+            render(<WmrContainer dropdownStyle={dropdownStyle} />, wmr)
+        }
+    }
+})

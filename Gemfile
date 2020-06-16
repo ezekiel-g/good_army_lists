@@ -8,7 +8,7 @@ gem 'rails', '~> 6.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 1.2.2', '< 2.0'
 # Use Puma as the app server
-gem 'puma', '>= 4.3.3'
+gem 'puma', '>= 4.3.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 5.1.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -47,6 +47,7 @@ gem 'valid_attribute', group: [:development, :test]
 gem 'shoulda-matchers', group: [:development, :test], require: false
 gem 'web-console', '>= 4.0.1', group: [:development]
 gem 'listen', '>= 3.0.5', '< 3.2', group: [:development]
+
 
 group :development, :test do
 

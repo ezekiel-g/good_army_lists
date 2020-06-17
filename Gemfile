@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.5'
+ruby '2.7.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
@@ -10,7 +10,7 @@ gem 'pg', '>= 1.2.2', '< 2.0'
 # Use Puma as the app server
 gem 'puma', '>= 4.3.5'
 # Use SCSS for stylesheets
-gem 'sass-rails', '>= 5.1.0'
+# gem 'sass-rails', '>= 5.1.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.2.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -35,6 +35,7 @@ gem 'webpacker', '>= 4.2.2'
 gem 'devise'
 gem 'jquery-rails'
 gem 'foundation-rails'
+gem 'sassc'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'pry-rails', group: [:development, :test]
 gem 'dotenv-rails', group: [:development, :test]

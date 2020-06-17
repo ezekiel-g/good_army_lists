@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_01_182442) do
+ActiveRecord::Schema.define(version: 2020_06_17_002121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,6 +153,49 @@ ActiveRecord::Schema.define(version: 2020_03_01_182442) do
     t.integer "points", null: false
     t.boolean "is_heroic", default: false, null: false
     t.text "description"
+  end
+
+  create_table "wmr_armies", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "number_in_order", null: false
+    t.text "army_rules"
+    t.string "alignment"
+  end
+
+  create_table "wmr_magic_items", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "display_name", null: false
+    t.string "magic_item_type", null: false
+    t.string "unique_to"
+    t.integer "points", null: false
+    t.text "description", null: false
+  end
+
+  create_table "wmr_spells", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "display_name", null: false
+    t.string "needed_to_cast", null: false
+    t.string "range", null: false
+    t.text "description", null: false
+    t.bigint "wmr_army_id"
+    t.index ["wmr_army_id"], name: "index_wmr_spells_on_wmr_army_id"
+  end
+
+  create_table "wmr_units", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "display_name", null: false
+    t.string "unit_type", null: false
+    t.integer "unit_type_index", null: false
+    t.string "attacks", null: false
+    t.string "hits", null: false
+    t.string "armor", null: false
+    t.string "command", null: false
+    t.string "unit_size", null: false
+    t.string "points_per_unit", null: false
+    t.string "min_max", null: false
+    t.text "special_rules"
+    t.bigint "wmr_army_id"
+    t.index ["wmr_army_id"], name: "index_wmr_units_on_wmr_army_id"
   end
 
 end

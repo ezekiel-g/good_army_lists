@@ -14,7 +14,12 @@ Rails.application.routes.draw do
 			resources :unit_options, only: [:index, :show]
 
 			resources :gg_units, only: [:index, :show]
-			resources :gg_unit_options, only: [:index, :show]	
+			resources :gg_unit_options, only: [:index, :show]
+
+			resources :wmr_armies, only: [:index, :show]
+			resources :wmr_units, only: [:index, :show]
+			resources :wmr_spells, only: [:index, :show]
+			resources :wmr_magic_items, only: [:index, :show]	
 		end
 	end
 end

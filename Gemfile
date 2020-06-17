@@ -31,7 +31,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'rack', '>= 2.0.8'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'webpacker', '>= 4.2.2'
+gem 'webpacker', '>= 5.1.0'
 gem 'devise'
 gem 'jquery-rails'
 gem 'foundation-rails'

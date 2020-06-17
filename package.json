@@ -38,6 +38,7 @@
   },
   "scripts": {
     "start": "./bin/webpack-dev-server",
+    "build": "./bin/webpack",
     "test": "node_modules/.bin/jest",
     "test:dev": "node_modules/.bin/jest --notify --watch"
   },
